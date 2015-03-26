@@ -8,7 +8,7 @@ Factory::~Factory(){}
 //returns polymorphed Population, already initialized with it's ->Init
 Population * Factory::createPopulation(std::string linksPath, std::string populationType, int totalTags){
 	/**/
-	std::string type = populationType;
+    std::string type = populationType;
 	Population * retPopulation = NULL; //population to be returned
     std::string path = linksPath;
 	/**
@@ -83,9 +83,6 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
 			_tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
 		}
 		_subscribers.push_back(_tempString);
-		
-
-
 		/**
 		std::cout << "Config File:" << std::endl;
 		std::cout << "Population Type: " << _populationType << std::endl;
