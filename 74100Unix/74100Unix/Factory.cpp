@@ -36,6 +36,10 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
      }
      /**/
     //TODO: meanwhile, everything should work with a lattice population type class
+    //TODO:continue here
+    char * dir = getcwd(NULL, 0); // Platform-dependent, see reference link below
+    std::cout << *dir;
+    
     retPopulation = new LatticePopulation();
     retPopulation->init(path, totalTags, type);
     return retPopulation;
@@ -49,7 +53,6 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
     //Tau : 0.7
     //Payoff_Matrix : 1 1 5 5
     //percentages_of_tags_in_pop : 0 50 1 30 2 10 3 10
-    std::cout << "Generatiing links from file: " << inputPath << std::endl;
     std::ifstream myfile(inputPath);
     if (myfile.is_open())
     {

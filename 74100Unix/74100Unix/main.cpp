@@ -11,10 +11,12 @@
 #include "DataSubscriber.h"
 #include <vector>
 #include <string>
-//#include <stdio.h>
+//TODO:delete this when it's time for release
+#include "TestClass.h"
 
 int main(int argc, const char * argv[])
 {
+    
     //TODO: delete memory allocations, to allow more simulations, one after the other while cleaning up
     
     //Factory will create populations and simulations
@@ -23,16 +25,16 @@ int main(int argc, const char * argv[])
      factory.generateFullyConnected();
      factory.generateTwoForwardTwoBehind();
      
-     /**/
+    /**/
     /**
      //Create a simulation for each of the input files given
      //TODO: make it work with argv instead of hardCoded AND the for each
      Simulation * a = factory.createSimulation("ConfigurationFiles/config1.txt");
-     /**/
+    /**/
     /**/
     std::vector <Simulation *> simulations;
     std::vector<std::string> * dataSubscribers = nullptr;
-    std::vector<float> payoffMatrix = { 100.0f, 0.0f, 1.0f, 0.0f };
+    std::vector<float> payoffMatrix = { 1.0f, 0.0f, 1.0f, 0.0f };
     const int NUMB_SIMS = 1500000;
     /**
      payoffMatrix[2] = 1.0f;
@@ -109,10 +111,11 @@ int main(int argc, const char * argv[])
      /**/
     payoffMatrix[2] = 1.15f;
     simulations.push_back(factory.createSimulation(2,
-                                                   "Networks/WellMixed/TwoForwardTwoBehind_512.txt", "OTHER2", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
+                                                   "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/WellMixed/TwoForwardTwoBehind_512.txt", "OTHER2", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
+    
     
     payoffMatrix[2] = 1.2f;
     simulations.push_back(factory.createSimulation(2,
-                                                   "Networks/WellMixed/TwoForwardTwoBehind_512.txt", "OTHER2", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
+                                                   "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/WellMixed/TwoForwardTwoBehind_512.txt", "OTHER2", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
     /**/
 }

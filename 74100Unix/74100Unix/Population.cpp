@@ -9,7 +9,10 @@
 #include "Population.h"
 
 //Population cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ss
-Population::Population(){}
+Population::Population(){
+    
+
+}
 Population::~Population(){}
 
 int Population::getSize(){
@@ -63,13 +66,14 @@ void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){
 }
 
 //Parse agents from a text file, filling the population vector
-void LatticePopulation::generateLinks(std::string source){
+void LatticePopulation::generateLinks(std::string i_source){
     int populationSize; //number of agents in the network, specified at the first line of the file
     std::vector<Agent> tempPopulation; //stores the parsed agents, will be returned
     std::vector<int> tempNeighbors; //stores a list of neighbors of the current parsed agent
     int tempIndex; //index for the current parsed agent
     int tempTag; //Tag for the current parsed agent
-    
+    std::string source = i_source;
+
     std::ifstream myfile(source);
     if (myfile.is_open())
     {

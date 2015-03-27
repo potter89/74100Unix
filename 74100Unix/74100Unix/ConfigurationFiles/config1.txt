@@ -1,0 +1,8 @@
+Population_Type: LATTICE
+Links_file_Path: Networks/Lattices/32x32.txt
+Generations: 11000
+Number_of_tags: 1
+Tau: 0.7
+Payoff_Matrix: 1 0 1.15 0
+Percentages_of_tags_in_pop: 0 100
+DataSubscribers: Console 

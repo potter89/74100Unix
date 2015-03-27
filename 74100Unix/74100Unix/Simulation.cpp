@@ -224,12 +224,12 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
             iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
             //TODO: delete this
             if (iPopulation[i].strategy[0] == 1 || iPopulation[i].strategy[1] == 1){
-                std::cout << "Chose: " << randomNeighborIndex << " fit: " << iPopulation[randomNeighborIndex].fitness << " #Neigh: " << iPopulation[randomNeighborIndex].neighbors.size();
-                std::cout << " s: ";
+                //std::cout << "Chose: " << randomNeighborIndex << " fit: " << iPopulation[randomNeighborIndex].fitness << " #Neigh: " << iPopulation[randomNeighborIndex].neighbors.size();
+                //std::cout << " s: ";
                 for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++){
-                    std::cout << iPopulation[randomNeighborIndex].strategy[x] << ", ";
+                    //std::cout << iPopulation[randomNeighborIndex].strategy[x] << ", ";
                 }
-                std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
+                //std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
             }
             /**
              std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
