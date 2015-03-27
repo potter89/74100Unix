@@ -10,5 +10,6 @@
 #define ___4100Unix__TestClass__
 
 #include <stdio.h>
+#include <pthread.h>
 
 #endif /* defined(___4100Unix__TestClass__) */

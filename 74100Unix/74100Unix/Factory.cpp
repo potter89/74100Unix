@@ -7,7 +7,7 @@
 //
 
 #include "Factory.h"
-
+//TODO:Update with the new paths!
 
 Factory::Factory(){}
 
@@ -36,10 +36,6 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
      }
      /**/
     //TODO: meanwhile, everything should work with a lattice population type class
-    //TODO:continue here
-    char * dir = getcwd(NULL, 0); // Platform-dependent, see reference link below
-    std::cout << *dir;
-    
     retPopulation = new LatticePopulation();
     retPopulation->init(path, totalTags, type);
     return retPopulation;
