@@ -59,7 +59,7 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
      std::cout << b.strategy[x] << ", ";
      }
      std::cout << "} and tag: " << b.tag << " and current payoff: " << b.payoff << std::endl;
-     /**/
+     //*/
     
     //_payoffMatrix[0] = C and C  3
     //_payoffMatrix[1] = C and D  0
@@ -106,7 +106,7 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
     /**
      std::cout << a.getIndex() << " receives Payoff: " << payoffA << " totaling: " << a.payoff << ".";
      std::cout << "And " << b.getIndex() << " receives:" << payoffB << " totaling: " << b.payoff << "." << std::endl;
-     /**/
+     //*/
 }
 
 //population plays games between neighbors, once
@@ -128,7 +128,7 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
          //std::cout << currentAgent->strategy[x] << ", ";
          }
          std::cout << "} and tag: " << currentAgent->tag << " and current payoff: " << currentAgent->payoff << std::endl;
-         /**/
+         //*/
         
         for (int ii = 0; ii < (int)(iPopulation[i].neighbors.size()); ii++){ // go through his neighbors
             nextItemInNeightbors = currentNeighbors[ii];
@@ -194,7 +194,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
          std::cout << iPopulation[i].strategy[x] << ", ";
          }
          std::cout << std::endl;
-         /**/
+         //*/
         int randomNumber = rand();
         
         //pick a random neighbor
@@ -207,12 +207,12 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
          std::cout << iPopulation[randomNeighborIndex].strategy[x] << ", ";
          }
          std::cout << std::endl;
-         /**/
+         //*/
         
         float p; //holds probability of imitating the other agent's strategy
         //p=(fitness_j-fitness_i)* (Diferenca maxima possivel entre fitness)
         p = (iPopulation[randomNeighborIndex].fitness - iPopulation[i].fitness) /
-        (maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff,aux_Lo_Payoff));
+        (maxFitnessDifference((int)iPopulation[i].neighbors.size(), (int)iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff,aux_Lo_Payoff));
         //std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
         
         float random0till1; //float between 0.0 and 1.0, inclusive
@@ -237,7 +237,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
              std::cout << iPopulation[i].strategy[x] << ", ";
              }
              std::cout << std::endl;
-             /**/
+            //*/
             //Imitates tag given a probability Tau
             random0till1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX); //float between 0.0 and 1.0, inclusive
             //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;

@@ -42,7 +42,7 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
         for (index = 0; index < populationAgents.size(); index++){ //for each agent
             auxAgent = &(populationAgents.at(index));
             //print his strategy
-            auxStratSize = auxAgent->strategy.size();
+            auxStratSize = (int)auxAgent->strategy.size();
             if (auxStratSize == 1){
                 if (auxAgent->strategy[0] == 0){
                     std::cout << "C";
@@ -99,7 +99,7 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
             auxAgent = &(populationAgents.at(index));
             std::cout << index << "_";
             //print his strategy
-            auxStratSize = auxAgent->strategy.size();
+            auxStratSize = (int)auxAgent->strategy.size();
             if (auxStratSize == 1){
                 if (auxAgent->strategy[0] == 0){
                     std::cout << "C";

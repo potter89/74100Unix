@@ -34,7 +34,7 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
      std::cin >> type;
      }
      }
-     /**/
+     //*/
     //TODO: meanwhile, everything should work with a lattice population type class
     retPopulation = new LatticePopulation();
     retPopulation->init(path, totalTags, type);
@@ -101,7 +101,7 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
          
          //std::cout << "Payoff Matrix: " << pay << std::endl;
          //std::cout << "Percentages of each tag" << linksFilePath << std::endl;
-         /**/
+         //*/
         myfile.close();
     }
     else{
@@ -141,7 +141,7 @@ void Factory::generateLatticeLinksTextFile(){
     std::cout << "Type the desired number of columns: " << std::endl;
     std::cin >> C;
     
-    std::string fileNamePath = "Networks/Lattices/" + std::to_string(R) + "x" + std::to_string(C) + ".txt";
+    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/l_" + std::to_string(R) + "x" + std::to_string(C) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath);
@@ -241,7 +241,7 @@ void Factory::generateTwoForwardTwoBehind(){
     
     //TODO:find out name..
     //Default FileNamePath creation
-    std::string fileNamePath = "Networks/WellMixed/TwoForwardTwoBehind_" + std::to_string(totalNumberOfAgents) + ".txt";
+    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_" + std::to_string(totalNumberOfAgents) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!
@@ -310,7 +310,7 @@ void Factory::generateFullyConnected(){
     }
     
     //Default FileNamePath creation
-    std::string fileNamePath = "Networks/WellMixed/FullyConnected_" + std::to_string(totalNumberOfAgents) + ".txt";
+    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/fc_" + std::to_string(totalNumberOfAgents) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!

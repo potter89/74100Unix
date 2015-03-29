@@ -33,7 +33,7 @@ public:
      int getTag();
      float getPayoff();
      float getFitness();
-     /**/
+    //*/
     
 private:
     int _index;

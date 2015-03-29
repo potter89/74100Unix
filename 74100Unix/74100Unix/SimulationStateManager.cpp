@@ -69,7 +69,7 @@ void SimulationStateManager::resetStateForNextGeneration(){
 	_simData._numbCooperators = c;
 	_simData._numbDefectors = d;
  }
- /**/
+ //*/
 
 
 /** //TODO:consider deleting this I wont need this, me thinks
@@ -89,7 +89,7 @@ void SimulationStateManager::resetStateForNextGeneration(){
  void SimulationStateManager::decrementDefectors(){ //-1
 	if (_simData._numbDefectors > 0) _simData._numbDefectors--;
  }
- /**/
+ //*/
 
 //TODO: delete this
 /**
@@ -97,4 +97,4 @@ void SimulationStateManager::resetStateForNextGeneration(){
 	std::cout << "Cooperators: " << _simData._numbCooperators << std::endl;
 	std::cout << "Defectors: " << _simData._numbDefectors << std::endl;
  }
- /**/
+ //*/

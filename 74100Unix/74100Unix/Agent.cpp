@@ -24,7 +24,7 @@ Agent::Agent(int indexNumber, int tagNumber, std::vector<int> neighborsIndexes){
 	tag = o.tag;
 	neighbors = o.neighbors;
  }
- /**/
+ //*/
 Agent::Agent(const Agent &o){
     _index = o._index;
     payoff = o.payoff;
@@ -48,4 +48,4 @@ int Agent::getIndex(){
 	}
 	std::cout << std::endl;
  }
- /**/
+ //*/
