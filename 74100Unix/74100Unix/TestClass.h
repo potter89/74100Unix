@@ -11,5 +11,22 @@
 
 #include <stdio.h>
 #include <pthread.h>
+#include <stdlib.h>
+#include <iostream>
+#include <vector>
+#include <unistd.h>
+
+class TestClass
+{
+public:
+    TestClass();
+    ~TestClass();
+    
+    int testThread();
+    int testThreadWithArg();
+    
+    void testTime();
+    
+};
 
 #endif /* defined(___4100Unix__TestClass__) */

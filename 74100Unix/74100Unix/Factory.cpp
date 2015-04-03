@@ -7,7 +7,6 @@
 //
 
 #include "Factory.h"
-//TODO:Update with the new paths!
 
 Factory::Factory(){}
 

@@ -32,7 +32,7 @@ public:
 class SimpleConsoleDataSubscriber : public DataSubscriber
 {
 private:
-    const int REFRESHRATE = 15000;
+    const int REFRESHRATE = 150;
     int refreshRateCounter = 0;
     
 public:

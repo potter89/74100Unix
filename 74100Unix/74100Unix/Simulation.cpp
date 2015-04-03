@@ -17,21 +17,25 @@ _tau(tau),
 _payoffMatrix(payoffMatrix)
 {
     _population = population;
-    std::vector<Agent> * agentsVectorPtr = _population->getPopulationPtr();
+    
+    //initializing stateManagerObject
+    agentsVectorPtr = _population->getPopulationPtr();
     stateManager.setPopulationToSendOut(agentsVectorPtr);
     stateManager.setTypeToSendOut(_population->getType());
-    std::cout << "Type: " << _population->getType() << " #Tag: " << _population->getNumberOfTags() << " b = " << payoffMatrix[2] << " ######################" << std::endl;
-    //TODO: continue here, add the whole vector, but inside state manager
-    DataSubscriber * dataSub = new SimpleConsoleDataSubscriber();
+
+    DataSubscriber * dataSub = new SimpleConsoleDataSubscriber();    //TODO: continue here, add the whole vector, but inside state manager
     stateManager.attachDataSubscriber(dataSub);
-    //TODO:FIX THIS WTFFFFFFF
-    _hasAttachedSubscribers = true;
-    
+    _hasAttachedSubscribers = true; //TODO:FIX THIS WTFFFFFFF
+}
+    Simulation::~Simulation(){}
+
+void Simulation::runSimulation(){
     //EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE -- EVOLVE
     //
     //make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
     //Currently updates subscribers at the end of each generation
     //TODO: consider making vector of agents public? this doesnt look right
+    //std::cout << "Simulation STARTED! Type: " << _population->getType() << " #Tag: " << _population->getNumberOfTags() << " b = " << _payoffMatrix[2] << " ######################" << std::endl;
     
     for (int i = 0; i < _maxGenerations; i++){
         gameTheoryGames(*agentsVectorPtr);
@@ -44,7 +48,6 @@ _payoffMatrix(payoffMatrix)
         evolutionaryGameTheory(*agentsVectorPtr, _tau, _payoffMatrix);
     }
 }
-Simulation::~Simulation(){}
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
     float payoffA = 0.0f; //payoff earned by A in this specific game

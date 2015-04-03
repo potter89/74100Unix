@@ -23,6 +23,7 @@ class Simulation
     int _maxGenerations;
     float _tau;
     std::vector<float> _payoffMatrix;
+    std::vector<Agent> * agentsVectorPtr;
     
     Population * _population = NULL; //holds pointers to one of the various types of classes parented by pure virtual class Population
     
@@ -38,7 +39,6 @@ class Simulation
     
     void setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation);
     
-    
     float highestPayoffInMatrix(std::vector<float> & payoffMatrix);
     float lowestPayoffInMatrix(std::vector<float> & payoffMatrix);
     float maxFitnessDifference(int numbNeiborsA, int numbNeiborsB, float maxPayoffPossible, float minPayoffPossible); //maxFitnessDifference between two agents
@@ -47,6 +47,8 @@ public:
     Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> * dataSubscribers);
     ~Simulation();
     
+    
+    void runSimulation();
     void gatherInitialData();
     void gatherFinalData();
     
