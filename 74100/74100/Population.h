@@ -14,9 +14,6 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <unistd.h>
-
-
 
 //Pure virtual class
 class Population

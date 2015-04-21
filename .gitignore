@@ -42,3 +42,9 @@
 *.plist
 
 *.xccheckout
+*.opensdf
+74100/74100.sdf
+*.suo
+74100/74100/74100.vcxproj
+*.sln
+74100/74100/74100.vcxproj.filters
