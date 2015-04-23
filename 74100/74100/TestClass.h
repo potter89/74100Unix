@@ -10,20 +10,28 @@
 #define ___4100Unix__TestClass__
 
 #include <stdio.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
-#include <unistd.h>
+#include <thread>
+#include <chrono>
+#include <thread>
 
 class TestClass
 {
 public:
     TestClass();
     ~TestClass();
-    
-    int testThread();
-    int testThreadWithArg();
+
+    void stlSimpleThreading();
+	void stlSimpleThreadingArg();
+	void stlThreadingArgDetach();
+
+	//comented due to using posix threading
+    // int testThread(); 
+    // int testThreadWithArg();
+
+	
     
     void testTime();
     

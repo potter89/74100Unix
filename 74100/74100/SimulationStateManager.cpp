@@ -42,7 +42,6 @@ void SimulationStateManager::detatchDataSubscriber(DataSubscriber * newSub){
                 _simData._dataSubscribers.erase(_simData._dataSubscribers.begin() + i); //delete and break
                 break;
             }
-            
         }
     }
 }
@@ -50,7 +49,9 @@ void SimulationStateManager::detatchDataSubscriber(DataSubscriber * newSub){
 //calls function update of every subscriber
 void SimulationStateManager::notifyDataSubscribers(){
     for (int i = 0; i < _simData._numbSubscribers; i++){ //for each of them, call their update function
-        _simData._dataSubscribers[i]->update(_simData._numbCooperativeActions, *_simData._population, _simData._populationType);
+        _simData._dataSubscribers[i]->update(_simData._numbCooperativeActions, 
+											*_simData._population, 
+											 _simData._populationType);
     }
 }
 

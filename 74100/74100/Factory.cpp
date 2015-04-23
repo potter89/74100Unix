@@ -140,7 +140,7 @@ void Factory::generateLatticeLinksTextFile(){
     std::cout << "Type the desired number of columns: " << std::endl;
     std::cin >> C;
     
-    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/l_" + std::to_string(R) + "x" + std::to_string(C) + ".txt";
+    std::string fileNamePath = "Networks/l_" + std::to_string(R) + "x" + std::to_string(C) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath);
@@ -240,7 +240,7 @@ void Factory::generateTwoForwardTwoBehind(){
     
     //TODO:find out name..
     //Default FileNamePath creation
-    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_" + std::to_string(totalNumberOfAgents) + ".txt";
+    std::string fileNamePath = "Networks/tftb_" + std::to_string(totalNumberOfAgents) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!
@@ -309,7 +309,7 @@ void Factory::generateFullyConnected(){
     }
     
     //Default FileNamePath creation
-    std::string fileNamePath = "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/fc_" + std::to_string(totalNumberOfAgents) + ".txt";
+    std::string fileNamePath = "Networks/fc_" + std::to_string(totalNumberOfAgents) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!

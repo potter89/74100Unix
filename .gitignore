@@ -48,3 +48,10 @@
 74100/74100/74100.vcxproj
 *.sln
 74100/74100/74100.vcxproj.filters
+*.lastbuildstate
+74100/74100/Release/74100.tlog/cl.command.1.tlog
+*.tlog
+74100/Debug/74100.ilk
+*.pdb
+*.log
+*.idb

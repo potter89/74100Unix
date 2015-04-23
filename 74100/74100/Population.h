@@ -15,6 +15,7 @@
 #include <string>
 #include <time.h>
 
+
 //Pure virtual class
 class Population
 {

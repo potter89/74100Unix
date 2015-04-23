@@ -11,8 +11,63 @@
 TestClass::TestClass(){}
 TestClass::~TestClass(){}
 
+void workerThread(){
+	printf("This is worker_thread()\n");
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	printf("Finished! \n");
+}
+
+void workerThreadArg(int i){
+	std::cout << "Thread " << i << std::endl;
+	std::this_thread::sleep_for(std::chrono::milliseconds((i*2000)));
+	std::cout << "Finished " << i << std::endl;
+}
+
+void TestClass::stlSimpleThreading(){
+	const int num_threads = 5;
+	std::thread t[num_threads];
+
+	//Launch a group of threads
+	for (int i = 0; i < num_threads; ++i) {
+		t[i] = std::thread(workerThread);
+	}
+
+	std::cout << "Launched from the main\n";
+
+	//Join the threads with the main thread
+	for (int i = 0; i < num_threads; ++i) {
+		t[i].join();
+	}
+}
+
+void TestClass::stlSimpleThreadingArg(){
+	const int num_threads = 5;
+	std::vector<std::thread> t;
+
+	//Launch a group of threads
+	for (int i = 0; i < num_threads; ++i) {
+		t.push_back(std::thread(workerThreadArg,i));
+	}
+	std::cout << "Launched from the main\n";
+
+	//Join the threads with the main thread
+	for (int i = 0; i < num_threads; ++i) {
+		t[i].join();
+	}
+}
+
+void TestClass::stlThreadingArgDetach(){
+	const int num_threads = 5;
+
+	//Launch a group of threads
+	for (int i = 0; i < num_threads; ++i) {
+		std::thread(workerThreadArg, i).detach();
+	}
+	std::cout << "Launched from the main\n";
+}
 
 // ************************************************************************************************************
+/*
 void *worker_thread(void *arg)
 {
     printf("This is worker_thread()\n");
@@ -69,6 +124,7 @@ void TestClass::testTime(){
     sleep(5);
     std::cout << "finished" << std::endl;
 }
+*/
 
 /* // implicit conversion of classes:
  #include <iostream>

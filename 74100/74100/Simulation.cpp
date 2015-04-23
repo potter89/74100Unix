@@ -47,6 +47,8 @@ void Simulation::runSimulation(){
         }
         evolutionaryGameTheory(*agentsVectorPtr, _tau, _payoffMatrix);
     }
+	//TODO:delete this
+	std::cout << "Finished running sim!" << std::endl;
 }
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
@@ -139,6 +141,7 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
                 oneShotInteraction(*currentAgent, iPopulation[nextItemInNeightbors]);//play a oneshot game with neighbor
             }
         }
+
     }
 }
 
@@ -225,15 +228,6 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
         if (p >= random0till1){
             //ALWAYS imitates strategy
             iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
-            //TODO: delete this
-            if (iPopulation[i].strategy[0] == 1 || iPopulation[i].strategy[1] == 1){
-                //std::cout << "Chose: " << randomNeighborIndex << " fit: " << iPopulation[randomNeighborIndex].fitness << " #Neigh: " << iPopulation[randomNeighborIndex].neighbors.size();
-                //std::cout << " s: ";
-                for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++){
-                    //std::cout << iPopulation[randomNeighborIndex].strategy[x] << ", ";
-                }
-                //std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
-            }
             /**
              std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
              for (int x = 0; x < iPopulation[i].strategy.size(); x++){
@@ -250,4 +244,9 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
             }
         }
     }
+}
+
+void Simulation::print(){
+	std::cout << "Path: " << s_linksSourcePath << std::endl;
+
 }

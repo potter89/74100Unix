@@ -52,6 +52,7 @@ public:
     void gatherInitialData();
     void gatherFinalData();
     
+	void print();
 };
 
 #endif /* defined(___4100Unix__Simulation__) */

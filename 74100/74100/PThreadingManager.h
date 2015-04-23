@@ -10,7 +10,8 @@
 #define ___4100Unix__PThreadingManager__
 
 #include <stdio.h>
-#include <pthread.h>
+//#include <pthread.h>
+#include <thread>
 #include <stdlib.h>
 #include <vector>
 #include "Simulation.h"

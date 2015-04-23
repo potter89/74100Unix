@@ -12,12 +12,11 @@ PThreadingManager::PThreadingManager(){}
 PThreadingManager::~PThreadingManager(){}
 
 
-void * runSingleSimulation(void * arg)
+void runSingleSimulation(Simulation * sim)
 {
-    //printf("Starting Simulation!\n");
-    reinterpret_cast<Simulation *>(arg)->runSimulation();
-    //printf("Simulation FINISHED!\n");
-    pthread_exit(NULL);
+    printf("Starting Simulation!\n");
+	sim->runSimulation();
+    printf("Simulation FINISHED!\n");
 }
 
 
@@ -25,13 +24,19 @@ void * runSingleSimulation(void * arg)
 void PThreadingManager::runMultiThreadedSimulations(std::vector <Simulation *> simulations)
 {
     unsigned long int numbOfSimulations = simulations.size();
-    std::vector<pthread_t> my_threadArray(numbOfSimulations);
-    int ret = 0;
+	std::vector<std::thread *> threads;
+	int ret = 0;
     long id;
     
-    for(id = 0; id < numbOfSimulations; id++){
-        ret =  pthread_create(&my_threadArray[id], NULL,
-                              &runSingleSimulation, (void *) simulations[id]);
+    for(id = 0; id < (int)numbOfSimulations; ++id){
+		std::thread * t = new std::thread(runSingleSimulation, simulations[id]);
+		threads.push_back(t);
     }
-    pthread_exit(NULL);
+	std::cout << "Launched from the main\n";
+
+	//Join the threads with the main thread
+	for (int i = 0; i < (int)numbOfSimulations; ++i) {
+		threads[i]->join();
+		delete threads[i];
+	}
 }
