@@ -9,8 +9,26 @@
 #include "Factory.h"
 
 Factory::Factory(){}
-
 Factory::~Factory(){}
+
+Simulation * Factory::createSimulation(std::string inputPath){
+    //parse text file
+    parseConfiguration(inputPath);
+	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
+	parseDataSubscribers(_subscribers);
+    Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
+	Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
+    return s;
+}
+
+Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> & dataSubscribers){
+	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
+	parseDataSubscribers(dataSubscribers);
+	Population * popul = createPopulation(linksPath, popType, totalTags);
+	Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
+    return s;
+}
+
 
 //returns polymorphed Population, already initialized with it's ->Init
 Population * Factory::createPopulation(std::string linksPath, std::string populationType, int totalTags){
@@ -42,7 +60,7 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
 
 void Factory::parseConfiguration(std::string inputPath){ //takes config file and creates a population
     //Population_Type: LATTICE
-    //Links_file_Path : Networks / Lattices / 5x5
+    //Links_file_Path : Networks / 5x5
     //Generations : 10000
     //Number_of_tags : 4
     //Tau : 0.7
@@ -90,6 +108,7 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
             _tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
         }
         _subscribers.push_back(_tempString);
+
         /**
          std::cout << "Config File:" << std::endl;
          std::cout << "Population Type: " << _populationType << std::endl;
@@ -107,26 +126,25 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
         std::cout << "wrong configuration path given on-> " << inputPath << std::endl;
     }
 }
+//takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 
-Simulation * Factory::createSimulation(std::string inputPath){
-    
-    //parse text file
-    parseConfiguration(inputPath);
-    Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
-    
-    Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, &_subscribers);
-    return s;
+void Factory::parseDataSubscribers(std::vector<std::string> subscribers){
+	if (!subscribers.empty()){
+		for (int i = 0; i < subscribers.size(); i++){
+			if (subscribers[i] == "TextFileDataSubscriber"){
+				_subscribersParsed.push_back(new TextFileDataSubscriber());
+			}
+			if (subscribers[i] == "ConsoleDataSubscriber"){
+				_subscribersParsed.push_back(new ConsoleDataSubscriber());
+			}
+			if (subscribers[i] == "SimpleConsoleDataSubscriber"){
+				_subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
+			}
+		}
+	}
 }
-
-Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> * dataSubscribers){
-    Population * popul = createPopulation(linksPath, popType, totalTags);
-    Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, dataSubscribers);
-    return s;
-}
-
 
 //Links Generation!*****************************************************************************************************************************************Links Generation
-
 //Generates a txt file containing lattice with the links of a population, with R rows and C columns, inputed by the user
 void Factory::generateLatticeLinksTextFile(){
     int i = 0; //index of the Agent

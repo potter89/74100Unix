@@ -14,9 +14,7 @@ PThreadingManager::~PThreadingManager(){}
 
 void runSingleSimulation(Simulation * sim)
 {
-    printf("Starting Simulation!\n");
 	sim->runSimulation();
-    printf("Simulation FINISHED!\n");
 }
 
 
@@ -32,7 +30,6 @@ void PThreadingManager::runMultiThreadedSimulations(std::vector <Simulation *> s
 		std::thread * t = new std::thread(runSingleSimulation, simulations[id]);
 		threads.push_back(t);
     }
-	std::cout << "Launched from the main\n";
 
 	//Join the threads with the main thread
 	for (int i = 0; i < (int)numbOfSimulations; ++i) {

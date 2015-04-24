@@ -10,7 +10,7 @@
 
 //Simulation*************************************************************************************************************************************Simulation
 
-Simulation::Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> * dataSubscribers) :
+Simulation::Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
 //Initializing simulation parameters
 _maxGenerations(i_maxGenerations),
 _tau(tau),
@@ -22,10 +22,11 @@ _payoffMatrix(payoffMatrix)
     agentsVectorPtr = _population->getPopulationPtr();
     stateManager.setPopulationToSendOut(agentsVectorPtr);
     stateManager.setTypeToSendOut(_population->getType());
-
-    DataSubscriber * dataSub = new SimpleConsoleDataSubscriber();    //TODO: continue here, add the whole vector, but inside state manager
-    stateManager.attachDataSubscriber(dataSub);
-    _hasAttachedSubscribers = true; //TODO:FIX THIS WTFFFFFFF
+	if (!dataSubscribers.empty()){
+		for (int i = 0; i < (int)dataSubscribers.size(); i++){
+			stateManager.attachDataSubscriber(dataSubscribers[i]);
+		}
+	}
 }
     Simulation::~Simulation(){}
 
@@ -41,7 +42,7 @@ void Simulation::runSimulation(){
         gameTheoryGames(*agentsVectorPtr);
         setFittnessAndResetPayoffs(*agentsVectorPtr);
         
-        if (_hasAttachedSubscribers) {
+        if (stateManager.getNumbAttachedSubscribers() != 0) {
             stateManager.notifyDataSubscribers(); //update DataSubscribers
             stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
         }
@@ -76,7 +77,7 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
             //C C
             payoffA = _payoffMatrix[0];
             payoffB = _payoffMatrix[0];
-            if (_hasAttachedSubscribers){
+			if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
                 stateManager.incrementCooperativeActions();
             }
@@ -92,7 +93,7 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
             //C D
             payoffA = _payoffMatrix[1];
             payoffB = _payoffMatrix[2];
-            if (_hasAttachedSubscribers){
+			if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
             }
         }
@@ -100,7 +101,7 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
             //D C
             payoffA = _payoffMatrix[2];
             payoffB = _payoffMatrix[1];
-            if (_hasAttachedSubscribers){
+			if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
             }
         }

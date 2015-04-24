@@ -10,6 +10,7 @@
 #define ___4100Unix__DataSubscriber__
 
 #include "Agent.h"
+#include <fstream> 
 #include <vector>
 
 class DataSubscriber
@@ -42,9 +43,9 @@ public:
 };
 
 class TextFileDataSubscriber : public DataSubscriber{
-	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+public:
+	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);	
 	TextFileDataSubscriber();
 	~TextFileDataSubscriber();
 };
-
 #endif /* defined(___4100Unix__DataSubscriber__) */

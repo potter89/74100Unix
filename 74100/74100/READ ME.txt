@@ -1,0 +1,6 @@
+Assumptions:
+
+Folders in the root of the project:
+	ConfigurationFiles
+	Networks
+	Results

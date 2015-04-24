@@ -144,3 +144,11 @@ void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::ve
         refreshRateCounter--;
     }
 }
+
+TextFileDataSubscriber::TextFileDataSubscriber(){}
+TextFileDataSubscriber::~TextFileDataSubscriber(){}
+
+void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+	//TODO: Continue here
+	//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+}
