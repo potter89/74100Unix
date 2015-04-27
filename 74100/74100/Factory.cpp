@@ -12,19 +12,22 @@ Factory::Factory(){}
 Factory::~Factory(){}
 
 Simulation * Factory::createSimulation(std::string inputPath){
-    //parse text file
+    //TODO: Test this!!! the data sub parsing!!!!
+	
+	//parse text file
     parseConfiguration(inputPath);
+	
+	Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
 	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-	parseDataSubscribers(_subscribers);
-    Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
+	parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
 	Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
     return s;
 }
 
 Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> & dataSubscribers){
-	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-	parseDataSubscribers(dataSubscribers);
 	Population * popul = createPopulation(linksPath, popType, totalTags);
+	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
+	parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
 	Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
     return s;
 }
@@ -128,11 +131,25 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
 }
 //takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 
-void Factory::parseDataSubscribers(std::vector<std::string> subscribers){
+void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix){
+	//TODO: this shouldn't be here....
+	_subscribersParsed.clear();
 	if (!subscribers.empty()){
 		for (int i = 0; i < subscribers.size(); i++){
 			if (subscribers[i] == "TextFileDataSubscriber"){
-				_subscribersParsed.push_back(new TextFileDataSubscriber());
+				//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+				std::string filename = "";
+				filename += std::to_string(totalTags) + "__";
+				filename += popType + "_" + std::to_string(sizePop) + "__";
+				filename += std::to_string(i_maxGenerations) + "__";
+				filename += std::to_string(tau) + "__";
+				for (int i = 0; i < payoffMatrix.size(); i++){
+					filename += std::to_string(payoffMatrix[i]) + "_";
+				}
+				filename += "__#";
+				//std::cout << "TextFile filename parsed: " << filename << std::endl;
+
+				_subscribersParsed.push_back(new TextFileDataSubscriber(filename));
 			}
 			if (subscribers[i] == "ConsoleDataSubscriber"){
 				_subscribersParsed.push_back(new ConsoleDataSubscriber());

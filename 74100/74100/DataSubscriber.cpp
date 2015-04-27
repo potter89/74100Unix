@@ -144,11 +144,59 @@ void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::ve
         refreshRateCounter--;
     }
 }
+bool TextFileDataSubscriber::emptyFile(std::string filename){
+	std::ifstream possibleExistingFile(filename);
+	std::string tempString = "";
+	getline(possibleExistingFile, tempString);
+	if (tempString == ""){
+		//non existing file
+		//std::cout << "Non duplicate file! #" << _tentativeFileIndex << std::endl;
+		possibleExistingFile.close();
+		return true;
+	}
+	//else
+		//file exists, try a different index at the end of the file
+	//std::cout << "Duplicate file! #" << _tentativeFileIndex << std::endl;
+		possibleExistingFile.close();
+		tempString = "";
+		return false;
+}
 
-TextFileDataSubscriber::TextFileDataSubscriber(){}
-TextFileDataSubscriber::~TextFileDataSubscriber(){}
+//sets non Duplicate filename for the current simulation in _fileName
+void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
+	//tries to open #1 for the first time for reading, to check for existing file with the same name
+	_fileName = "Results/" + _paramFileName + std::to_string(_tentativeFileIndex) + ".txt";
+	while (!emptyFile(_fileName)){
+		_tentativeFileIndex++;
+		_fileName = "Results/" + _paramFileName + std::to_string(_tentativeFileIndex) + ".txt";
+	}
+	//creates file
+	_outputTxtFile.open(_fileName);
+	if (_outputTxtFile.is_open()){
+		_outputTxtFile << "Results: \n";
+		_outputTxtFile.close();
+	}
+	else{
+		std::cout << "Couldn't write to file" << std::endl;
+	}
+}
 
+TextFileDataSubscriber::TextFileDataSubscriber(std::string filename) : 
+_paramFileName(filename)
+{
+	setNonDuplicateOutputFileName();
+}
+TextFileDataSubscriber::~TextFileDataSubscriber(){
+
+}
+
+//Writes the updates to a text file
 void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
-	//TODO: Continue here
 	//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+	//std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
+	if (!_outputTxtFile.is_open()){
+		_outputTxtFile.open(_fileName, std::ios::app);
+	}
+	_outputTxtFile << numberOfCooperativeActions << "\n";
+	//std::cout << _tentativeFileIndex << " writing " << std::endl;
 }

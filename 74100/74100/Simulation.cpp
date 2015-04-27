@@ -41,15 +41,13 @@ void Simulation::runSimulation(){
     for (int i = 0; i < _maxGenerations; i++){
         gameTheoryGames(*agentsVectorPtr);
         setFittnessAndResetPayoffs(*agentsVectorPtr);
-        
         if (stateManager.getNumbAttachedSubscribers() != 0) {
-            stateManager.notifyDataSubscribers(); //update DataSubscribers
+			stateManager.notifyDataSubscribers(); //update DataSubscribers
             stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
-        }
+			
+		}
         evolutionaryGameTheory(*agentsVectorPtr, _tau, _payoffMatrix);
     }
-	//TODO:delete this
-	std::cout << "Finished running sim!" << std::endl;
 }
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){

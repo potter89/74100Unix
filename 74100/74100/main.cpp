@@ -40,19 +40,27 @@ int main(int argc, const char * argv[])
      Simulation * a = factory.createSimulation("ConfigurationFiles/config1.txt");
     //*/
     std::vector <Simulation *> simulations;
-	std::vector<std::string> dataSubscribers = { "ConsoleDataSubscriber" };
-    std::vector<float> payoffMatrix = { 1.0f, 0.0f, 1.0f, 0.0f };
+	std::vector<std::string> dataSubscribers = 
+	//{ "SimpleConsoleDataSubscriber" };
+	{ "TextFileDataSubscriber" };
+    
+	std::vector<float> payoffMatrix = { 1.0f, 0.0f, 1.0f, 0.0f };
     const int NUMB_SIMS = 3;
     
 	
-	payoffMatrix[2] = 1.1f;
-	simulations.push_back(factory.createSimulation(2,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-	/**
 	payoffMatrix[2] = 1.0f;
 	simulations.push_back(factory.createSimulation(1,
 													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-    
+	
+	payoffMatrix[2] = 1.0f;
+	simulations.push_back(factory.createSimulation(1,
+													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
+	
+	payoffMatrix[2] = 1.0f;
+	simulations.push_back(factory.createSimulation(1,
+													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
+
+	/**
 	payoffMatrix[2] = 1.0f;
     simulations.push_back(factory.createSimulation(1,
 													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
@@ -72,15 +80,9 @@ int main(int argc, const char * argv[])
     //*/
     //simulations.clear();
 	
-	/**
-    payoffMatrix[2] = 1.0f;
-    simulations.push_back(factory.createSimulation(1,
-                                                   "Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-	
-    
+	/**   
     for (long i = 0; i < simulations.size(); i++) {
-        //simulations[i]->runSimulation();
+        simulations[i]->runSimulation();
     }
 	//*/
 

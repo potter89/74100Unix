@@ -43,8 +43,8 @@ private:
     std::string const _delimiter = " ";
 
 	void parseConfiguration(std::string inputPath);
-	void parseDataSubscribers(std::vector<std::string> subscribers);
-	
+	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix);
+
 	Population * createPopulation(std::string linksPath, std::string populationType, int totalTags);
 };
 
