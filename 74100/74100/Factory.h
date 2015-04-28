@@ -46,6 +46,8 @@ private:
 	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix);
 
 	Population * createPopulation(std::string linksPath, std::string populationType, int totalTags);
+
+	void clearParsedVariables();
 };
 
 #endif /* defined(___4100Unix__Factory__) */

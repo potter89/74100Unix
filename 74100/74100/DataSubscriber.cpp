@@ -25,7 +25,7 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
     std::cout << "Update! There were " <<
     numberOfCooperativeActions << " cooperative actions made last generation!" << std::endl;
     
-    if (popType == "LATTICE"){
+    if (popType == "l"){
         //If they have 1 or 0 tags, prints strategy and current fitness
         //C-3 D-7 D-2
         //C- D- D-
@@ -144,6 +144,16 @@ void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::ve
         refreshRateCounter--;
     }
 }
+
+
+//Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+TextFileDataSubscriber::TextFileDataSubscriber(std::string filename) : 
+_paramFileName(filename)
+{
+	setNonDuplicateOutputFileName();
+}
+TextFileDataSubscriber::~TextFileDataSubscriber(){}
+
 bool TextFileDataSubscriber::emptyFile(std::string filename){
 	std::ifstream possibleExistingFile(filename);
 	std::string tempString = "";
@@ -181,15 +191,6 @@ void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 	}
 }
 
-TextFileDataSubscriber::TextFileDataSubscriber(std::string filename) : 
-_paramFileName(filename)
-{
-	setNonDuplicateOutputFileName();
-}
-TextFileDataSubscriber::~TextFileDataSubscriber(){
-
-}
-
 //Writes the updates to a text file
 void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
 	//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
@@ -198,5 +199,7 @@ void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<
 		_outputTxtFile.open(_fileName, std::ios::app);
 	}
 	_outputTxtFile << numberOfCooperativeActions << "\n";
+	//TODO: tentative change, might have performance issues closing each time
+	//_outputTxtFile.close();
 	//std::cout << _tentativeFileIndex << " writing " << std::endl;
 }

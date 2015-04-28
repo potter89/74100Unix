@@ -244,8 +244,3 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
         }
     }
 }
-
-void Simulation::print(){
-	std::cout << "Path: " << s_linksSourcePath << std::endl;
-
-}

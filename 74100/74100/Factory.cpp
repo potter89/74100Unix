@@ -21,7 +21,8 @@ Simulation * Factory::createSimulation(std::string inputPath){
 	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
 	parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
 	Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
-    return s;
+	clearParsedVariables();
+	return s;
 }
 
 Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> & dataSubscribers){
@@ -29,9 +30,9 @@ Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std
 	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
 	parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
 	Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
-    return s;
+	clearParsedVariables();
+	return s;
 }
-
 
 //returns polymorphed Population, already initialized with it's ->Init
 Population * Factory::createPopulation(std::string linksPath, std::string populationType, int totalTags){
@@ -364,4 +365,18 @@ void Factory::generateFullyConnected(){
     
     /**/
     myfile.close();
+}
+
+//These variables are reused for the various factory creations, they need to be reset after each creation
+void Factory::clearParsedVariables(){
+	 _populationType = "";
+	 _linksFilePath = "";
+	 _totalGenerations = 0;
+	 _totalTags = 0;
+	 _tau = 0.0f;
+	 _payOffMatrix.clear();
+	 _percentages.clear();
+	 _subscribers.clear();
+	 _subscribersParsed.clear();
+	 _tempString = "";
 }

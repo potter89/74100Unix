@@ -1,5 +1,5 @@
 Population_Type: fc
-Links_file_Path: Networks/fc_5.txt
+Links_file_Path: Networks/fc_512.txt
 Generations: 3000
 Number_of_tags: 1
 Tau: 1.0

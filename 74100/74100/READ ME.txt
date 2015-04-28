@@ -1,6 +1,17 @@
 Assumptions:
 
+Config File:
+Population_Type: fc														(pick just one: l (for lattice), xpto(there's only code for lattices, this field is used for data susbcribers))
+Links_file_Path: Networks/fc_5.txt										(one path to the text files)
+Generations: 3000														(one int)
+Number_of_tags: 1														(one int)
+Tau: 1.0																(one float)
+Payoff_Matrix: 1 0 1 0													(floats)
+Percentages_of_tags_in_pop: 0 100										(int)
+DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber)
+
 Folders in the root of the project:
 	ConfigurationFiles
 	Networks
 	Results
+
