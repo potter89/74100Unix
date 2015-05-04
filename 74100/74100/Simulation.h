@@ -40,6 +40,11 @@ class Simulation
     float lowestPayoffInMatrix(std::vector<float> & payoffMatrix);
     float maxFitnessDifference(int numbNeiborsA, int numbNeiborsB, float maxPayoffPossible, float minPayoffPossible); //maxFitnessDifference between two agents
     //TODO: ^\ investigate int vs float
+
+	void printPercentageDone(int & iGeneration);
+	int _percentage = 0; //how much percentage of work has been calculated already
+	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
+
 public:
     Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
     ~Simulation();

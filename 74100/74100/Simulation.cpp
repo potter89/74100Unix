@@ -44,10 +44,10 @@ void Simulation::runSimulation(){
         if (stateManager.getNumbAttachedSubscribers() != 0) {
 			stateManager.notifyDataSubscribers(); //update DataSubscribers
             stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
-			
 		}
         evolutionaryGameTheory(*agentsVectorPtr, _tau, _payoffMatrix);
-    }
+		printPercentageDone(i); //uncomment to show in console the % of generations completed
+	}
 }
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
@@ -243,4 +243,14 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
             }
         }
     }
+}
+
+void Simulation::printPercentageDone(int & iGeneration){
+
+	if (_tenPercentGenerations == -1) _tenPercentGenerations = (_maxGenerations * 0.1);
+
+	if (_percentage * _tenPercentGenerations == iGeneration){
+		std::cout << "Progress: " << (_percentage * 10) << "%" << std::endl;
+		_percentage++;
+	}
 }
