@@ -134,7 +134,7 @@ SimpleConsoleDataSubscriber::SimpleConsoleDataSubscriber(){}
 SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 
 void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
-    //Prints the number of cooperative actions performed in the console
+	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
         std::cout << "Update! " <<
         numberOfCooperativeActions << " cooperative actions made last generation!" << std::endl;
@@ -216,15 +216,14 @@ AverageTextFileDataSubscriber::AverageTextFileDataSubscriber(std::string filenam
 AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){}
 
 //returns the average value of the contents of the vector
-int AverageTextFileDataSubscriber::calculateAverage(std::vector<int> inVec){
-	int avr = 0;
-	int size = inVec.size();
+int AverageTextFileDataSubscriber::calculateAverage(std::vector<int> & inVec){
+	unsigned long long avr = 0;
+	unsigned long size = inVec.size();
 	for (int i = 0; i < size; i++){
 		avr += inVec[i];
 	}
 	avr = avr / size;
-
-	return avr;
+	return (int)avr;
 }
 
 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
@@ -234,9 +233,14 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 		if (!_outputTxtFile.is_open()){
 			_outputTxtFile.open(_fileName, std::ios::app);
 		}
-		(_average == -1) ? // if running for the first time, dont store average, store the first number of coop actions
-			_outputTxtFile << numberOfCooperativeActions << "\n" : 
+
+		if (_average == -1){// if running for the first time, dont store average, store the first number of coop actions
+			std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
+			_outputTxtFile << numberOfCooperativeActions << "\n";
+		}
+		else{
 			_outputTxtFile << calculateAverage(_valuesToAverage) << "\n";
+		}
 		//TODO: tentative change, might have performance issues closing each time
 		_outputTxtFile.close();
 		//std::cout << _tentativeFileIndex << " writing " << std::endl;

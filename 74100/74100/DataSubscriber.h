@@ -35,7 +35,7 @@ public:
 class SimpleConsoleDataSubscriber : public DataSubscriber
 {
 private:
-    const int REFRESHRATE = 0;
+    const int REFRESHRATE = 100;
     int refreshRateCounter = 0;
     
 public:
@@ -68,7 +68,7 @@ private:
 	int _average = -1; //starts at -1 to distinguish first write from the others
 	std::vector<int> _valuesToAverage;
 
-	int calculateAverage(std::vector<int> inVec);
+	int calculateAverage(std::vector<int> & inVec);
 
 public:
 	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);

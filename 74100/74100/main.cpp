@@ -23,54 +23,56 @@ int main(int argc, const char * argv[])
 	TestClass t;
 	//*/
 
-	/**/
-	//Factory will create populations and simulations
-	Factory factory;
-
-	//main simulation to execute
-	Simulation * simulation;
-
-	//TODO: code a way to access this
-	//factory.generateFullyConnected();
-	//factory.generateTwoForwardTwoBehind();d
-	//factory.generateLatticeLinksTextFile();
-
 	if (argc == 1){
 		std::cout << "No input :( Ejecting now -> ";
 	}
+	else{
 
-	if (argc == 2){
-		//config.txt file path
-		std::string configFilePath = argv[1];
-		simulation = factory.createSimulation(configFilePath);
-		simulation->runSimulation();
-	}
-	else if (argc >= 10){
-		//list of arguments
-		int numbTags = atoi(argv[1]);
-		std::string linksPath = argv[2];
-		std::string populationType = argv[3];
-		int numbGenerations = atoi(argv[4]);
-		float tau = atof(argv[5]);
+		/**/
+		//Factory will create populations and simulations
+		Factory factory;
 
-		std::vector<float> payoffMatrix;
-		for (int i = 0; i < 4; i++){
-			payoffMatrix.push_back(atof(argv[(i+6)]));
+		//main simulation to execute
+		Simulation * simulation;
+
+		//TODO: code a way to access this
+		//factory.generateFullyConnected();
+		//factory.generateTwoForwardTwoBehind();d
+		//factory.generateLatticeLinksTextFile();
+
+		if (argc == 2){
+			//config.txt file path
+			std::string configFilePath = argv[1];
+			simulation = factory.createSimulation(configFilePath);
+			simulation->runSimulation();
 		}
+		else if (argc >= 10){
+			//list of arguments
+			int numbTags = atoi(argv[1]);
+			std::string linksPath = argv[2];
+			std::string populationType = argv[3];
+			int numbGenerations = atoi(argv[4]);
+			float tau = atof(argv[5]);
 
-		std::vector<std::string> dataSubscribers;
-		for (int i = 10; i < argc; i++){
-			dataSubscribers.push_back(argv[i]);
+			std::vector<float> payoffMatrix;
+			for (int i = 0; i < 4; i++){
+				payoffMatrix.push_back(atof(argv[(i + 6)]));
+			}
+
+			std::vector<std::string> dataSubscribers;
+			for (int i = 10; i < argc; i++){
+				dataSubscribers.push_back(argv[i]);
+			}
+
+			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tau, payoffMatrix, dataSubscribers);
+			simulation->runSimulation();
+
+			//PThreadingManager pTManager;
+			//pTManager.runMultiThreadedSimulations(simulations);
+			//for (long i = 0; i < simulations.size(); i++) {
+			//	simulations[i]->runSimulation();
+			//}
 		}
-
-		simulation = factory.createSimulation(numbTags, linksPath, populationType,numbGenerations, tau, payoffMatrix, dataSubscribers);
-		simulation->runSimulation();
-		
-		//PThreadingManager pTManager;
-		//pTManager.runMultiThreadedSimulations(simulations);
-		//for (long i = 0; i < simulations.size(); i++) {
-		//	simulations[i]->runSimulation();
-		//}
 	}
 	//*/
 

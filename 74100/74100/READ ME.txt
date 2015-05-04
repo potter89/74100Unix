@@ -15,3 +15,5 @@ Folders in the root of the project:
 	Networks
 	Results
 
+HardCoded:
+	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"
