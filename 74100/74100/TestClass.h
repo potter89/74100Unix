@@ -16,6 +16,7 @@
 #include <thread>
 #include <chrono>
 #include <thread>
+//#include "RandomSeedGenerator.h"
 
 class TestClass
 {
@@ -27,13 +28,16 @@ public:
 	void stlSimpleThreadingArg();
 	void stlThreadingArgDetach();
 
-	//comented due to using posix threading
+	//comented due to using posix threading, which only works in Unix systems
     // int testThread(); 
     // int testThreadWithArg();
 
-	
+	void generateRand();
+	void generateRand(unsigned int inSeed);
     
     void testTime();
+
+	void testGSL();
     
 };
 

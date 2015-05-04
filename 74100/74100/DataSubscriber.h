@@ -45,6 +45,7 @@ public:
 };
 
 class TextFileDataSubscriber : public DataSubscriber{
+protected:
 	std::string _fileName = ""; //final, non duplicate, file name
 	std::string _paramFileName = ""; //untouched parsed filename
 	std::ofstream _outputTxtFile;
@@ -57,5 +58,21 @@ public:
 	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);	
 	TextFileDataSubscriber(std::string fileName);
 	~TextFileDataSubscriber();
+};
+
+//This DataSub writes 100 times to a file, averaging the current 
+class AverageTextFileDataSubscriber : public TextFileDataSubscriber{
+private:
+	int _refreshRate;
+	int _refreshRateCounter = 0;// starting at 0 forces the first write immediately
+	int _average = -1; //starts at -1 to distinguish first write from the others
+	std::vector<int> _valuesToAverage;
+
+	int calculateAverage(std::vector<int> inVec);
+
+public:
+	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+	AverageTextFileDataSubscriber(std::string fileName, int totalGenerations);
+	~AverageTextFileDataSubscriber();
 };
 #endif /* defined(___4100Unix__DataSubscriber__) */

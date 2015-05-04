@@ -18,139 +18,65 @@
 
 int main(int argc, const char * argv[])
 {
-    
-    //TODO: delete memory allocations, to allow more simulations, one after the other while cleaning up
-    
-    //tests
-    /**
-    TestClass t;
-	t.stlSimpleThreadingArg();
-    //*/
-    
-    //Factory will create populations and simulations
-    Factory factory;
-
-	//factory.generateFullyConnected();
-    //factory.generateTwoForwardTwoBehind();
-    //factory.generateLatticeLinksTextFile();
-    
-    /**
-     //Create a simulation for each of the input files given
-     //TODO: make it work with argv instead of hardCoded AND the for each
-     Simulation * a = factory.createSimulation("ConfigurationFiles/config1.txt");
-    //*/
-    std::vector <Simulation *> simulations;
-	std::vector<std::string> dataSubscribers = 
-	//{ "SimpleConsoleDataSubscriber" };
-	{ "TextFileDataSubscriber" };
-    
-	std::vector<float> payoffMatrix = { 1.0f, 0.0f, 1.0f, 0.0f };
-    const int NUMB_SIMS = 3;
-    
-	
-	payoffMatrix[2] = 1.0f;
-	simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-	
-	payoffMatrix[2] = 1.0f;
-	simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-	
-	payoffMatrix[2] = 1.0f;
-	simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
+	//tests
 	/**
-	payoffMatrix[2] = 1.0f;
-    simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-    
-	payoffMatrix[2] = 1.0f;
-    simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers)); 
-	
-	payoffMatrix[2] = 1.0f;
-    simulations.push_back(factory.createSimulation(1,
-													"Networks/fc_5.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-    /**/
-    PThreadingManager pTManager;
-    pTManager.runMultiThreadedSimulations(simulations);
-
-    //*/
-    //simulations.clear();
-	
-	/**   
-    for (long i = 0; i < simulations.size(); i++) {
-        simulations[i]->runSimulation();
-    }
+	TestClass t;
 	//*/
 
-	std::cout << "Press any button to exit. ...";
+	/**/
+	//Factory will create populations and simulations
+	Factory factory;
+
+	//main simulation to execute
+	Simulation * simulation;
+
+	//TODO: code a way to access this
+	//factory.generateFullyConnected();
+	//factory.generateTwoForwardTwoBehind();d
+	//factory.generateLatticeLinksTextFile();
+
+	if (argc == 1){
+		std::cout << "No input :( Ejecting now -> ";
+	}
+
+	if (argc == 2){
+		//config.txt file path
+		std::string configFilePath = argv[1];
+		simulation = factory.createSimulation(configFilePath);
+		simulation->runSimulation();
+	}
+	else if (argc >= 10){
+		//list of arguments
+		int numbTags = atoi(argv[1]);
+		std::string linksPath = argv[2];
+		std::string populationType = argv[3];
+		int numbGenerations = atoi(argv[4]);
+		float tau = atof(argv[5]);
+
+		std::vector<float> payoffMatrix;
+		for (int i = 0; i < 4; i++){
+			payoffMatrix.push_back(atof(argv[(i+6)]));
+		}
+
+		std::vector<std::string> dataSubscribers;
+		for (int i = 10; i < argc; i++){
+			dataSubscribers.push_back(argv[i]);
+		}
+
+		simulation = factory.createSimulation(numbTags, linksPath, populationType,numbGenerations, tau, payoffMatrix, dataSubscribers);
+		simulation->runSimulation();
+		
+		//PThreadingManager pTManager;
+		//pTManager.runMultiThreadedSimulations(simulations);
+		//for (long i = 0; i < simulations.size(); i++) {
+		//	simulations[i]->runSimulation();
+		//}
+	}
+	//*/
+
+	std::cout << "Input any char to exit. Thank you for flying with us :) ... ";
 	char i;
 	std::cin >> i;
-    
-    //*/
 
+	return 0;
 }
-/**
-payoffMatrix[2] = 1.0f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-payoffMatrix[2] = 1.05f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-payoffMatrix[2] = 1.1f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-payoffMatrix[2] = 1.2f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-payoffMatrix[2] = 1.25f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
-payoffMatrix[2] = 1.3f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-payoffMatrix[2] = 1.5f;
-simulations.push_back(factory.createSimulation(1,
-                                               "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
-
- payoffMatrix[2] = -100.0f;
- simulations.push_back(factory.createSimulation(1,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = 1.0f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = 1.05f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = 1.1f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = 1.2f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- payoffMatrix[2] = 1.25f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = 1.3f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- payoffMatrix[2] = 1.5f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "fc", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- 
- payoffMatrix[2] = -100.0f;
- simulations.push_back(factory.createSimulation(2,
- "/Users/elvio/Documents/Projects/74100Unix/74100Unix/74100Unix/Networks/tftb_512.txt", "tftb", NUMB_SIMS, 1.0f, payoffMatrix, dataSubscribers));
- //*/

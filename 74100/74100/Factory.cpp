@@ -130,8 +130,8 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
         std::cout << "wrong configuration path given on-> " << inputPath << std::endl;
     }
 }
-//takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 
+//takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix){
 	//TODO: this shouldn't be here....
 	_subscribersParsed.clear();
@@ -152,6 +152,21 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
 
 				_subscribersParsed.push_back(new TextFileDataSubscriber(filename));
 			}
+			if (subscribers[i] == "AverageTextFileDataSubscriber"){
+				//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+				std::string filename = "";
+				filename += std::to_string(totalTags) + "__";
+				filename += popType + "_" + std::to_string(sizePop) + "__";
+				filename += std::to_string(i_maxGenerations) + "__";
+				filename += std::to_string(tau) + "__";
+				for (int i = 0; i < payoffMatrix.size(); i++){
+					filename += std::to_string(payoffMatrix[i]) + "_";
+				}
+				filename += "__#";
+				//std::cout << "TextFile filename parsed: " << filename << std::endl;
+
+				_subscribersParsed.push_back(new AverageTextFileDataSubscriber(filename, i_maxGenerations));
+			}
 			if (subscribers[i] == "ConsoleDataSubscriber"){
 				_subscribersParsed.push_back(new ConsoleDataSubscriber());
 			}
@@ -159,6 +174,9 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
 				_subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
 			}
 		}
+	}
+	else{
+		std::cout << "No subscribers connected." << std::endl;
 	}
 }
 

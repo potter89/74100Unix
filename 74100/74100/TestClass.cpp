@@ -66,6 +66,47 @@ void TestClass::stlThreadingArgDetach(){
 	std::cout << "Launched from the main\n";
 }
 
+void TestClass::generateRand(){
+	time_t seconds;
+	time(&seconds);
+	srand((unsigned int)seconds);
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+}
+void TestClass::generateRand(unsigned int inSeed){
+	srand(inSeed);
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+	srand(inSeed);
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+	std::cout << rand() << std::endl;
+}
+/**
+t.generateRand();
+unsigned int inSeed = 1;
+std::cout << "Generate Rand" << std::endl;
+t.generateRand();
+std::cout << "Generate second Rand" << std::endl;
+t.generateRand();
+std::cout << "Hardcoded i= 1 Rand" << std::endl;
+t.generateRand(inSeed);
+std::cout << "Hardcoded i= 1 second Rand" << std::endl;
+t.generateRand(inSeed);
+inSeed = 2;
+std::cout << "Hardcoded i= 2 Rand" << std::endl;
+t.generateRand(inSeed);
+std::cout << "Hardcoded i= 2 second Rand" << std::endl;
+t.generateRand(inSeed);
+//*/
+
+//just testing if this would compile
+void TestClass::testGSL(){
+	//gsl_rng *cm_rng;
+}
+
 // ************************************************************************************************************
 /*
 void *worker_thread(void *arg)

@@ -8,7 +8,7 @@ Number_of_tags: 1														(one int)
 Tau: 1.0																(one float)
 Payoff_Matrix: 1 0 1 0													(floats)
 Percentages_of_tags_in_pop: 0 100										(int)
-DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber)
+DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber) AverageTextFileDataSubscriber
 
 Folders in the root of the project:
 	ConfigurationFiles

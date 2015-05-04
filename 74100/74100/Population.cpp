@@ -9,10 +9,7 @@
 #include "Population.h"
 
 //Population cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ss
-Population::Population(){
-    
-
-}
+Population::Population(){}
 Population::~Population(){}
 
 int Population::getSize(){
@@ -74,7 +71,7 @@ void LatticePopulation::generateLinks(std::string i_source){
     int tempTag; //Tag for the current parsed agent
     std::string source = i_source;
 
-    std::ifstream myfile(source);
+	std::ifstream myfile(source);
     if (myfile.is_open())
     {
         std::string populationSizeString = "";
@@ -116,7 +113,7 @@ void LatticePopulation::generateLinks(std::string i_source){
         myfile.close();
     }
     else{
-        std::cout << "No links txt not found!" << std::endl;
+		std::cout << "Links txt not found! -> " << source << std::endl;
     }
 }
 
