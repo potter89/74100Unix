@@ -7,12 +7,12 @@
 //
 
 #include "Factory.h"
-
+    //TODO: in case it cant parse a file, etc, whole program should close
 Factory::Factory(){}
 Factory::~Factory(){}
 
 Simulation * Factory::createSimulation(std::string inputPath){
-    //TODO: Test this!!! the data sub parsing!!!!
+
 	
 	//parse text file
     parseConfiguration(inputPath);

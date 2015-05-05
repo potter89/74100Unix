@@ -21,7 +21,7 @@ void runSingleSimulation(Simulation * sim)
 //TODO: make this passing a reference
 void PThreadingManager::runMultiThreadedSimulations(std::vector <Simulation *> simulations)
 {
-    unsigned long int numbOfSimulations = simulations.size();
+    signed long int numbOfSimulations = simulations.size();
 	std::vector<std::thread *> threads;
 	int ret = 0;
     long id;

@@ -217,13 +217,18 @@ AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){}
 
 //returns the average value of the contents of the vector
 int AverageTextFileDataSubscriber::calculateAverage(std::vector<int> & inVec){
-	unsigned long long avr = 0;
+	signed long long avr = 0;
 	unsigned long size = inVec.size();
 	for (int i = 0; i < size; i++){
 		avr += inVec[i];
 	}
-	avr = avr / size;
-	return (int)avr;
+	if (size > 0){
+		avr = avr / size;
+		return (int)avr;
+	}
+	else{
+		return -1;
+	}
 }
 
 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt

@@ -245,6 +245,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
     }
 }
 
+//every 10% of the generations done, prints in console the progress
 void Simulation::printPercentageDone(int & iGeneration){
 
 	if (_tenPercentGenerations == -1) _tenPercentGenerations = (_maxGenerations * 0.1);
