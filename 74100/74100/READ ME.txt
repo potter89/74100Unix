@@ -6,7 +6,7 @@ Links_file_Path: Networks/fc_5.txt										(one path to the text files)
 Generations: 3000														(one int)
 Number_of_tags: 1														(one int)
 Tau: 1.0																(one float)
-Payoff_Matrix: 3 0 5 1													(floats)(Only four!) (Prisioner's'Dilemma example) ([0]=CC [1]=CD [2]=DC [3]=DD )
+Payoff_Matrix: 3 0 5 1													(floats)(Only four!) (Prisioner's'Dilemma example) ([0]=CC [1]=CD [2]=DC [3]=DD)
 Percentages_of_tags_in_pop: 0 100										(int)
 DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber) AverageTextFileDataSubscriber
 
