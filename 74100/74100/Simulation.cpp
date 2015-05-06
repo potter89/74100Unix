@@ -236,6 +236,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
             //*/
             //Imitates tag given a probability Tau
             random0till1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX); //float between 0.0 and 1.0, inclusive
+            
             //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
             if (_tau >= random0till1){
                 iPopulation[i].tag = iPopulation[randomNeighborIndex].tag;

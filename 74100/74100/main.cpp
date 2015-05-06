@@ -23,6 +23,8 @@ int main(int argc, const char * argv[])
 	TestClass t;
 	//*/
 
+    //for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl;
+    
 	if (argc == 1){
 		std::cout << "No input :( Ejecting now -> ";
 	}
@@ -40,25 +42,28 @@ int main(int argc, const char * argv[])
 		//factory.generateTwoForwardTwoBehind();d
 		//factory.generateLatticeLinksTextFile();
 
+        //depending of 
 		if (argc == 2){
-			//config.txt file path
+			//parse config.txt file path
 			std::string configFilePath = argv[1];
 			simulation = factory.createSimulation(configFilePath);
 			simulation->runSimulation();
 		}
 		else if (argc >= 10){
-			//list of arguments
+			//parse command line arguments
 			int numbTags = atoi(argv[1]);
 			std::string linksPath = argv[2];
 			std::string populationType = argv[3];
 			int numbGenerations = atoi(argv[4]);
-			float tau = atof(argv[5]);
+			
 
 			std::vector<float> payoffMatrix;
 			for (int i = 0; i < 4; i++){
-				payoffMatrix.push_back(atof(argv[(i + 6)]));
+				payoffMatrix.push_back(atof(argv[(i + 5)]));
 			}
 
+            float tau = atof(argv[9]);
+            
 			std::vector<std::string> dataSubscribers;
 			for (int i = 10; i < argc; i++){
 				dataSubscribers.push_back(argv[i]);
