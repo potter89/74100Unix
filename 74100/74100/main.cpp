@@ -23,7 +23,7 @@ int main(int argc, const char * argv[])
 	TestClass t;
 	//*/
 
-    //for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl;
+    //for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl; //print arguments passed
     
 	if (argc == 1){
 		std::cout << "No input :( Ejecting now -> ";
@@ -56,13 +56,12 @@ int main(int argc, const char * argv[])
 			std::string populationType = argv[3];
 			int numbGenerations = atoi(argv[4]);
 			
-
+            float tau = atof(argv[5]);
+            
 			std::vector<float> payoffMatrix;
 			for (int i = 0; i < 4; i++){
-				payoffMatrix.push_back(atof(argv[(i + 5)]));
+				payoffMatrix.push_back(atof(argv[(i + 6)]));
 			}
-
-            float tau = atof(argv[9]);
             
 			std::vector<std::string> dataSubscribers;
 			for (int i = 10; i < argc; i++){

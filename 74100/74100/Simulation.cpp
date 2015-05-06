@@ -27,6 +27,16 @@ _payoffMatrix(payoffMatrix)
 			stateManager.attachDataSubscriber(dataSubscribers[i]);
 		}
 	}
+    std::cout << "Simulation created!" << std::endl;
+    std::cout << "#Generations: "<< _maxGenerations << std::endl;
+    std::cout << "#Tags: "<< _population->getNumberOfTags() << std::endl;
+    std::cout << "Tau: "<< _tau << std::endl;
+    std::cout << "PayoffMatrix CC: "<< _payoffMatrix[0] << std::endl;
+    std::cout << "PayoffMatrix CD: "<< _payoffMatrix[1] << std::endl;
+    std::cout << "PayoffMatrix DC: "<< _payoffMatrix[2] << std::endl;
+    std::cout << "PayoffMatrix DD: "<< _payoffMatrix[3] << std::endl;
+    //TODO: if there's time to do it, print out subs as well
+
 }
     Simulation::~Simulation(){}
 
