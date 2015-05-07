@@ -37,7 +37,6 @@ void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){
     /* initialize random seed: */
     int totNumberOfTags = totalNumberOfTags;
     
-    srand(time(NULL));
     int randomNumber;
     
     for (int i = 0; i < (int)agentsInPop.size(); i++){

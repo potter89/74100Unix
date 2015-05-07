@@ -8,8 +8,8 @@
 
 #include "Simulation.h"
 #include "Factory.h"
-#include "DataSubscriber.h"
 #include "PThreadingManager.h"
+#include <time.h>
 #include <vector>
 #include <string>
 //TODO:delete this when it's time for release
@@ -18,7 +18,8 @@
 
 int main(int argc, const char * argv[])
 {
-	//tests
+	srand(time(NULL));
+    //tests
 	/**
 	TestClass t;
 	//*/

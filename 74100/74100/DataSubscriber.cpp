@@ -22,7 +22,7 @@ ConsoleDataSubscriber::~ConsoleDataSubscriber(){}
 void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
     //Prints the number of cooperative actions performed in the console
     std::cout << std::endl << std::endl; //separation from what might be in the console
-    std::cout << "Update! There were " << numberOfCooperativeActions << " cooperative actions made last generation!" << std::endl;
+    std::cout << "Update! Cooperative actions made last generation: " << numberOfCooperativeActions << std::endl;
     if (popType == "l"){
         //If they have 1 or 0 tags, prints strategy and current fitness
         //C-3 D-7 D-2
@@ -134,7 +134,7 @@ SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
 	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
-        std::cout << "Update! " << numberOfCooperativeActions << " cooperative actions made last generation!" << std::endl;
+        std::cout << "Update! Cooperative actions made last generation: " << numberOfCooperativeActions << std::endl;
         refreshRateCounter = REFRESHRATE;
     }
     else{

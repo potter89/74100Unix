@@ -8,8 +8,6 @@
 
 #include "Simulation.h"
 
-//Simulation*************************************************************************************************************************************Simulation
-
 Simulation::Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
 //Initializing simulation parameters
 _maxGenerations(i_maxGenerations),
@@ -136,7 +134,7 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
         currentAgentIndex = currentAgent->getIndex();
         currentNeighbors = currentAgent->neighbors;
         /**
-         std::cout << "Agent " << currentAgent->getIndex() << "-----------------------------------------------------------------" << std::endl;
+         std::cout << "Agent " << currentAgent->getIndex() << "------------------------------------------" << std::endl;
          std::cout << currentAgent->getIndex() << " has strategy {";
          for (int x = 0; x < currentAgent->strategy.size(); x++){
          //std::cout << currentAgent->strategy[x] << ", ";
@@ -199,7 +197,6 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
     float aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
     float aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
     
-    srand(time(NULL)); //initialize random seed
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
         /**
          std::cout << "Agent: " << i << "-------------------------------------------------------------" << std::endl;
@@ -237,6 +234,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
         if (p >= random0till1){
             //ALWAYS imitates strategy
             iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
+            //std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
             /**
              std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
              for (int x = 0; x < iPopulation[i].strategy.size(); x++){
