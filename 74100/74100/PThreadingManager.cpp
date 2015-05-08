@@ -23,7 +23,6 @@ void PThreadingManager::runMultiThreadedSimulations(std::vector <Simulation *> s
 {
     signed long int numbOfSimulations = simulations.size();
 	std::vector<std::thread *> threads;
-	int ret = 0;
     long id;
     
     for(id = 0; id < (int)numbOfSimulations; ++id){

@@ -11,6 +11,24 @@
 TestClass::TestClass(){}
 TestClass::~TestClass(){}
 
+//TODO: testing if opening for writing blocks the file
+void TestClass::concurrentFileOpen(unsigned int seed){
+    std::string fileName = "test2.txt";
+    std::ofstream _outputTxtFile;
+    _outputTxtFile.open(fileName);
+    std::cout << seed << std::endl;
+    
+    if (_outputTxtFile.is_open()){
+        std::cout << "Wrinting to file!!" << std::endl;
+        _outputTxtFile << seed << " \n";
+        //_outputTxtFile.close();
+    }
+    else{
+        std::cout << "Couldn't write to file..." << std::endl;
+        //concurrentFileOpen(seed);
+    }
+}
+
 void workerThread(){
 	printf("This is worker_thread()\n");
 	std::this_thread::sleep_for(std::chrono::milliseconds(5000));

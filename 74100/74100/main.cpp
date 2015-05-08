@@ -12,26 +12,27 @@
 #include <time.h>
 #include <vector>
 #include <string>
-//TODO:delete this when it's time for release
 #include "TestClass.h"
-
 
 int main(int argc, const char * argv[])
 {
-	srand(time(NULL));
+    unsigned int seedRand = time(NULL);
+	srand(seedRand);
+    
     //tests
 	/**
 	TestClass t;
+    t.concurrentFileOpen(seedRand);
 	//*/
 
     //for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl; //print arguments passed
     
+    /**/
 	if (argc == 1){
-		std::cout << "No input :( Ejecting now -> ";
+		printf("No input :( Ejecting now -> ");
 	}
+    
 	else{
-
-		/**/
 		//Factory will create populations and simulations
 		Factory factory;
 
@@ -81,7 +82,7 @@ int main(int argc, const char * argv[])
 	}
 	//*/
 
-	std::cout << "Input any char to exit. Thank you for flying with us :) ... ";
+	printf("Input any char to exit. Thank you for flying with us :) ... ");
 	char i;
 	std::cin >> i;
 

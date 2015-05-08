@@ -134,7 +134,7 @@ SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
 	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
-        std::cout << "Update! Cooperative actions made last generation: " << numberOfCooperativeActions << std::endl;
+        printf("Update! Cooperative actions made last generation: %i \n", numberOfCooperativeActions);
         refreshRateCounter = REFRESHRATE;
     }
     else{

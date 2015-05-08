@@ -16,6 +16,7 @@
 #include <thread>
 #include <chrono>
 #include <thread>
+#include <fstream>
 //#include "RandomSeedGenerator.h"
 
 class TestClass
@@ -38,6 +39,8 @@ public:
     void testTime();
 
 	void testGSL();
+    
+    void concurrentFileOpen(unsigned int seed);
     
 };
 

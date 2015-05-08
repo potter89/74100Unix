@@ -1,6 +1,14 @@
 Assumptions:
 
-Config File:
+ALWAYS cd to where the executable is located alongside the following folders:
+
+---- (Folders in the root of the project) ------------------------------------------------------------------------------------------------------------
+ConfigurationFiles
+Networks
+Results
+
+
+---- Config File: ------------------------------------------------------------------------------------------------------------------------------------
 Population_Type: fc														(pick just one: l (for lattice), xpto(there's only code for lattices, this field is used for data susbcribers))
 Links_file_Path: Networks/fc_5.txt										(one path to the text files)
 Generations: 3000														(one int)
@@ -10,10 +18,6 @@ Payoff_Matrix: 3 0 5 1													(floats)(Only four!) (Prisioner's'Dilemma exa
 Percentages_of_tags_in_pop: 0 100										(int)
 DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber) AverageTextFileDataSubscriber
 
-Folders in the root of the project:
-	ConfigurationFiles
-	Networks
-	Results
 
-HardCoded:
-	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"
+---- HardCoded: --------------------------------------------------------------------------------------------------------------------------------------
+	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"s
