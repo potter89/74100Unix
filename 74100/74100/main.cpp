@@ -12,7 +12,9 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include "TextUIManager.h"
 #include "TestClass.h"
+#include "MiscCode.h" //just to test, delete this
 
 int main(int argc, const char * argv[])
 {
@@ -21,31 +23,26 @@ int main(int argc, const char * argv[])
     
     //tests
 	/**
-	TestClass t;
-    t.concurrentFileOpen(seedRand);
-	//*/
+    TestClass t;
+    //*/
 
-    //for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl; //print arguments passed
+//    for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl; //print arguments passed
+    
     
     /**/
-	if (argc == 1){
-		printf("No input :( Ejecting now -> ");
-	}
     
+    //Factory will create populations and simulations
+    Factory factory;
+    
+    //main simulation to execute
+    Simulation * simulation;
+    
+	if (argc == 1){
+        //no input, prompt input
+        handleUIRequest(factory);
+	}
 	else{
-		//Factory will create populations and simulations
-		Factory factory;
-
-		//main simulation to execute
-		Simulation * simulation;
-
-		//TODO: code a way to access this
-		//factory.generateFullyConnected();
-		//factory.generateTwoForwardTwoBehind();d
-		//factory.generateLatticeLinksTextFile();
-
-        //depending of 
-		if (argc == 2){
+        if (argc == 2){
 			//parse config.txt file path
 			std::string configFilePath = argv[1];
 			simulation = factory.createSimulation(configFilePath);
@@ -82,9 +79,9 @@ int main(int argc, const char * argv[])
 	}
 	//*/
 
-	printf("Input any char to exit. Thank you for flying with us :) ... ");
-	char i;
-	std::cin >> i;
+//	printf("Input any char to exit. Thank you for flying with us :) ... ");
+//	char i;
+//	std::cin >> i;
 
 	return 0;
 }

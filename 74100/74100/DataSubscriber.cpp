@@ -197,8 +197,7 @@ void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<
 		_outputTxtFile.open(_fileName, std::ios::app);
 	}
 	_outputTxtFile << numberOfCooperativeActions << "\n";
-	//TODO: tentative change, might have performance issues closing each time
-	//_outputTxtFile.close();
+    _outputTxtFile.close();
 	//std::cout << _tentativeFileIndex << " writing " << std::endl;
 }
 
@@ -243,8 +242,7 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 		else{
 			_outputTxtFile << calculateAverage(_valuesToAverage) << "\n";
 		}
-		//TODO: tentative change, might have performance issues closing each time
-		_outputTxtFile.close();
+        _outputTxtFile.close();
 		//std::cout << _tentativeFileIndex << " writing " << std::endl;
 		_average = 0;
 		_valuesToAverage.clear();

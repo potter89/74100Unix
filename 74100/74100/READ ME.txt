@@ -6,6 +6,7 @@ ALWAYS cd to where the executable is located alongside the following folders:
 ConfigurationFiles
 Networks
 Results
+Scripts
 
 
 ---- Config File: ------------------------------------------------------------------------------------------------------------------------------------

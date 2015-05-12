@@ -190,9 +190,9 @@ void Factory::generateLatticeLinksTextFile(){
     
     //ask for name of output file, to create the fileNamePath
     std::cout << "Type the desired number of rows: " << std::endl;
-    std::cin >> R;
+    positiveIntCin(R);
     std::cout << "Type the desired number of columns: " << std::endl;
-    std::cin >> C;
+    positiveIntCin(C);
     
     std::string fileNamePath = "Networks/l_" + std::to_string(R) + "x" + std::to_string(C) + ".txt";
     
@@ -286,10 +286,10 @@ void Factory::generateTwoForwardTwoBehind(){
     
     //ask for name of output file, to create the fileNamePath
     std::cout << "Type the desired number of agents (Must be above 5!): " << std::endl;
-    std::cin >> totalNumberOfAgents;
+    positiveIntCin(totalNumberOfAgents);
     while (totalNumberOfAgents < 5){
         std::cout << "Must be above 5! Type the desired number of agents: " << std::endl;
-        std::cin >> totalNumberOfAgents;
+        positiveIntCin(totalNumberOfAgents);
     }
     
     //TODO:find out name..
@@ -356,10 +356,10 @@ void Factory::generateFullyConnected(){
     
     //ask for name of output file, to create the fileNamePath
     std::cout << "Type the desired number of agents (Must be above 2!): " << std::endl;
-    std::cin >> totalNumberOfAgents;
+    positiveIntCin(totalNumberOfAgents);
     while (totalNumberOfAgents < 2){
         std::cout << "Must be above 2! Type the desired number of agents: " << std::endl;
-        std::cin >> totalNumberOfAgents;
+        positiveIntCin(totalNumberOfAgents);
     }
     
     //Default FileNamePath creation
@@ -383,6 +383,58 @@ void Factory::generateFullyConnected(){
     
     /**/
     myfile.close();
+}
+
+void Factory::generateShellScript(){
+    //fields that need to be inputted
+    int numbTags, generations;
+    std::string fullPathToExecFolder, networkFilePath, popType, dataSubs;
+
+    //prompt user for input
+    std::cout << "Creating a shell file, please input values for the given fields:" << std::endl;
+    
+    std::cout << "(string)Full path to Folder with Unix Executable: " << std::endl;
+    customCin(fullPathToExecFolder);
+    std::cout << "(int)Number of Tags: " << std::endl;
+    positiveIntCin(numbTags);
+    std::cout << "(int)Number of Generations: " << std::endl;
+    positiveIntCin(generations);
+    std::cout << "(string)Population Type: " << std::endl;
+    customCin(popType);
+    std::cout << "(string)Number of agents: popType_xxxxxx.txt ";
+    customCin(networkFilePath);
+    std::string simpleFP = networkFilePath;
+    networkFilePath = "Networks/" + popType + "_" + networkFilePath + ".txt"; std::cout << std::endl;
+    
+    //TODO: accept more than one datasub
+    std::cout << "(string)Data Subscriber: " << std::endl;
+    std::cin >> dataSubs;
+    
+    //Default FileNamePath for ShellScripts
+    std::string fileNamePath = "Scripts/" + std::to_string(numbTags) + "_" +
+                                            std::to_string(generations) + "_" +
+                                            popType + "_" + simpleFP + ".sh";
+    
+    
+    std::ofstream myfile;
+    myfile.open(fileNamePath); //creates or overwrites existing file!
+    
+    if (myfile.is_open()) {
+    std::string const firstLine = "osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'\n";
+    std::string const secondLine = "osascript -e 'tell application \"Terminal\" to do script \"cd ";
+    std::string const secondLineEnding = "\" in selected tab of the front window'\n";
+    std::string tempLine = "";
+    
+    for (float b = 1.0f; b <= 2.0f; b += 0.05f) {
+        myfile << firstLine;
+        tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string(b) + " 0 " + dataSubs + secondLineEnding;
+        myfile << tempLine;
+    }
+    myfile.close();
+    std::cout << "Created shell script on " << fileNamePath << std::endl;
+    }else{
+        std::cout << "ERROR: Could not create shell file in requested path!" << std::endl;
+    }
 }
 
 //These variables are reused for the various factory creations, they need to be reset after each creation

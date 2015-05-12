@@ -11,6 +11,7 @@
 
 #include "Population.h"
 #include "Simulation.h"
+#include "MiscCode.h" //for custom Cin
 #include <fstream>
 
 
@@ -27,6 +28,7 @@ public:
     void generateLatticeLinksTextFile();
     void generateTwoForwardTwoBehind();
     void generateFullyConnected();
+    void generateShellScript();
     
 private:
     std::string _populationType = "";
