@@ -8,29 +8,28 @@
 
 #include "Simulation.h"
 #include "Factory.h"
-#include "PThreadingManager.h"
 #include <time.h>
 #include <vector>
 #include <string>
 #include "TextUIManager.h"
 #include "TestClass.h"
-#include "MiscCode.h" //just to test, delete this
+#include "GlobalRandomGen.h" //for GlobalRandom
+
+
+// Allocating and initializing GlobalClass's
+// static data member.  The pointer is being
+// allocated - not the object inself.
+GlobalRandomGen * GlobalRandomGen::_globalRandomGen_instance = 0;
 
 int main(int argc, const char * argv[])
 {
-    unsigned int seedRand = time(NULL);
-	srand(seedRand);
-    
     //tests
 	/**
     TestClass t;
-    //*/
-
-//    for (int i=0; i< argc; i++) std::cout << argv[i] << std::endl; //print arguments passed
-    
+    t.testGenerateRandMax();
+    //*/    
     
     /**/
-    
     //Factory will create populations and simulations
     Factory factory;
     
@@ -48,40 +47,42 @@ int main(int argc, const char * argv[])
 			simulation = factory.createSimulation(configFilePath);
 			simulation->runSimulation();
 		}
-		else if (argc >= 10){
-			//parse command line arguments
-			int numbTags = atoi(argv[1]);
-			std::string linksPath = argv[2];
-			std::string populationType = argv[3];
-			int numbGenerations = atoi(argv[4]);
-			
-            float tau = atof(argv[5]);
+        else if (argc >= 10){
+			//PARSE command line arguments
+            int argvIndex = 0; //to store the last position of argv parsed
+            
+            int numbTags = atoi(argv[++argvIndex]);
+			std::string linksPath = argv[++argvIndex];
+			std::string populationType = argv[++argvIndex];
+			int numbGenerations = atoi(argv[++argvIndex]);
+
+            float tau = atof(argv[++argvIndex]);
             
 			std::vector<float> payoffMatrix;
-			for (int i = 0; i < 4; i++){
-				payoffMatrix.push_back(atof(argv[(i + 6)]));
+			for (int i = 0; i < 4; i++){ //4 payoff matrix numbers
+				payoffMatrix.push_back(atof(argv[(++argvIndex)]));
 			}
             
+            unsigned int seed = atoi(argv[++argvIndex]);
+            if (seed != 0) {
+                //use the given seed
+                GlobalRandomGen::getInstance()->setSeed(seed);
+            }//else, when called for the first time, it will generate a true random seed
+            
 			std::vector<std::string> dataSubscribers;
-			for (int i = 10; i < argc; i++){
-				dataSubscribers.push_back(argv[i]);
+			for (int i = argvIndex; i < argc-1; i++){ //from the current index, until the end of the command arg, must all be datasubs
+				dataSubscribers.push_back(argv[++argvIndex]);
 			}
 
 			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tau, payoffMatrix, dataSubscribers);
 			simulation->runSimulation();
-
-			//PThreadingManager pTManager;
-			//pTManager.runMultiThreadedSimulations(simulations);
-			//for (long i = 0; i < simulations.size(); i++) {
-			//	simulations[i]->runSimulation();
-			//}
 		}
 	}
 	//*/
 
-//	printf("Input any char to exit. Thank you for flying with us :) ... ");
-//	char i;
-//	std::cin >> i;
+	printf("Input any char to exit. Thank you for flying with us :) ... ");
+	char i;
+	std::cin >> i;
 
 	return 0;
 }

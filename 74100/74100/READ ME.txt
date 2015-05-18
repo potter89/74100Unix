@@ -1,13 +1,14 @@
 Assumptions:
 
+########### !!!! ########### !!!! ########### !!!! ########### !!!! ###########
 ALWAYS cd to where the executable is located alongside the following folders:
+########### !!!! ########### !!!! ########### !!!! ########### !!!! ###########
 
 ---- (Folders in the root of the project) ------------------------------------------------------------------------------------------------------------
 ConfigurationFiles
 Networks
 Results
 Scripts
-
 
 ---- Config File: ------------------------------------------------------------------------------------------------------------------------------------
 Population_Type: fc														(pick just one: l (for lattice), xpto(there's only code for lattices, this field is used for data susbcribers))
@@ -20,5 +21,14 @@ Percentages_of_tags_in_pop: 0 100										(int)
 DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber) AverageTextFileDataSubscriber
 
 
+---- Console argv: ------------------------------------------------------------------------------------------------------------------------------------
+Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 1 1 0 1.05 0 123456 AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
+
+        ./74100Unix          2                Networks/fc_512.txt   fc                10000         1     1 0 1.05 0     0       AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
+argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   Tau   Payoff_Matrix  RandSeed    DataSubscriber1 DataSubscriber2....
+
+If seed == 0, a true random seed is generated
+
 ---- HardCoded: --------------------------------------------------------------------------------------------------------------------------------------
 	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"s
+

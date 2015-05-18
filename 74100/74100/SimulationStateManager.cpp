@@ -28,7 +28,6 @@ void SimulationStateManager::setTypeToSendOut(std::string type){
 
 //adds new dataSub to the vector of data sub pointers AND _numbSubscribers++
 void SimulationStateManager::attachDataSubscriber(DataSubscriber * newSub){
-    //TODO:test this
     _simData._dataSubscribers.push_back(newSub);
     _simData._numbSubscribers++;
 }
@@ -63,39 +62,3 @@ void SimulationStateManager::incrementCooperativeActions(){
 void SimulationStateManager::resetStateForNextGeneration(){
     _simData._numbCooperativeActions = 0;
 }
-
-
-/** //TODO:consider deleting this I wont need this, me thinks
- SimulationStateManager::SimulationStateManager(int c, int d){
-	_simData._numbCooperators = c;
-	_simData._numbDefectors = d;
- }
- //*/
-
-
-/** //TODO:consider deleting this I wont need this, me thinks
- //_numbCooperators++
- void SimulationStateManager::incrementCooperators(){ //+1
-	_simData._numbCooperators++;
- }
- //_numbCooperators--
- void SimulationStateManager::decrementCooperators(){ //-1
-	if (_simData._numbCooperators > 0) _simData._numbCooperators--;
- }
- //_numbDefectors++
- void SimulationStateManager::incrementDefectors(){ //+1
-	_simData._numbDefectors++;
- }
- //_numbDefectors--
- void SimulationStateManager::decrementDefectors(){ //-1
-	if (_simData._numbDefectors > 0) _simData._numbDefectors--;
- }
- //*/
-
-//TODO: delete this
-/**
- void SimulationStateManager::print(){
-	std::cout << "Cooperators: " << _simData._numbCooperators << std::endl;
-	std::cout << "Defectors: " << _simData._numbDefectors << std::endl;
- }
- //*/

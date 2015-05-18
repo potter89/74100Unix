@@ -13,10 +13,9 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <time.h>
+#include "GlobalRandomGen.h"
 
-
-//Pure virtual class
+//Pure virtual class∫
 class Population
 {
 public:

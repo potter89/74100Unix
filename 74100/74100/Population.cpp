@@ -13,7 +13,7 @@ Population::Population(){}
 Population::~Population(){}
 
 int Population::getSize(){
-    return agentsInPop.size();
+    return (int)agentsInPop.size();
 }
 int Population::getNumberOfTags(){
     return _numberOfTags;
@@ -31,31 +31,32 @@ std::vector<Agent> * Population::getPopulationPtr(){
 LatticePopulation::LatticePopulation(){}
 LatticePopulation::~LatticePopulation(){}
 
-//generates random tag, from 0 to totalNumberOfTags, and fills <_strategy> with random 0 and 1's
+//generates random tag, from 0 to totalNumberOfTags-1, and fills <_strategy> with random 0 and 1's
 void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){
-    //TODO: use a better random gen
-    /* initialize random seed: */
     int totNumberOfTags = totalNumberOfTags;
-    
     int randomNumber;
     
+    //0 tags should be the same as 1 tag!!!
+    if (totNumberOfTags <= 1) totNumberOfTags = 0;
+    
+    //for each agent int the pop
     for (int i = 0; i < (int)agentsInPop.size(); i++){
-        //random tag
         if (totNumberOfTags != 0){
-            randomNumber = rand() % totNumberOfTags;
+            //assign random tag
+            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(totNumberOfTags-1); //if there is two tags, they will be tag 0 and 1, hence the -1
             agentsInPop[i].tag = randomNumber;
         }
         else{
             agentsInPop[i].tag = 0;
         }
         
-        //0 tags should be the same as 1 tag!!!
-        if (totNumberOfTags < 1) totNumberOfTags = 1;
+        int strategyVectorSize = totNumberOfTags; //this variable will help populate the strategy vector of an agent with a correct size
+        if (strategyVectorSize == 0) strategyVectorSize += 1; //for the case where it has only one tag
         
-        //random strategy for each tag available
-        for (int x = 0; x < totNumberOfTags; x++){
-            /* generate secret number between 0 and 1 */
-            randomNumber = rand() % 2;
+        //random strategy for each tag
+        for (int x = 0; x < strategyVectorSize; x++){
+            //generate random number between 0 and 1, as they can cooperate or defect
+            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(1);
             agentsInPop[i].strategy.push_back(randomNumber);
         }
     }

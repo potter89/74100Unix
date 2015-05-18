@@ -70,6 +70,9 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
     //Tau : 0.7
     //Payoff_Matrix : 1 1 5 5
     //percentages_of_tags_in_pop : 0 50 1 30 2 10 3 10
+    
+    //TODO:consider adding support for random seed input
+    
     std::ifstream myfile(inputPath);
     if (myfile.is_open())
     {
@@ -384,11 +387,11 @@ void Factory::generateFullyConnected(){
     /**/
     myfile.close();
 }
-
 void Factory::generateShellScript(){
     //fields that need to be inputted
-    int numbTags, generations;
-    std::string fullPathToExecFolder, networkFilePath, popType, dataSubs;
+    int numbTags = 0, generations = 0;
+    std::string fullPathToExecFolder = "", networkFilePath = "", popType = "", dataSubs = "";
+    unsigned int seed;
 
     //prompt user for input
     std::cout << "Creating a shell file, please input values for the given fields:" << std::endl;
@@ -405,6 +408,8 @@ void Factory::generateShellScript(){
     customCin(networkFilePath);
     std::string simpleFP = networkFilePath;
     networkFilePath = "Networks/" + popType + "_" + networkFilePath + ".txt"; std::cout << std::endl;
+    std::cout << "(Uint)Seed (input 0 for random seed):  ";
+    customCin(seed);
     
     //TODO: accept more than one datasub
     std::cout << "(string)Data Subscriber: " << std::endl;
@@ -427,7 +432,7 @@ void Factory::generateShellScript(){
     
     for (float b = 1.0f; b <= 2.0f; b += 0.05f) {
         myfile << firstLine;
-        tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string(b) + " 0 " + dataSubs + secondLineEnding;
+        tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string(b) + " 0 " + std::to_string(seed) + " " + dataSubs + secondLineEnding;
         myfile << tempLine;
     }
     myfile.close();

@@ -29,4 +29,6 @@ bool customCin(T & input){
         std::cout << "Please input a correct value! ->> ";
     }
 }
+
+
 #endif /* defined(___4100Unix__MiscCode__) */

@@ -17,7 +17,7 @@ bool positiveIntCin(int & input){
             std::cin.clear(); //clears the error flag on cin
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //clears contents of cin
         }
-        std::cout << "Please input a positive integer Number! ->> ";
+        std::cout << "Please input a positive integer number! ->> ";
     }
 }
 

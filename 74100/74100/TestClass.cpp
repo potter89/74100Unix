@@ -11,6 +11,45 @@
 TestClass::TestClass(){}
 TestClass::~TestClass(){}
 
+void TestClass::testGenerateRandMax(){
+    int max = 1;
+    std::cout << "max: " << max << std::endl;
+    for (int i = 0; i < 100; i++) {
+        std::cout << GlobalRandomGen::getInstance()->getRandomTillMax(max);
+    }
+    max = 5;
+    std::cout << "max: " << max << std::endl;
+    for (int i = 0; i < 100; i++) {
+        std::cout << GlobalRandomGen::getInstance()->getRandomTillMax(max);
+    }
+}
+
+void TestClass::testGlobalRandFloat(){
+    unsigned int seed = GlobalRandomGen::getInstance()->getSeed();
+    GlobalRandomGen::getInstance()->setSeed(seed);
+    std::cout << "Current seed: " << seed << std::endl;
+    std::cout << "getRandomF0Till1" << std::endl;
+    for (int i = 0; i < 10000000; i++) {
+        float rand = GlobalRandomGen::getInstance()->getRandomF0Till1();
+        if (rand > 1.0f || rand < 0) {
+            std::cout << "BUG! rand = " << rand << std::endl;
+        }
+    }
+    std::cout << "getRandomF0Till1 END!!" << std::endl;
+}
+
+void TestClass::testGlobalRandInt(){
+    unsigned int seed = GlobalRandomGen::getInstance()->getSeed();
+    GlobalRandomGen::getInstance()->setSeed(seed);
+    std::cout << "Current seed: " << seed << std::endl;
+    std::cout << "getRandomI0Till100" << std::endl;
+    for (int i = 0; i < 1000; i++) {
+        std::cout << GlobalRandomGen::getInstance()->getRandomI0Till100() << std::endl;
+    }
+}
+
+
+
 //TODO: testing if opening for writing blocks the file
 void TestClass::concurrentFileOpen(unsigned int seed){
     std::string fileName = "test2.txt";

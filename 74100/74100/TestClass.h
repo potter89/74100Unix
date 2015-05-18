@@ -17,7 +17,7 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
-//#include "RandomSeedGenerator.h"
+#include "GlobalRandomGen.h" //for GlobalRandom
 
 class TestClass
 {
@@ -41,6 +41,10 @@ public:
 	void testGSL();
     
     void concurrentFileOpen(unsigned int seed);
+    
+    void testGlobalRandFloat();
+    void testGlobalRandInt();
+    void testGenerateRandMax();
     
 };
 
