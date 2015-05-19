@@ -32,7 +32,7 @@ unsigned int GlobalRandomGen::getSeed(){
     return _seed;
 }
 
-float GlobalRandomGen::getRandomF0Till1(){
+long double GlobalRandomGen::getRandomF0Till1(){
     return _distribution0Till1(*_gen);
 }
 

@@ -30,7 +30,7 @@ public:
     static GlobalRandomGen * getInstance();
     void setSeed(unsigned int newSeed); //sets a seed for the generator
     unsigned int getSeed(); //returns current _seed
-    float getRandomF0Till1();
+    long double getRandomF0Till1();
     int getRandomI0Till100();
     int getRandomTillMax(int max);
 };

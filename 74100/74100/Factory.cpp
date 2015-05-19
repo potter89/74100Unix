@@ -25,7 +25,7 @@ Simulation * Factory::createSimulation(std::string inputPath){
 	return s;
 }
 
-Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> & dataSubscribers){
+Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers){
 	Population * popul = createPopulation(linksPath, popType, totalTags);
 	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
 	parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
@@ -99,7 +99,7 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
         _tempString.erase(0, pos + _delimiter.length()); //removing the text "PayoffMatrix"
         
         while ((pos = _tempString.find(_delimiter)) != std::string::npos){ //for each of the tokens, delimited by a space
-            _payOffMatrix.push_back(atof(_tempString.substr(0, pos).c_str())); //add token to vector of floats
+            _payOffMatrix.push_back(atof(_tempString.substr(0, pos).c_str())); //add token to vector of long doubles
             _tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
         }
         _payOffMatrix.push_back(atof(_tempString.c_str()));
@@ -135,7 +135,7 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
 }
 
 //takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
-void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix){
+void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
 	//TODO: this shouldn't be here....
 	_subscribersParsed.clear();
 	if (!subscribers.empty()){
@@ -430,7 +430,7 @@ void Factory::generateShellScript(){
     std::string const secondLineEnding = "\" in selected tab of the front window'\n";
     std::string tempLine = "";
     
-    for (float b = 1.0f; b <= 2.0f; b += 0.05f) {
+    for (long double b = 1.0f; b <= 2.0f; b += 0.05f) {
         myfile << firstLine;
         tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string(b) + " 0 " + std::to_string(seed) + " " + dataSubs + secondLineEnding;
         myfile << tempLine;

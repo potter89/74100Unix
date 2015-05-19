@@ -11,6 +11,15 @@
 TestClass::TestClass(){}
 TestClass::~TestClass(){}
 
+void TestClass::testdoubleatof(){
+    std::string s_double = "0.0000000009";
+    
+    long double doubleVar = atof(s_double.c_str());
+    std::cout <<"test atof double: " << doubleVar << std::endl;
+    printf("pf: %0.1LF \n", doubleVar);
+    
+}
+
 void TestClass::testGenerateRandMax(){
     int max = 1;
     std::cout << "max: " << max << std::endl;
@@ -24,13 +33,13 @@ void TestClass::testGenerateRandMax(){
     }
 }
 
-void TestClass::testGlobalRandFloat(){
+void TestClass::testGlobalRand(){
     unsigned int seed = GlobalRandomGen::getInstance()->getSeed();
     GlobalRandomGen::getInstance()->setSeed(seed);
     std::cout << "Current seed: " << seed << std::endl;
     std::cout << "getRandomF0Till1" << std::endl;
     for (int i = 0; i < 10000000; i++) {
-        float rand = GlobalRandomGen::getInstance()->getRandomF0Till1();
+        long double rand = GlobalRandomGen::getInstance()->getRandomF0Till1();
         if (rand > 1.0f || rand < 0) {
             std::cout << "BUG! rand = " << rand << std::endl;
         }

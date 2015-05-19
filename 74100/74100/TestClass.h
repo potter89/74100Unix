@@ -18,6 +18,7 @@
 #include <thread>
 #include <fstream>
 #include "GlobalRandomGen.h" //for GlobalRandom
+#include <cstdlib> //for atof
 
 class TestClass
 {
@@ -42,9 +43,11 @@ public:
     
     void concurrentFileOpen(unsigned int seed);
     
-    void testGlobalRandFloat();
+    void testGlobalRand();
     void testGlobalRandInt();
     void testGenerateRandMax();
+    
+    void testdoubleatof();
     
 };
 

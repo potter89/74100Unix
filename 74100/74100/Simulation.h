@@ -22,8 +22,8 @@ class Simulation
 {
     std::string s_linksSourcePath = "";
     int _maxGenerations;
-    float _tau;
-    std::vector<float> _payoffMatrix;
+    long double _tau;
+    std::vector<long double> _payoffMatrix;
     std::vector<Agent> * agentsVectorPtr;
     
     Population * _population = NULL; //holds pointers to one of the various types of classes parented by pure virtual class Population
@@ -32,20 +32,20 @@ class Simulation
 
     void oneShotInteraction(Agent & a, Agent & b);
     void gameTheoryGames(std::vector<Agent> & iPopulation);
-    void evolutionaryGameTheory(std::vector<Agent> & iPopulation, float & tau, std::vector<float> & payoffMatrix);
+    void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix);
     
     void setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation);
     
-    float highestPayoffInMatrix(std::vector<float> & payoffMatrix);
-    float lowestPayoffInMatrix(std::vector<float> & payoffMatrix);
-    float maxFitnessDifference(unsigned long numbNeiborsA, unsigned long numbNeiborsB, float maxPayoffPossible, float minPayoffPossible); //maxFitnessDifference between two agents
+    long double highestPayoffInMatrix(std::vector<long double> & payoffMatrix);
+    long double lowestPayoffInMatrix(std::vector<long double> & payoffMatrix);
+    long double maxFitnessDifference(unsigned long numbNeiborsA, unsigned long numbNeiborsB, long double maxPayoffPossible, long double minPayoffPossible); //maxFitnessDifference between two agents
 
 	void printPercentageDone(int & iGeneration);
 	int _percentage = 0; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
 
 public:
-    Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
+    Simulation(Population * population, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
     ~Simulation();
     
     void runSimulation();

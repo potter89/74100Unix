@@ -8,7 +8,7 @@
 
 #include "Simulation.h"
 
-Simulation::Simulation(Population * population, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
+Simulation::Simulation(Population * population, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
 //Initializing simulation parameters
 _maxGenerations(i_maxGenerations),
 _tau(tau),
@@ -55,8 +55,8 @@ void Simulation::runSimulation(){
 }
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
-    float payoffA = 0.0f; //payoff earned by A in this specific game
-    float payoffB = 0.0f; //payoff earned by B in this specific game
+    long double payoffA = 0.0f; //payoff earned by A in this specific game
+    long double payoffB = 0.0f; //payoff earned by B in this specific game
     
     int aStrategyPlayingOther = a.strategy[b.tag];
     int bStrategyPlayingOther = b.strategy[a.tag];
@@ -156,9 +156,9 @@ void Simulation::setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation){
     }
 }
 //returns the highest payoff possible from the payoffMatrix
-float Simulation::highestPayoffInMatrix(std::vector<float> & payoffMatrix){
-    float max = std::numeric_limits<float>::min();
-    for (float i : payoffMatrix){
+long double Simulation::highestPayoffInMatrix(std::vector<long double> & payoffMatrix){
+    long double max = std::numeric_limits<long double>::min();
+    for (long double i : payoffMatrix){
         if (i > max) {
             max = i;
         }
@@ -166,9 +166,9 @@ float Simulation::highestPayoffInMatrix(std::vector<float> & payoffMatrix){
     return max;
 }
 //returns the lowest payoff possible from the payoffMatrix
-float Simulation::lowestPayoffInMatrix(std::vector<float> & payoffMatrix){
-    float min = std::numeric_limits<float>::max();
-    for (float i : payoffMatrix){
+long double Simulation::lowestPayoffInMatrix(std::vector<long double> & payoffMatrix){
+    long double min = std::numeric_limits<long double>::max();
+    for (long double i : payoffMatrix){
         if (i < min) {
             min = i;
         }
@@ -176,7 +176,7 @@ float Simulation::lowestPayoffInMatrix(std::vector<float> & payoffMatrix){
     return min;
 }
 
-float Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsigned long numbNeiborsOfB, float maxPayoffPossible, float minPayoffPossible){
+long double Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsigned long numbNeiborsOfB, long double maxPayoffPossible, long double minPayoffPossible){
     // highest number of neighbors (between agents A and B) times the highest payoff - lowest number of neighbors (from A and B) times the lowest possible payoff
     if (numbNeiborsOfA > numbNeiborsOfB){
         return numbNeiborsOfA * maxPayoffPossible - numbNeiborsOfB * minPayoffPossible;
@@ -186,22 +186,18 @@ float Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsigned lo
     }
 }
 
-void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float & tau, std::vector<float> & payoffMatrix){
+void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix){
     //IMP: test all of this again!!!!!!!
     
-    float aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
-    float aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
+    long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
+    long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
     
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
         /**
         printf("Agent: %i -------------------------------------------------------------\n", i);
         printf("Has      fit: %f #Neigh: %i", iPopulation[i].fitness, (int)iPopulation[i].neighbors.size());
-        
         printf(" tag: %i strat: ", iPopulation[i].tag);
-        for (int x = 0; x < iPopulation[i].strategy.size(); x++){
-            printf( "%d, ", iPopulation[i].strategy[x]);
-        }
-        printf("\n");
+        for (int x = 0; x < iPopulation[i].strategy.size(); x++) printf( "%d, ", iPopulation[i].strategy[x]); printf("\n");
         //*/
         
         //pick a random neighbor
@@ -214,35 +210,41 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, float 
         }
         printf("\n");
         //*/
+        //TODO: check if everything is ok with the p calculation
+        //TODO: continue here
         
-        float p; //holds probability of imitating the other agent's strategy
-        //p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
-        p = (iPopulation[randomNeighborIndex].fitness - iPopulation[i].fitness) /
-                (maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff,aux_Lo_Payoff));
-        //std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
-        
-        float random0till1; //float between 0.0 and 1.0, inclusive
-        random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1();
-        printf("p = %f and random: %f\n", p, random0till1);
-        
-        if (p >= random0till1){
-            //ALWAYS imitates strategy
-            iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
-            //std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-            /**
-             std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
-             for (int x = 0; x < iPopulation[i].strategy.size(); x++){
-             std::cout << iPopulation[i].strategy[x] << ", ";
-             }
-             std::cout << std::endl;
-             //*/
-            //Imitates tag given a probability Tau
-            random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //float between 0.0 and 1.0, inclusive
+        long double payoffDiff = iPopulation[randomNeighborIndex].fitness - iPopulation[i].fitness;
+        if (payoffDiff > 0) { //only considers changing strategy(and tag) if the neighbor's payoff is better than his own
             
-            //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
-            if (_tau >= random0till1){
-                iPopulation[i].tag = iPopulation[randomNeighborIndex].tag;
-                printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+            long double p; //holds probability of imitating the other agent's strategy
+            //p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
+            p = (payoffDiff) /
+            (maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff,aux_Lo_Payoff));
+            //std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
+            
+            long double random0till1; //long double between 0.0 and 1.0, inclusive
+            random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1();
+            //printf("p = %Lf and random: %Lf\n", p, random0till1);
+            
+            if (p >= random0till1){
+                //ALWAYS imitates strategy
+                iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
+                //std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+                /**
+                 std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
+                 for (int x = 0; x < iPopulation[i].strategy.size(); x++){
+                 std::cout << iPopulation[i].strategy[x] << ", ";
+                 }
+                 std::cout << std::endl;
+                 //*/
+                //Imitates tag given a probability Tau
+                random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
+                
+                //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
+                if (_tau >= random0till1){
+                    iPopulation[i].tag = iPopulation[randomNeighborIndex].tag;
+                    //printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+                }
             }
         }
     }
@@ -254,7 +256,7 @@ void Simulation::printPercentageDone(int & iGeneration){
     if (_tenPercentGenerations == -1) _tenPercentGenerations = (_maxGenerations * 0.1);
     
     if (_percentage * _tenPercentGenerations == iGeneration){
-        printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Progress: %d%% \n",(_percentage * 10));
+        printf("%%%%  %%%%  %%%%  %%%%  -- Progress: %d%%  -- %%%%  %%%%  %%%%  %%%%\n",(_percentage * 10));
         _percentage++;
     }
 }

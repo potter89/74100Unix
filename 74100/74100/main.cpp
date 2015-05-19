@@ -21,12 +21,13 @@
 // allocated - not the object inself.
 GlobalRandomGen * GlobalRandomGen::_globalRandomGen_instance = 0;
 
+
 int main(int argc, const char * argv[])
 {
     //tests
 	/**
     TestClass t;
-    t.testGenerateRandMax();
+    t.testdoubleatof();
     //*/    
     
     /**/
@@ -56,9 +57,9 @@ int main(int argc, const char * argv[])
 			std::string populationType = argv[++argvIndex];
 			int numbGenerations = atoi(argv[++argvIndex]);
 
-            float tau = atof(argv[++argvIndex]);
+            long double tau = atof(argv[++argvIndex]);
             
-			std::vector<float> payoffMatrix;
+			std::vector<long double> payoffMatrix;
 			for (int i = 0; i < 4; i++){ //4 payoff matrix numbers
 				payoffMatrix.push_back(atof(argv[(++argvIndex)]));
 			}

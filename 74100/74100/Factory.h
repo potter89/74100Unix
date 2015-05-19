@@ -23,7 +23,7 @@ public:
     
     
     Simulation * createSimulation(std::string inputPath);
-    Simulation * createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, float tau, std::vector<float> payoffMatrix, std::vector<std::string> & dataSubscribers);
+    Simulation * createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers);
 
     void generateLatticeLinksTextFile();
     void generateTwoForwardTwoBehind();
@@ -35,8 +35,8 @@ private:
     std::string _linksFilePath = "";
     int _totalGenerations = 0;
     int _totalTags = 0;
-    float _tau = 0.0f;
-    std::vector<float> _payOffMatrix;
+    long double _tau = 0.0f;
+    std::vector<long double> _payOffMatrix;
     std::vector<int> _percentages;
     std::vector<std::string> _subscribers;
 	std::vector<DataSubscriber *> _subscribersParsed;
@@ -45,7 +45,7 @@ private:
     std::string const _delimiter = " ";
 
 	void parseConfiguration(std::string inputPath);
-	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const float tau, const std::vector<float> payoffMatrix);
+	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix);
 
 	Population * createPopulation(std::string linksPath, std::string populationType, int totalTags);
 
