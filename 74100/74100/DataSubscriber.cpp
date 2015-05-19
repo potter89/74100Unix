@@ -21,8 +21,8 @@ ConsoleDataSubscriber::~ConsoleDataSubscriber(){}
 //TODO: confirm that we are merely getting a COPY of the population
 void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
     //Prints the number of cooperative actions performed in the console
-    std::cout << std::endl << std::endl; //separation from what might be in the console
-    std::cout << "Update! Cooperative actions made last generation: " << numberOfCooperativeActions << std::endl;
+    printf("\n\n"); //separation from what might be in the console
+    printf("Update! Cooperative actions made last generation: %d\n", numberOfCooperativeActions);
     if (popType == "l"){
         //If they have 1 or 0 tags, prints strategy and current fitness
         //C-3 D-7 D-2
@@ -186,8 +186,11 @@ void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 	}
 	else{
 		std::cout << "Couldn't write to file" << std::endl;
+        std::cout << "print!" << std::endl;
 	}
 }
+
+
 
 //Writes the updates to a text file
 void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){

@@ -38,8 +38,7 @@ class Simulation
     
     float highestPayoffInMatrix(std::vector<float> & payoffMatrix);
     float lowestPayoffInMatrix(std::vector<float> & payoffMatrix);
-    float maxFitnessDifference(int numbNeiborsA, int numbNeiborsB, float maxPayoffPossible, float minPayoffPossible); //maxFitnessDifference between two agents
-    //TODO: ^\ investigate int vs float
+    float maxFitnessDifference(unsigned long numbNeiborsA, unsigned long numbNeiborsB, float maxPayoffPossible, float minPayoffPossible); //maxFitnessDifference between two agents
 
 	void printPercentageDone(int & iGeneration);
 	int _percentage = 0; //how much percentage of work has been calculated already
