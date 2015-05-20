@@ -60,7 +60,6 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
     
     int aStrategyPlayingOther = a.strategy[b.tag];
     int bStrategyPlayingOther = b.strategy[a.tag];
-    //TODO: continue here, checking tags an dall randoms
     /**
      std::cout << b.getIndex() << " has strategy {";
      for (int x = 0; x < b.strategy.size(); x++){
@@ -135,8 +134,8 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
          for (int x = 0; x < currentAgent->strategy.size(); x++){
          //std::cout << currentAgent->strategy[x] << ", ";
          }
-         std::cout << "} and tag: " << currentAgent->tag << " and current payoff: " << currentAgent->payoff << std::endl;
-         //*/
+         std::cout << "} and tag: " << currentAgent->tag << " and current payoff: " << currentAgent->payoff << std::endl; //*/
+         
         
         for (unsigned int ii = 0; ii < (iPopulation[i].neighbors.size()); ii++){ // go through his neighbors
             nextItemInNeightbors = currentNeighbors[ii];
@@ -195,28 +194,26 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
         /**
         printf("Agent: %i -------------------------------------------------------------\n", i);
-        printf("Has      fit: %f #Neigh: %i", iPopulation[i].fitness, (int)iPopulation[i].neighbors.size());
+        printf("Has      fit: %Lf #Neigh: %i", iPopulation[i].fitness, (int)iPopulation[i].neighbors.size());
         printf(" tag: %i strat: ", iPopulation[i].tag);
-        for (int x = 0; x < iPopulation[i].strategy.size(); x++) printf( "%d, ", iPopulation[i].strategy[x]); printf("\n");
-        //*/
+        for (int x = 0; x < iPopulation[i].strategy.size(); x++) printf( "%d, ", iPopulation[i].strategy[x]); printf("\n"); //*/
+        
         
         //pick a random neighbor
         int randomIndex = GlobalRandomGen::getInstance()->getRandomTillMax((unsigned int)iPopulation[i].neighbors.size()-1); //generates random number between 0 and sizeof vector neighbors, minus one as we want one of the indexes;
         int randomNeighborIndex = iPopulation[i].neighbors[randomIndex]; //goes to that index to get the neighbors population index
         /**
-        printf("Chose: %d  fit: %f   #Neigh: %d  strat: ", randomNeighborIndex , iPopulation[randomNeighborIndex].fitness, (int)iPopulation[randomNeighborIndex].neighbors.size());
-        for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++){
-            printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]);
-        }
-        printf("\n");
-        //*/
-        //TODO: check if everything is ok with the p calculation
-        //TODO: continue here
+        printf("Chose: %d  fit: %Lf   #Neigh: %d  strat: ", randomNeighborIndex , iPopulation[randomNeighborIndex].fitness, (int)iPopulation[randomNeighborIndex].neighbors.size());
+        for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
+        
+
         
         long double payoffDiff = iPopulation[randomNeighborIndex].fitness - iPopulation[i].fitness;
+        
         if (payoffDiff > 0) { //only considers changing strategy(and tag) if the neighbor's payoff is better than his own
             
             long double p; //holds probability of imitating the other agent's strategy
+            
             //p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
             p = (payoffDiff) /
             (maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff,aux_Lo_Payoff));
@@ -229,17 +226,10 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
             if (p >= random0till1){
                 //ALWAYS imitates strategy
                 iPopulation[i].strategy = iPopulation[randomNeighborIndex].strategy;
-                //std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-                /**
-                 std::cout << " COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl << "Now: ";
-                 for (int x = 0; x < iPopulation[i].strategy.size(); x++){
-                 std::cout << iPopulation[i].strategy[x] << ", ";
-                 }
-                 std::cout << std::endl;
-                 //*/
+                //printf("COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nNow: ");
+
                 //Imitates tag given a probability Tau
                 random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
-                
                 //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
                 if (_tau >= random0till1){
                     iPopulation[i].tag = iPopulation[randomNeighborIndex].tag;

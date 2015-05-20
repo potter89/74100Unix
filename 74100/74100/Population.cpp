@@ -62,16 +62,72 @@ void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){
     }
 }
 
-//Parse agents from a text file, filling the population vector
-void LatticePopulation::generateLinks(std::string i_source){
+void LatticePopulation::parseDotLinksFile(std::string i_source){
     int populationSize; //number of agents in the network, specified at the first line of the file
     std::vector<Agent> tempPopulation; //stores the parsed agents, will be returned
     std::vector<int> tempNeighbors; //stores a list of neighbors of the current parsed agent
     int tempIndex; //index for the current parsed agent
     int tempTag; //Tag for the current parsed agent
+    
     std::string source = i_source;
+    std::ifstream myfile(source);
+    if (myfile.is_open())
+    {
+        std::string populationSizeString = "";
+        
+        //DO NOT DELETE - read first line, looking for the number of agents to include -
+        getline(myfile, populationSizeString);
+        populationSize = atoi(populationSizeString.c_str());
+        
+        //parsing each line, for each agent.
+        //Format:AgentIndex NumbNeighbors SignalBit  NeighborIndex NeighborIndex ... (two spaces!!)
+        std::string currentAgentLine;
+        std::string delimiter = " ";
+        
+        size_t pos = 0;
+        std::vector<std::string> tokens;
+        
+        while (getline(myfile, currentAgentLine)){ //for each line to read, break it down into tokens and add to a vector to be handled afterwards
+            while ((pos = currentAgentLine.find(delimiter)) != std::string::npos){ //for each of the tokens, delimited by a space
+                tokens.push_back(currentAgentLine.substr(0, pos)); //add token to vector of strings
+                //std::cout << "Adding " << currentAgentLine.substr(0, pos) << " token!" << std::endl;
+                currentAgentLine.erase(0, pos + delimiter.length()); //eliminate the token and delimiter from the string
+            }
+            tokens.push_back(currentAgentLine);
+            
+            //create the neigbors vector to be used in the constructor of this new agent.
+            for (int i = 4; i < (tokens.size()); i++){ //neighbor's indexes start at pos 4, and end
+                if (tokens[i] != "") {
+                    tempNeighbors.push_back(atoi(tokens[i].c_str()));
+                }
+            }
+            //create agent with the line read
+            tempIndex = atoi(tokens[0].c_str());
+            tempTag = atoi(tokens[2].c_str()); //tag is at position 2
+            
+            //TODO: change to pointers
+            agentsInPop.push_back(Agent(tempIndex, tempTag, tempNeighbors));
+            
+            tempNeighbors.clear();
+            tokens.clear();
+        }
+        myfile.close();
+    }
+    else{
+        std::cout << "Links txt not found! -> " << source << std::endl;
+    }
 
-	std::ifstream myfile(source);
+}
+
+void LatticePopulation::parseDotTxtLinksFile(std::string i_source){
+    int populationSize; //number of agents in the network, specified at the first line of the file
+    std::vector<Agent> tempPopulation; //stores the parsed agents, will be returned
+    std::vector<int> tempNeighbors; //stores a list of neighbors of the current parsed agent
+    int tempIndex; //index for the current parsed agent
+    int tempTag; //Tag for the current parsed agent
+    
+    std::string source = i_source;
+    std::ifstream myfile(source);
     if (myfile.is_open())
     {
         std::string populationSizeString = "";
@@ -113,8 +169,33 @@ void LatticePopulation::generateLinks(std::string i_source){
         myfile.close();
     }
     else{
-		std::cout << "Links txt not found! -> " << source << std::endl;
+        std::cout << "Links txt not found! -> " << source << std::endl;
     }
+}
+
+//Delegates the creation of the population to correct function, who can handle the given file extension type
+void LatticePopulation::generateLinks(std::string i_source){
+    //find out which type of file we are dealig with, by finding out the name of the extension
+    std::string filePath = i_source;
+    std::string delimiter = "."; //extension name comes after the last .
+    size_t pos = 0;
+    std::string fileTypeName = ""; //stores the file type name
+
+    while ((pos = filePath.find(delimiter)) != std::string::npos){ //erases everything before the last delimiter
+        filePath.erase(0, pos + delimiter.length());
+    }
+    fileTypeName = filePath; //gets what's left from the file, after the last delimiter
+    
+    //for each kind of known file type, there is a function that can parse it
+    if (fileTypeName == "txt") {
+        //parse txt with links
+        parseDotTxtLinksFile(i_source);
+    }else if (fileTypeName == "links"){
+        //parse links file
+        parseDotLinksFile(i_source);
+    }else
+        printf("Links file type extension not recognized! -> %s", fileTypeName.c_str());
+
 }
 
 //parse input text file with networks, and define initial strategies

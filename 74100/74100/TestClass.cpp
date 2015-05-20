@@ -168,10 +168,6 @@ std::cout << "Hardcoded i= 2 second Rand" << std::endl;
 t.generateRand(inSeed);
 //*/
 
-//just testing if this would compile
-void TestClass::testGSL(){
-	//gsl_rng *cm_rng;
-}
 
 // ************************************************************************************************************
 /*

@@ -43,15 +43,15 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
             auxStratSize = (int)auxAgent->strategy.size();
             if (auxStratSize == 1){
                 if (auxAgent->strategy[0] == 0){
-                    std::cout << "C";
+                    printf("C");
                 }
                 else
                 {
-                    std::cout << "D";
+                    printf("D");
                 }
             }
             else{
-                std::cout << auxAgent->tag << "_{";
+                printf("%d_{", auxAgent->tag);
                 for (int i = 0; i < auxStratSize; i++){
                     std::cout << auxAgent->strategy.at(i);
                     if (i != (auxStratSize - 1)) std::cout << ",";

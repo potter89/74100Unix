@@ -12,7 +12,6 @@ Factory::Factory(){}
 Factory::~Factory(){}
 
 Simulation * Factory::createSimulation(std::string inputPath){
-
 	
 	//parse text file
     parseConfiguration(inputPath);
@@ -38,7 +37,7 @@ Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std
 Population * Factory::createPopulation(std::string linksPath, std::string populationType, int totalTags){
     /**/
     std::string type = populationType;
-    Population * retPopulation = NULL; //population to be returned
+    Population * retPopulation = nullptr; //population to be returned
     std::string path = linksPath;
     /**
      //TODO: if we are not going to have different types of population, this needs to be reviewed
@@ -182,6 +181,7 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
 		std::cout << "No subscribers connected." << std::endl;
 	}
 }
+
 
 //Links Generation!*****************************************************************************************************************************************Links Generation
 //Generates a txt file containing lattice with the links of a population, with R rows and C columns, inputed by the user
@@ -404,10 +404,10 @@ void Factory::generateShellScript(){
     positiveIntCin(generations);
     std::cout << "(string)Population Type: " << std::endl;
     customCin(popType);
-    std::cout << "(string)Number of agents: popType_xxxxxx.txt ";
+    std::cout << "(string)Links file: Networks/xxxxxx.xxxx ";
     customCin(networkFilePath);
     std::string simpleFP = networkFilePath;
-    networkFilePath = "Networks/" + popType + "_" + networkFilePath + ".txt"; std::cout << std::endl;
+    networkFilePath = "Networks/" + networkFilePath; std::cout << std::endl;
     std::cout << "(Uint)Seed (input 0 for random seed):  ";
     customCin(seed);
     

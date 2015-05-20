@@ -32,6 +32,7 @@ public:
     virtual void init(std::string source, int totalNumberOfTags, std::string type) = 0;
     
     
+    
 protected:
     std::vector<Agent> agentsInPop;
     int _numberOfTags = 0;
@@ -45,5 +46,7 @@ public:
     void init(std::string source, int totalNumberOfTags, std::string type);
     void generateLinks(std::string source);
     void generateRandomStrategies(int totalNumberOfTags);
+    void parseDotLinksFile(std::string i_source);
+    void parseDotTxtLinksFile(std::string i_source);
 };
 #endif /* defined(___4100Unix__Population__) */

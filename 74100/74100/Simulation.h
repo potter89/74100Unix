@@ -26,7 +26,7 @@ class Simulation
     std::vector<long double> _payoffMatrix;
     std::vector<Agent> * agentsVectorPtr;
     
-    Population * _population = NULL; //holds pointers to one of the various types of classes parented by pure virtual class Population
+    Population * _population = nullptr; //holds pointers to one of the various types of classes parented by pure virtual class Population
     
     SimulationStateManager stateManager;
 

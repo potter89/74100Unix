@@ -12,7 +12,7 @@ Scripts
 
 ---- Config File: ------------------------------------------------------------------------------------------------------------------------------------
 Population_Type: fc														(pick just one: l (for lattice), xpto(there's only code for lattices, this field is used for data susbcribers))
-Links_file_Path: Networks/fc_5.txt										(one path to the text files)
+Links_file_Path: Networks/fc_5.txt										(one path to the text files) .txt format or .links file format (see examples below)
 Generations: 3000														(one int)
 Number_of_tags: 1														(one int)
 Tau: 1.0																(one long double)
@@ -31,4 +31,30 @@ If seed == 0, a true random seed is generated
 
 ---- HardCoded: --------------------------------------------------------------------------------------------------------------------------------------
 	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"s
+
+---- File Formats: -------------------------------------
+@@@@@@@@@@@@ Links file:
+
+First line:  Total number of agents in the population
+Second Line: AgentIndex NumbNeighbors SignalBit  NeighborIndex NeighborIndex ...
+
+example:
+4
+0 3 0  1 2 3
+1 2 0  2 3
+2 1 0  0
+3 1 0  0
+
+@@@@@@@@@@@@ .txt file:
+
+First line:  Total number of agents in the population
+Second Line: AgentIndex SignalBit NeighborIndex NeighborIndex ...
+
+example:
+5
+0 0 1 2 3 4
+1 0 0 2 3 4
+2 0 0 1 3 4
+3 0 0 1 2 4
+4 0 0 1 2 3
 

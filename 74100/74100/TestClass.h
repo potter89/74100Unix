@@ -38,8 +38,6 @@ public:
 	void generateRand(unsigned int inSeed);
     
     void testTime();
-
-	void testGSL();
     
     void concurrentFileOpen(unsigned int seed);
     
