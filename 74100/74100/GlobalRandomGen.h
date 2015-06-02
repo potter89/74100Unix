@@ -1,4 +1,4 @@
-//
+ //
 //  GlobalRandomGen.h
 //  74100Unix
 //
@@ -15,8 +15,9 @@
 class GlobalRandomGen{
     static GlobalRandomGen * _globalRandomGen_instance;
     
-    std::random_device _rd; //trully random seed, different everytime, even when running multiple instances at the exact same time
-    unsigned int _seed = -1;
+    std::random_device _rd; //trully random seed, different everytime, even when running multiple instances at the exact same time. returns an unsigned int
+    
+    signed int _seed = -1;
     
     std::mt19937 * _gen; //engine
     //and distribuitions
@@ -28,8 +29,8 @@ class GlobalRandomGen{
     
 public:
     static GlobalRandomGen * getInstance();
-    void setSeed(unsigned int newSeed); //sets a seed for the generator
-    unsigned int getSeed(); //returns current _seed
+    void setSeed(signed int newSeed); //sets a seed for the generator
+    signed int getSeed(); //returns current _seed
     long double getRandomF0Till1();
     int getRandomI0Till100();
     int getRandomTillMax(int max);

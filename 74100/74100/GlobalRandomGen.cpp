@@ -3,12 +3,11 @@
 GlobalRandomGen::GlobalRandomGen(){
     if(_seed == -1){
         //if no seed has been given, get a random seed
-        printf("GlobalRand -> No seed given! ");
         _seed = _rd();
         while (_seed == -1) _seed = _rd();
     }
     //initialize Rnd Engine
-    printf("Seed used: %d \n", _seed);
+    //printf("Seed used: %d \n", _seed);
     _gen = new std::mt19937(_seed); //mt19937 is an engine than generates high quality random numbers
     _distribution0Till1 = std::uniform_real_distribution<double>(0.0,1.0);
     _distribuition0Till100 = std::uniform_int_distribution<int>(0,100);
@@ -22,13 +21,14 @@ GlobalRandomGen * GlobalRandomGen::getInstance(){
     return _globalRandomGen_instance;
 }
 
-void GlobalRandomGen::setSeed(unsigned int newSeed){
+void GlobalRandomGen::setSeed(signed int newSeed){
     printf("GlobalRand -> Set new seed: %d \n", newSeed);
-    delete _gen;
-    _gen = new std::mt19937(newSeed);
+    delete _gen; //delete previous engine
+    _seed = newSeed;
+    _gen = new std::mt19937(_seed); //setup new engine with the given seed
 }
 
-unsigned int GlobalRandomGen::getSeed(){
+signed int GlobalRandomGen::getSeed(){
     return _seed;
 }
 

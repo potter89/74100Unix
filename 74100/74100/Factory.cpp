@@ -7,30 +7,30 @@
 //
 
 #include "Factory.h"
-    //TODO: in case it cant parse a file, etc, whole program should close
+//TODO: in case it cant parse a file, etc, whole program should close
 Factory::Factory(){}
 Factory::~Factory(){}
 
 Simulation * Factory::createSimulation(std::string inputPath){
-	
-	//parse text file
+    
+    //parse text file
     parseConfiguration(inputPath);
-	
-	Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
-	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-	parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
-	Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
-	clearParsedVariables();
-	return s;
+    
+    Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
+    //Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
+    parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
+    Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
+    clearParsedVariables();
+    return s;
 }
 
 Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers){
-	Population * popul = createPopulation(linksPath, popType, totalTags);
-	//Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-	parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
-	Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
-	clearParsedVariables();
-	return s;
+    Population * popul = createPopulation(linksPath, popType, totalTags);
+    //Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
+    parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
+    Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
+    clearParsedVariables();
+    return s;
 }
 
 //returns polymorphed Population, already initialized with it's ->Init
@@ -114,7 +114,7 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
             _tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
         }
         _subscribers.push_back(_tempString);
-
+        
         /**
          std::cout << "Config File:" << std::endl;
          std::cout << "Population Type: " << _populationType << std::endl;
@@ -135,51 +135,51 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
 
 //takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
-	//TODO: this shouldn't be here....
-	_subscribersParsed.clear();
-	if (!subscribers.empty()){
-		for (int i = 0; i < subscribers.size(); i++){
-			if (subscribers[i] == "TextFileDataSubscriber"){
-				//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-				std::string filename = "";
-				filename += std::to_string(totalTags) + "__";
-				filename += popType + "_" + std::to_string(sizePop) + "__";
-				filename += std::to_string(i_maxGenerations) + "__";
-				filename += std::to_string(tau) + "__";
-				for (int i = 0; i < payoffMatrix.size(); i++){
-					filename += std::to_string(payoffMatrix[i]) + "_";
-				}
-				filename += "__#";
-				//std::cout << "TextFile filename parsed: " << filename << std::endl;
-
-				_subscribersParsed.push_back(new TextFileDataSubscriber(filename));
-			}
-			if (subscribers[i] == "AverageTextFileDataSubscriber"){
-				//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-				std::string filename = "";
-				filename += std::to_string(totalTags) + "__";
-				filename += popType + "_" + std::to_string(sizePop) + "__";
-				filename += std::to_string(i_maxGenerations) + "__";
-				filename += std::to_string(tau) + "__";
-				for (int i = 0; i < payoffMatrix.size(); i++){
-					filename += std::to_string(payoffMatrix[i]) + "_";
-				}
-				filename += "__#";
-				//std::cout << "TextFile filename parsed: " << filename << std::endl;
-
-				_subscribersParsed.push_back(new AverageTextFileDataSubscriber(filename, i_maxGenerations));
-			}
-			if (subscribers[i] == "ConsoleDataSubscriber"){
-				_subscribersParsed.push_back(new ConsoleDataSubscriber());
-			}
-			if (subscribers[i] == "SimpleConsoleDataSubscriber"){
-				_subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
-			}
-		}
-	}
-	else{
-		std::cout << "No subscribers connected." << std::endl;
-	}
+    //TODO: this shouldn't be here....
+    _subscribersParsed.clear();
+    if (!subscribers.empty()){
+        for (int i = 0; i < subscribers.size(); i++){
+            if (subscribers[i] == "TextFileDataSubscriber"){
+                //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+                std::string filename = "";
+                filename += std::to_string(totalTags) + "__";
+                filename += popType + "_" + std::to_string(sizePop) + "__";
+                filename += std::to_string(i_maxGenerations) + "__";
+                filename += std::to_string(tau) + "__";
+                for (int i = 0; i < payoffMatrix.size(); i++){
+                    filename += std::to_string(payoffMatrix[i]) + "_";
+                }
+                filename += "__#";
+                //std::cout << "TextFile filename parsed: " << filename << std::endl;
+                
+                _subscribersParsed.push_back(new TextFileDataSubscriber(filename));
+            }
+            if (subscribers[i] == "AverageTextFileDataSubscriber"){
+                //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+                std::string filename = "";
+                filename += std::to_string(totalTags) + "__";
+                filename += popType + "_" + std::to_string(sizePop) + "__";
+                filename += std::to_string(i_maxGenerations) + "__";
+                filename += std::to_string(tau) + "__";
+                for (int i = 0; i < payoffMatrix.size(); i++){
+                    filename += std::to_string(payoffMatrix[i]) + "_";
+                }
+                filename += "__#";
+                //std::cout << "TextFile filename parsed: " << filename << std::endl;
+                
+                _subscribersParsed.push_back(new AverageTextFileDataSubscriber(filename, i_maxGenerations));
+            }
+            if (subscribers[i] == "ConsoleDataSubscriber"){
+                _subscribersParsed.push_back(new ConsoleDataSubscriber());
+            }
+            if (subscribers[i] == "SimpleConsoleDataSubscriber"){
+                _subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
+            }
+        }
+    }
+    else{
+        std::cout << "No subscribers connected." << std::endl;
+    }
 }
 
 
@@ -377,7 +377,7 @@ void Factory::generateFullyConnected(){
         s += std::to_string(i) + " 0"; //i 0
         for (auxI = 0; auxI < totalNumberOfAgents; auxI++){ //append the rest of the population as well
             if (i != auxI){ //except himself
-                s += " " + std::to_string(auxI); 
+                s += " " + std::to_string(auxI);
             }
         }
         if (i != (totalNumberOfAgents-1)) s += '\n';
@@ -391,8 +391,8 @@ void Factory::generateShellScript(){
     //fields that need to be inputted
     int numbTags = 0, generations = 0;
     std::string fullPathToExecFolder = "", networkFilePath = "", popType = "", dataSubs = "";
-    unsigned int seed;
-
+    signed int seed;
+    
     //prompt user for input
     std::cout << "Creating a shell file, please input values for the given fields:" << std::endl;
     
@@ -417,26 +417,26 @@ void Factory::generateShellScript(){
     
     //Default FileNamePath for ShellScripts
     std::string fileNamePath = "Scripts/" + std::to_string(numbTags) + "_" +
-                                            std::to_string(generations) + "_" +
-                                            popType + "_" + simpleFP + ".sh";
+    std::to_string(generations) + "_" +
+    popType + "_" + simpleFP + ".sh";
     
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!
     
     if (myfile.is_open()) {
-    std::string const firstLine = "osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'\n";
-    std::string const secondLine = "osascript -e 'tell application \"Terminal\" to do script \"cd ";
-    std::string const secondLineEnding = "\" in selected tab of the front window'\n";
-    std::string tempLine = "";
-    
-    for (long double b = 1.0f; b <= 2.0f; b += 0.05f) {
-        myfile << firstLine;
-        tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string(b) + " 0 " + std::to_string(seed) + " " + dataSubs + secondLineEnding;
-        myfile << tempLine;
-    }
-    myfile.close();
-    std::cout << "Created shell script on " << fileNamePath << std::endl;
+        std::string const firstLine = "osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"n\" using command down'\n";
+        std::string const secondLine = "osascript -e 'tell application \"Terminal\" to do script \"cd ";
+        std::string const secondLineEnding = "\" in selected tab of the front window'\n";
+        std::string tempLine = "";
+        
+        for (int b = 100; b <= 200; b += 5) { //after division by 100.0f, b goes from 1.0 to 2.0, with increments of 0.05f, without loss of precision
+            myfile << firstLine;
+            tempLine = secondLine + fullPathToExecFolder + "; ./74100Unix " + std::to_string(numbTags) + " " + networkFilePath + " " + popType + " " + std::to_string(generations) + " 1 1 0 " + std::to_string((b/100.0f)) + " 0 " + std::to_string(seed) + " " + dataSubs + secondLineEnding;
+            myfile << tempLine;
+        }
+        myfile.close();
+        std::cout << "Created shell script on " << fileNamePath << std::endl;
     }else{
         std::cout << "ERROR: Could not create shell file in requested path!" << std::endl;
     }
@@ -444,14 +444,14 @@ void Factory::generateShellScript(){
 
 //These variables are reused for the various factory creations, they need to be reset after each creation
 void Factory::clearParsedVariables(){
-	 _populationType = "";
-	 _linksFilePath = "";
-	 _totalGenerations = 0;
-	 _totalTags = 0;
-	 _tau = 0.0f;
-	 _payOffMatrix.clear();
-	 _percentages.clear();
-	 _subscribers.clear();
-	 _subscribersParsed.clear();
-	 _tempString = "";
+    _populationType = "";
+    _linksFilePath = "";
+    _totalGenerations = 0;
+    _totalTags = 0;
+    _tau = 0.0f;
+    _payOffMatrix.clear();
+    _percentages.clear();
+    _subscribers.clear();
+    _subscribersParsed.clear();
+    _tempString = "";
 }

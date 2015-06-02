@@ -33,15 +33,14 @@ _payoffMatrix(payoffMatrix)
     std::cout << "PayoffMatrix CD: "<< _payoffMatrix[1] << std::endl;
     std::cout << "PayoffMatrix DC: "<< _payoffMatrix[2] << std::endl;
     std::cout << "PayoffMatrix DD: "<< _payoffMatrix[3] << std::endl;
-    //TODO: if there's time to do it, print out subs as well
+    //TODO: print out subs as well
     
 }
 Simulation::~Simulation(){}
 
 void Simulation::runSimulation(){
-
     //make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
-    //Currently updates subscribers at the end of each generation
+    //Subscribers need to be updated at the end of each generation
     for (int i = 0; i < _maxGenerations; i++){
         gameTheoryGames(*agentsVectorPtr);
         setFittnessAndResetPayoffs(*agentsVectorPtr);
@@ -186,7 +185,6 @@ long double Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsig
 }
 
 void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix){
-    //IMP: test all of this again!!!!!!!
     
     long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
     long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);

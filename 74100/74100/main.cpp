@@ -28,7 +28,7 @@ int main(int argc, const char * argv[])
 	/**
     TestClass t;
     t.testdoubleatof();
-    //*/    
+    //*/
     
     /**/
     //Factory will create populations and simulations
@@ -36,6 +36,8 @@ int main(int argc, const char * argv[])
     
     //main simulation to execute
     Simulation * simulation;
+    
+    //for (int a = 0; a < argc; a++) { std::cout << a << ": " << argv[a] << std::endl; }
     
 	if (argc == 1){
         //no input, prompt input
@@ -63,8 +65,9 @@ int main(int argc, const char * argv[])
 			for (int i = 0; i < 4; i++){ //4 payoff matrix numbers
 				payoffMatrix.push_back(atof(argv[(++argvIndex)]));
 			}
+            //TODO: use something different here. atoi isnt good for negative numbers
+            signed int seed = std::stoi(argv[++argvIndex]);
             
-            unsigned int seed = atoi(argv[++argvIndex]);
             if (seed != 0) {
                 //use the given seed
                 GlobalRandomGen::getInstance()->setSeed(seed);

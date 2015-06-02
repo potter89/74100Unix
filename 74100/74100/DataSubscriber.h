@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "GlobalRandomGen.h"
 
 class DataSubscriber
 {
@@ -24,6 +25,7 @@ public:
     virtual void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType) = 0;
 };
 
+
 class ConsoleDataSubscriber : public DataSubscriber
 {
 public:
@@ -31,6 +33,7 @@ public:
     ConsoleDataSubscriber();
     ~ConsoleDataSubscriber();
 };
+
 
 class SimpleConsoleDataSubscriber : public DataSubscriber
 {
@@ -43,6 +46,7 @@ public:
     SimpleConsoleDataSubscriber();
     ~SimpleConsoleDataSubscriber();
 };
+
 
 class TextFileDataSubscriber : public DataSubscriber{
 protected:
@@ -60,9 +64,10 @@ public:
 	~TextFileDataSubscriber();
 };
 
+
 //This DataSub writes 100 times to a file, averaging the current 
 class AverageTextFileDataSubscriber : public TextFileDataSubscriber{
-private:
+protected:
 	int _refreshRate;
 	int _refreshRateCounter = 0;// starting at 0 forces the first write immediately
 	int _average = -1; //starts at -1 to distinguish first write from the others
@@ -75,4 +80,18 @@ public:
 	AverageTextFileDataSubscriber(std::string fileName, int totalGenerations);
 	~AverageTextFileDataSubscriber();
 };
+//
+//
+////this DataSub writes once
+//class AverageLastHundredTextFileDataSubscriber : public TextFileDataSubscriber{
+//private:
+//    int lastHundred = -1; // holds total number of generations - 100
+//    int generationsCounter = 0; //counts how many generations have been made so far //TODO: this should be removed, instead receiving the number of generations from the simulation data object
+//public:
+//    void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+//    AverageLastHundredTextFileDataSubscriber(std::string fileName, int totalGenerations);
+//    ~AverageLastHundredTextFileDataSubscriber();
+//};
+
+
 #endif /* defined(___4100Unix__DataSubscriber__) */

@@ -173,20 +173,22 @@ bool TextFileDataSubscriber::emptyFile(std::string filename){
 //sets non Duplicate filename for the current simulation in _fileName
 void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 	//tries to open #1 for the first time for reading, to check for existing file with the same name
-	_fileName = "Results/" + _paramFileName + std::to_string(_tentativeFileIndex) + ".txt";
+    _fileName = "Results/" + _paramFileName + std::to_string(_tentativeFileIndex) + ".txt";
 	while (!emptyFile(_fileName)){
 		_tentativeFileIndex++;
 		_fileName = "Results/" + _paramFileName + std::to_string(_tentativeFileIndex) + ".txt";
 	}
 	//creates file
 	_outputTxtFile.open(_fileName);
-	if (_outputTxtFile.is_open()){
-		_outputTxtFile << _fileName << " \n";
+	
+    std::cout << "Seed: " + std::to_string(GlobalRandomGen::getInstance()->getSeed()) << std::endl;
+    
+    if (_outputTxtFile.is_open()){
+		_outputTxtFile << _fileName + " Seed: " + std::to_string(GlobalRandomGen::getInstance()->getSeed()) << " \n";
 		_outputTxtFile.close();
 	}
 	else{
 		std::cout << "Couldn't write to file" << std::endl;
-        std::cout << "print!" << std::endl;
 	}
 }
 
@@ -255,3 +257,56 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 		_refreshRateCounter--;
 	}
 }
+
+//
+////Average LAST HUNDRED Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//AverageLastHundredTextFileDataSubscriber::AverageLastHundredTextFileDataSubscriber(std::string filename,  int totalGenerations)
+//: TextFileDataSubscriber(filename)
+//{
+//    if(lastHundred == -1) lastHundred = totalGenerations - 100;
+//}
+//
+////
+//void AverageLastHundredTextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+//    
+//    //fills the vector only with the last hundred generation's values
+//    if (lastHundred < generationsCounter) {
+//        
+//    }
+//}
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

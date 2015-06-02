@@ -16,6 +16,7 @@
 
 class SimulationStateManager
 {
+    
     SimulationData _simData;
     
 public:

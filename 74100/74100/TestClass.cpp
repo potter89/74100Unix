@@ -34,7 +34,7 @@ void TestClass::testGenerateRandMax(){
 }
 
 void TestClass::testGlobalRand(){
-    unsigned int seed = GlobalRandomGen::getInstance()->getSeed();
+    signed int seed = GlobalRandomGen::getInstance()->getSeed();
     GlobalRandomGen::getInstance()->setSeed(seed);
     std::cout << "Current seed: " << seed << std::endl;
     std::cout << "getRandomF0Till1" << std::endl;
@@ -48,7 +48,7 @@ void TestClass::testGlobalRand(){
 }
 
 void TestClass::testGlobalRandInt(){
-    unsigned int seed = GlobalRandomGen::getInstance()->getSeed();
+    signed int seed = GlobalRandomGen::getInstance()->getSeed();
     GlobalRandomGen::getInstance()->setSeed(seed);
     std::cout << "Current seed: " << seed << std::endl;
     std::cout << "getRandomI0Till100" << std::endl;
