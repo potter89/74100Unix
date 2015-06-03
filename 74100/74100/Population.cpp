@@ -21,7 +21,7 @@ int Population::getNumberOfTags(){
 std::string Population::getType(){
     return _type;
 }
-std::vector<Agent> * Population::getPopulationPtr(){
+std::vector<Agent> * Population::getAgentsPtr(){
     return &agentsInPop;
 }
 

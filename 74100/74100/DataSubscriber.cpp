@@ -19,11 +19,11 @@ ConsoleDataSubscriber::ConsoleDataSubscriber(){}
 ConsoleDataSubscriber::~ConsoleDataSubscriber(){}
 
 //TODO: confirm that we are merely getting a COPY of the population
-void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+void ConsoleDataSubscriber::update(const SimulationData & simData){
     //Prints the number of cooperative actions performed in the console
     printf("\n\n"); //separation from what might be in the console
-    printf("Update! Cooperative actions made last generation: %d\n", numberOfCooperativeActions);
-    if (popType == "l"){
+    printf("Update! Cooperative actions made last generation: %d\n", simData.numbCooperativeActions);
+    if (simData.population->getType() == "l"){
         //If they have 1 or 0 tags, prints strategy and current fitness
         //C-3 D-7 D-2
         //C- D- D-
@@ -37,8 +37,12 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
         int index = 0;
         int auxStratSize = 0;
         
-        for (index = 0; index < populationAgents.size(); index++){ //for each agent
-            auxAgent = &(populationAgents.at(index));
+        for (index = 0; index < simData.population->getSize(); index++){ //for each agent
+            //TODO: IMP!!  test if this line works, it totally shouldn't!!!!!!
+            simData.population->getAgentsPtr()->at(index).payoff = 2;
+            
+            auxAgent = &simData.population->getAgentsPtr()->at(index);
+            
             //print his strategy
             auxStratSize = (int)auxAgent->strategy.size();
             if (auxStratSize == 1){
@@ -93,8 +97,8 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
         int auxStratSize = 0;
         const int MAXAgentsPerLine = 5; //max agents printed per line in the console
         int agentsPerLineCounter = 0; //counts how many have been placed already
-        for (index = 0; index < populationAgents.size(); index++){ //for each agent
-            auxAgent = &(populationAgents.at(index));
+        for (index = 0; index < simData.population->getSize(); index++){ //for each agent
+            auxAgent = &simData.population->getAgentsPtr()->at(index);
             std::cout << index << "_";
             //print his strategy
             auxStratSize = (int)auxAgent->strategy.size();
@@ -131,10 +135,10 @@ void ConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<A
 SimpleConsoleDataSubscriber::SimpleConsoleDataSubscriber(){}
 SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 
-void SimpleConsoleDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+void SimpleConsoleDataSubscriber::update(const SimulationData & simData){
 	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
-        printf("Update! Cooperative actions made last generation: %i \n", numberOfCooperativeActions);
+        printf("Update! Cooperative actions made last generation: %i \n", simData.numbCooperativeActions);
         refreshRateCounter = REFRESHRATE;
     }
     else{
@@ -195,13 +199,13 @@ void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 
 
 //Writes the updates to a text file
-void TextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+void TextFileDataSubscriber::update(const SimulationData & simData){
 	//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
 	//std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
 	if (!_outputTxtFile.is_open()){
 		_outputTxtFile.open(_fileName, std::ios::app);
 	}
-	_outputTxtFile << numberOfCooperativeActions << "\n";
+	_outputTxtFile << simData.numbCooperativeActions << "\n";
     _outputTxtFile.close();
 	//std::cout << _tentativeFileIndex << " writing " << std::endl;
 }
@@ -233,7 +237,7 @@ int AverageTextFileDataSubscriber::calculateAverage(std::vector<int> & inVec){
 }
 
 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+void AverageTextFileDataSubscriber::update(const SimulationData & simData){
 	if (_refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
 		//std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
 		if (!_outputTxtFile.is_open()){
@@ -242,7 +246,7 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 
 		if (_average == -1){// if running for the first time, dont store average, store the first number of coop actions
 			std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
-			_outputTxtFile << numberOfCooperativeActions << "\n";
+			_outputTxtFile << simData.numbCooperativeActions << "\n";
 		}
 		else{
 			_outputTxtFile << calculateAverage(_valuesToAverage) << "\n";
@@ -253,7 +257,7 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 		_valuesToAverage.clear();
 		_refreshRateCounter = _refreshRate;
 	}else{
-		_valuesToAverage.push_back(numberOfCooperativeActions);
+		_valuesToAverage.push_back(simData.numbCooperativeActions);
 		_refreshRateCounter--;
 	}
 }
@@ -267,7 +271,7 @@ void AverageTextFileDataSubscriber::update(int numberOfCooperativeActions, std::
 //}
 //
 ////
-//void AverageLastHundredTextFileDataSubscriber::update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType){
+//void AverageLastHundredTextFileDataSubscriber::update(const SimulationData & simData){
 //    
 //    //fills the vector only with the last hundred generation's values
 //    if (lastHundred < generationsCounter) {

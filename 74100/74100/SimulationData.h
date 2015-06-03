@@ -9,22 +9,18 @@
 #ifndef ___4100Unix__SimulationData__
 #define ___4100Unix__SimulationData__
 
-#include <vector>
-#include "Agent.h"
-#include "DataSubscriber.h"
-#include <string>
+#include "Population.h"
 
 class SimulationData
 {
+    
+    
 public:
     SimulationData();
     ~SimulationData();
-    int _numbCooperativeActions = 0;
-    std::vector<Agent> * _population;
-    std::string _populationType;
     
-    int _numbSubscribers = 0;
-    std::vector<DataSubscriber*> _dataSubscribers;
+    int numbCooperativeActions = 0;
+    Population * population;
 };
 
 #endif /* defined(___4100Unix__SimulationData__) */

@@ -8,32 +8,33 @@
 
 #include "Simulation.h"
 
-Simulation::Simulation(Population * population, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
-//Initializing simulation parameters
+Simulation::Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
 _maxGenerations(i_maxGenerations),
 _tau(tau),
 _payoffMatrix(payoffMatrix)
 {
-    _population = population;
-    
-    //initializing stateManagerObject
-    agentsVectorPtr = _population->getPopulationPtr();
-    stateManager.setPopulationToSendOut(agentsVectorPtr);
-    stateManager.setTypeToSendOut(_population->getType());
+    //Initializing simulation information/data
+    stateManager = SimulationStateManager();
+    stateManager.setPopulation(population);
+    agentsVectorPtr = stateManager.getPopulation()->getAgentsPtr();
+
     if (!dataSubscribers.empty()){
         for (int i = 0; i < (int)dataSubscribers.size(); i++){
             stateManager.attachDataSubscriber(dataSubscribers[i]);
         }
     }
+    
+    /**/ //print information at the start te the simulation
     std::cout << "Simulation created!" << std::endl;
     std::cout << "#Generations: "<< _maxGenerations << std::endl;
-    std::cout << "#Tags: "<< _population->getNumberOfTags() << std::endl;
+    std::cout << "#Tags: "<< stateManager.getPopulation()->getNumberOfTags() << std::endl;
     std::cout << "Tau: "<< _tau << std::endl;
     std::cout << "PayoffMatrix CC: "<< _payoffMatrix[0] << std::endl;
     std::cout << "PayoffMatrix CD: "<< _payoffMatrix[1] << std::endl;
     std::cout << "PayoffMatrix DC: "<< _payoffMatrix[2] << std::endl;
     std::cout << "PayoffMatrix DD: "<< _payoffMatrix[3] << std::endl;
     //TODO: print out subs as well
+    //*/
     
 }
 Simulation::~Simulation(){}

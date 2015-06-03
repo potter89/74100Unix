@@ -24,11 +24,14 @@ public:
     SimulationStateManager(int c, int d);
     ~SimulationStateManager();
     
+    int _numbSubscribers = 0;
+    std::vector<DataSubscriber*> _dataSubscribers;
+    
     int getNumbAttachedSubscribers();
     
-    //setup simdata
-    void setPopulationToSendOut(std::vector<Agent> * population);
-    void setTypeToSendOut(std::string type);
+    //accessors of _simdata
+    void setPopulation(Population * population);
+    Population * getPopulation();
     
     //setup subs
     void attachDataSubscriber(DataSubscriber * newSub);

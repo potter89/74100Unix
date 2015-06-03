@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include "GlobalRandomGen.h"
+#include "SimulationData.h"
 
 class DataSubscriber
 {
@@ -22,14 +23,14 @@ public:
     DataSubscriber();
     ~DataSubscriber();
     
-    virtual void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType) = 0;
+    virtual void update(const SimulationData & simData) = 0;
 };
 
 
 class ConsoleDataSubscriber : public DataSubscriber
 {
 public:
-    void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+    void update(const SimulationData & simData);
     ConsoleDataSubscriber();
     ~ConsoleDataSubscriber();
 };
@@ -42,7 +43,7 @@ private:
     int refreshRateCounter = 0;
     
 public:
-    void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+    void update(const SimulationData & simData);
     SimpleConsoleDataSubscriber();
     ~SimpleConsoleDataSubscriber();
 };
@@ -59,7 +60,7 @@ protected:
 	bool emptyFile(std::string filename);
 
 public:
-	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);	
+    void update(const SimulationData & simData);
 	TextFileDataSubscriber(std::string fileName);
 	~TextFileDataSubscriber();
 };
@@ -76,7 +77,7 @@ protected:
 	int calculateAverage(std::vector<int> & inVec);
 
 public:
-	void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+    void update(const SimulationData & simData);
 	AverageTextFileDataSubscriber(std::string fileName, int totalGenerations);
 	~AverageTextFileDataSubscriber();
 };
@@ -88,7 +89,7 @@ public:
 //    int lastHundred = -1; // holds total number of generations - 100
 //    int generationsCounter = 0; //counts how many generations have been made so far //TODO: this should be removed, instead receiving the number of generations from the simulation data object
 //public:
-//    void update(int numberOfCooperativeActions, std::vector<Agent> populationAgents, std::string popType);
+//    void update(const SimulationData & simData);
 //    AverageLastHundredTextFileDataSubscriber(std::string fileName, int totalGenerations);
 //    ~AverageLastHundredTextFileDataSubscriber();
 //};

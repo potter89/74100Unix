@@ -24,9 +24,8 @@ class Simulation
     int _maxGenerations;
     long double _tau;
     std::vector<long double> _payoffMatrix;
-    std::vector<Agent> * agentsVectorPtr;
     
-    Population * _population = nullptr; //holds pointers to one of the various types of classes parented by pure virtual class Population
+    std::vector<Agent> * agentsVectorPtr;
     
     SimulationStateManager stateManager;
 
@@ -45,7 +44,7 @@ class Simulation
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
 
 public:
-    Simulation(Population * population, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
+    Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
     ~Simulation();
     
     void runSimulation();
