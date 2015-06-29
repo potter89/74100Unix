@@ -81,18 +81,20 @@ public:
 	AverageTextFileDataSubscriber(std::string fileName, int totalGenerations);
 	~AverageTextFileDataSubscriber();
 };
-//
-//
-////this DataSub writes once
-//class AverageLastHundredTextFileDataSubscriber : public TextFileDataSubscriber{
-//private:
-//    int lastHundred = -1; // holds total number of generations - 100
-//    int generationsCounter = 0; //counts how many generations have been made so far //TODO: this should be removed, instead receiving the number of generations from the simulation data object
-//public:
-//    void update(const SimulationData & simData);
-//    AverageLastHundredTextFileDataSubscriber(std::string fileName, int totalGenerations);
-//    ~AverageLastHundredTextFileDataSubscriber();
-//};
+
+
+//this DataSub writes once to a textFile
+class AverageLastThousandDataSubscriber : public TextFileDataSubscriber{
+private:
+    int lastThousand = -1; // holds total number of generations - 1000
+    std::vector<int> _valuesToAverage;
+    
+    int calculateAverage(std::vector<int> & inVec);
+public:
+    void update(const SimulationData & simData);
+    AverageLastThousandDataSubscriber(std::string fileName);
+    ~AverageLastThousandDataSubscriber();
+};
 
 
 #endif /* defined(___4100Unix__DataSubscriber__) */

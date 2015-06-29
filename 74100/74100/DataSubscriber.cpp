@@ -18,8 +18,8 @@ DataSubscriber::~DataSubscriber(){}
 ConsoleDataSubscriber::ConsoleDataSubscriber(){}
 ConsoleDataSubscriber::~ConsoleDataSubscriber(){}
 
-//TODO: confirm that we are merely getting a COPY of the population
-void ConsoleDataSubscriber::update(const SimulationData & simData){
+
+void ConsoleDataSubscriber::update(const SimulationData & simData) {
     //Prints the number of cooperative actions performed in the console
     printf("\n\n"); //separation from what might be in the console
     printf("Update! Cooperative actions made last generation: %d\n", simData.numbCooperativeActions);
@@ -38,9 +38,6 @@ void ConsoleDataSubscriber::update(const SimulationData & simData){
         int auxStratSize = 0;
         
         for (index = 0; index < simData.population->getSize(); index++){ //for each agent
-            //TODO: IMP!!  test if this line works, it totally shouldn't!!!!!!
-            simData.population->getAgentsPtr()->at(index).payoff = 2;
-            
             auxAgent = &simData.population->getAgentsPtr()->at(index);
             
             //print his strategy
@@ -135,7 +132,7 @@ void ConsoleDataSubscriber::update(const SimulationData & simData){
 SimpleConsoleDataSubscriber::SimpleConsoleDataSubscriber(){}
 SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 
-void SimpleConsoleDataSubscriber::update(const SimulationData & simData){
+void SimpleConsoleDataSubscriber::update(SimulationData const & simData){
 	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
         printf("Update! Cooperative actions made last generation: %i \n", simData.numbCooperativeActions);
@@ -197,7 +194,6 @@ void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 }
 
 
-
 //Writes the updates to a text file
 void TextFileDataSubscriber::update(const SimulationData & simData){
 	//1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
@@ -216,7 +212,7 @@ AverageTextFileDataSubscriber::AverageTextFileDataSubscriber(std::string filenam
 {
 	(totalGenerations >= 100) ? 
 		_refreshRate = totalGenerations * 0.01 : // to print 100 times only
-		_refreshRate = 0; // prints at all times
+		_refreshRate = 0; //else prints at all times
 }
 AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){}
 
@@ -238,7 +234,10 @@ int AverageTextFileDataSubscriber::calculateAverage(std::vector<int> & inVec){
 
 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
 void AverageTextFileDataSubscriber::update(const SimulationData & simData){
-	if (_refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
+    //TODO: IMP!! test if this line works, it totally shouldn't!!!!!!
+    //simData.population->getAgentsPtr()->at(1).payoff = 69;
+    
+    if (_refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
 		//std::cout << _fileName << " with index:" << _tentativeFileIndex << std::endl;
 		if (!_outputTxtFile.is_open()){
 			_outputTxtFile.open(_fileName, std::ios::app);
@@ -262,39 +261,49 @@ void AverageTextFileDataSubscriber::update(const SimulationData & simData){
 	}
 }
 
-//
-////Average LAST HUNDRED Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-//AverageLastHundredTextFileDataSubscriber::AverageLastHundredTextFileDataSubscriber(std::string filename,  int totalGenerations)
-//: TextFileDataSubscriber(filename)
-//{
-//    if(lastHundred == -1) lastHundred = totalGenerations - 100;
-//}
-//
-////
-//void AverageLastHundredTextFileDataSubscriber::update(const SimulationData & simData){
-//    
-//    //fills the vector only with the last hundred generation's values
-//    if (lastHundred < generationsCounter) {
-//        
-//    }
-//}
-//
-//
-//
-//
 
+//Average LAST thousand Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+AverageLastThousandDataSubscriber::AverageLastThousandDataSubscriber(std::string fileName)
+: TextFileDataSubscriber(fileName){}
+AverageLastThousandDataSubscriber::~AverageLastThousandDataSubscriber(){}
 
+void AverageLastThousandDataSubscriber::update(const SimulationData & simData){
+    if (lastThousand == -1) {
+        //if it's being updated for the first time, it needs to initialize when the lastThousand starts
+        if (simData.maxGenerations >= 1000) lastThousand = simData.maxGenerations - 1000;
+        else lastThousand = 0;
+    }else{
+        //fills the vector only with the last thousand generation's values
+        if (simData.currentGeneration >= lastThousand) {
+            _valuesToAverage.push_back(simData.numbCooperativeActions);
+            if ((simData.currentGeneration+1) == simData.maxGenerations) { //if it's the last generation, average values and print to file
+                int avg = calculateAverage(_valuesToAverage);
+                
+                if (!_outputTxtFile.is_open()){
+                    _outputTxtFile.open(_fileName, std::ios::app);
+                }
+                _outputTxtFile << avg << "\n";
+                _outputTxtFile.close();
+            }
+        }
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
+//returns the average value of the contents of the vector
+int AverageLastThousandDataSubscriber::calculateAverage(std::vector<int> & inVec){
+    signed long long avr = 0;
+    unsigned long size = inVec.size();
+    for (int i = 0; i < size; i++){
+        avr += inVec[i];
+    }
+    if (size > 0){
+        avr = avr / size;
+        return (int)avr;
+    }
+    else{
+        return -1;
+    }
+}
 
 
 

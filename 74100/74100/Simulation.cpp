@@ -8,16 +8,16 @@
 
 #include "Simulation.h"
 
-Simulation::Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers) :
-_maxGenerations(i_maxGenerations),
-_tau(tau),
-_payoffMatrix(payoffMatrix)
+Simulation::Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers)
 {
     //Initializing simulation information/data
     stateManager = SimulationStateManager();
-    stateManager.setPopulation(population);
+    stateManager.setSimulationData(population, i_maxGenerations, tau, payoffMatrix);
+    
+    //core vector with the agents
     agentsVectorPtr = stateManager.getPopulation()->getAgentsPtr();
 
+    //attaching data subs
     if (!dataSubscribers.empty()){
         for (int i = 0; i < (int)dataSubscribers.size(); i++){
             stateManager.attachDataSubscriber(dataSubscribers[i]);
@@ -26,13 +26,13 @@ _payoffMatrix(payoffMatrix)
     
     /**/ //print information at the start te the simulation
     std::cout << "Simulation created!" << std::endl;
-    std::cout << "#Generations: "<< _maxGenerations << std::endl;
+    std::cout << "#Generations: "<< stateManager.getMaxGenerations() << std::endl;
     std::cout << "#Tags: "<< stateManager.getPopulation()->getNumberOfTags() << std::endl;
-    std::cout << "Tau: "<< _tau << std::endl;
-    std::cout << "PayoffMatrix CC: "<< _payoffMatrix[0] << std::endl;
-    std::cout << "PayoffMatrix CD: "<< _payoffMatrix[1] << std::endl;
-    std::cout << "PayoffMatrix DC: "<< _payoffMatrix[2] << std::endl;
-    std::cout << "PayoffMatrix DD: "<< _payoffMatrix[3] << std::endl;
+    std::cout << "Tau: "<< tau << std::endl;
+    std::cout << "PayoffMatrix CC: "<< stateManager.getPayoffMatrix()->at(0) << std::endl;
+    std::cout << "PayoffMatrix CD: "<< stateManager.getPayoffMatrix()->at(1) << std::endl;
+    std::cout << "PayoffMatrix DC: "<< stateManager.getPayoffMatrix()->at(2) << std::endl;
+    std::cout << "PayoffMatrix DD: "<< stateManager.getPayoffMatrix()->at(3) << std::endl;
     //TODO: print out subs as well
     //*/
     
@@ -40,16 +40,18 @@ _payoffMatrix(payoffMatrix)
 Simulation::~Simulation(){}
 
 void Simulation::runSimulation(){
+    //TODO: it's not updating datasubs after last egt
     //make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
     //Subscribers need to be updated at the end of each generation
-    for (int i = 0; i < _maxGenerations; i++){
+    for (int i = 0; i < *stateManager.getMaxGenerations(); i++){
+        stateManager.incCurrentGeneration(); //So data subs know which generation it is. First calls makes it start at zero
         gameTheoryGames(*agentsVectorPtr);
         setFittnessAndResetPayoffs(*agentsVectorPtr);
         if (stateManager.getNumbAttachedSubscribers() != 0) {
             stateManager.notifyDataSubscribers(); //update DataSubscribers
             stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
         }
-        evolutionaryGameTheory(*agentsVectorPtr, _tau, _payoffMatrix);
+        evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTau(), *stateManager.getPayoffMatrix());
         printPercentageDone(i); //uncomment to show in console the % of generations completed
     }
 }
@@ -73,11 +75,13 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
     //_payoffMatrix[2] = D and C  5
     //_payoffMatrix[3] = D and D  1
     
+    std::vector<long double> * _payoffMatrix = stateManager.getPayoffMatrix();
+    
     if (aStrategyPlayingOther == bStrategyPlayingOther){
         if (aStrategyPlayingOther == 0){
             //C C
-            payoffA = _payoffMatrix[0];
-            payoffB = _payoffMatrix[0];
+            payoffA = _payoffMatrix->at(0);
+            payoffB = _payoffMatrix->at(0);
             if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
                 stateManager.incrementCooperativeActions();
@@ -85,23 +89,23 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
         }
         else{
             //D D
-            payoffA = _payoffMatrix[3];
-            payoffB = _payoffMatrix[3];
+            payoffA = _payoffMatrix->at(3);
+            payoffB = _payoffMatrix->at(3);
         }
     }
     else{
         if (aStrategyPlayingOther == 0){
             //C D
-            payoffA = _payoffMatrix[1];
-            payoffB = _payoffMatrix[2];
+            payoffA = _payoffMatrix->at(1);
+            payoffB = _payoffMatrix->at(2);
             if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
             }
         }
         else{
             //D C
-            payoffA = _payoffMatrix[2];
-            payoffB = _payoffMatrix[1];
+            payoffA = _payoffMatrix->at(2);
+            payoffB = _payoffMatrix->at(1);
             if (stateManager.getNumbAttachedSubscribers() != 0){
                 stateManager.incrementCooperativeActions();
             }
@@ -230,7 +234,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
                 //Imitates tag given a probability Tau
                 random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
                 //std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
-                if (_tau >= random0till1){
+                if (*stateManager.getTau() >= random0till1){
                     iPopulation[i].tag = iPopulation[randomNeighborIndex].tag;
                     //printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
                 }
@@ -242,7 +246,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
 //every 10% of the generations done, prints in console the progress
 void Simulation::printPercentageDone(int & iGeneration){
     
-    if (_tenPercentGenerations == -1) _tenPercentGenerations = (_maxGenerations * 0.1);
+    if (_tenPercentGenerations == -1) _tenPercentGenerations = ((*stateManager.getMaxGenerations()) * 0.1);
     
     if (_percentage * _tenPercentGenerations == iGeneration){
         printf("%%%%  %%%%  %%%%  %%%%  -- Progress: %d%%  -- %%%%  %%%%  %%%%  %%%%\n",(_percentage * 10));

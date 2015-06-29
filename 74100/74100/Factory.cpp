@@ -133,6 +133,22 @@ void Factory::parseConfiguration(std::string inputPath){ //takes config file and
     }
 }
 
+//auxiliar function that creates the filename to the files, to avoid code duplication on parseDataSubscribers
+std::string createFileName(const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
+    std::string filename = "";
+    filename += std::to_string(totalTags) + "__";
+    filename += popType + "_" + std::to_string(sizePop) + "__";
+    filename += std::to_string(i_maxGenerations) + "__";
+    filename += std::to_string(tau) + "__";
+    for (int i = 0; i < payoffMatrix.size(); i++){
+        filename += std::to_string(payoffMatrix[i]) + "_";
+    }
+    filename += "__#";
+    //std::cout << "TextFile filename parsed: " << filename << std::endl;
+    
+    return filename;
+}
+
 //takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
 void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
     //TODO: this shouldn't be here....
@@ -141,33 +157,18 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
         for (int i = 0; i < subscribers.size(); i++){
             if (subscribers[i] == "TextFileDataSubscriber"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-                std::string filename = "";
-                filename += std::to_string(totalTags) + "__";
-                filename += popType + "_" + std::to_string(sizePop) + "__";
-                filename += std::to_string(i_maxGenerations) + "__";
-                filename += std::to_string(tau) + "__";
-                for (int i = 0; i < payoffMatrix.size(); i++){
-                    filename += std::to_string(payoffMatrix[i]) + "_";
-                }
-                filename += "__#";
-                //std::cout << "TextFile filename parsed: " << filename << std::endl;
-                
+                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
                 _subscribersParsed.push_back(new TextFileDataSubscriber(filename));
             }
             if (subscribers[i] == "AverageTextFileDataSubscriber"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-                std::string filename = "";
-                filename += std::to_string(totalTags) + "__";
-                filename += popType + "_" + std::to_string(sizePop) + "__";
-                filename += std::to_string(i_maxGenerations) + "__";
-                filename += std::to_string(tau) + "__";
-                for (int i = 0; i < payoffMatrix.size(); i++){
-                    filename += std::to_string(payoffMatrix[i]) + "_";
-                }
-                filename += "__#";
-                //std::cout << "TextFile filename parsed: " << filename << std::endl;
-                
+                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
                 _subscribersParsed.push_back(new AverageTextFileDataSubscriber(filename, i_maxGenerations));
+            }
+            if (subscribers[i] == "tds"){
+                //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+                _subscribersParsed.push_back(new AverageLastThousandDataSubscriber(filename));
             }
             if (subscribers[i] == "ConsoleDataSubscriber"){
                 _subscribersParsed.push_back(new ConsoleDataSubscriber());
@@ -387,6 +388,7 @@ void Factory::generateFullyConnected(){
     /**/
     myfile.close();
 }
+
 void Factory::generateShellScript(){
     //fields that need to be inputted
     int numbTags = 0, generations = 0;

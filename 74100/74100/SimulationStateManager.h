@@ -29,9 +29,16 @@ public:
     
     int getNumbAttachedSubscribers();
     
-    //accessors of _simdata
-    void setPopulation(Population * population);
+    //setters of _simdata
+    void setSimulationData(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix);
+    void incCurrentGeneration();
+    
+    //getters of _simdata
     Population * getPopulation();
+    int * getMaxGenerations();
+    long double * getTau();
+    std::vector<long double> * getPayoffMatrix();
+
     
     //setup subs
     void attachDataSubscriber(DataSubscriber * newSub);

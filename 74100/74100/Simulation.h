@@ -20,13 +20,6 @@
 
 class Simulation
 {
-    std::string s_linksSourcePath = "";
-    int _maxGenerations;
-    long double _tau;
-    std::vector<long double> _payoffMatrix;
-    
-    std::vector<Agent> * agentsVectorPtr;
-    
     SimulationStateManager stateManager;
 
     void oneShotInteraction(Agent & a, Agent & b);
@@ -43,8 +36,11 @@ class Simulation
 	int _percentage = 0; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
 
+    std::vector<Agent> * agentsVectorPtr; //just caching the agents vector, because it's used extensively
+    
 public:
     Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
+    
     ~Simulation();
     
     void runSimulation();

@@ -16,11 +16,27 @@ SimulationStateManager::~SimulationStateManager(){}
 
 
 //set the population to b used in this simulation, and also passed on to subs
-void SimulationStateManager::setPopulation(Population * population){
-    _simData.population = population;
+void SimulationStateManager::setSimulationData(Population * newPopulation, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix){
+    _simData.population = newPopulation;
+    _simData.maxGenerations = i_maxGenerations;
+    _simData.tau = tau;
+    _simData.payoffMatrix = payoffMatrix;
 }
+
 Population * SimulationStateManager::getPopulation(){
     return _simData.population;
+}
+
+int * SimulationStateManager::getMaxGenerations(){
+    return &_simData.maxGenerations;
+}
+
+long double * SimulationStateManager::getTau(){
+    return &_simData.tau;
+}
+
+std::vector<long double> * SimulationStateManager::getPayoffMatrix(){
+    return &_simData.payoffMatrix;
 }
 
 //returns how many subscribers are attached
@@ -43,6 +59,11 @@ void SimulationStateManager::detatchDataSubscriber(DataSubscriber * newSub){
             }
         }
     }
+}
+
+//updates the number of the current generation
+void SimulationStateManager::incCurrentGeneration(){
+    _simData.currentGeneration++;
 }
 
 //calls function update of every subscriber

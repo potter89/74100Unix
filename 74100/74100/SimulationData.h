@@ -13,14 +13,20 @@
 
 class SimulationData
 {
+
     
     
 public:
     SimulationData();
     ~SimulationData();
     
-    int numbCooperativeActions = 0;
+    int maxGenerations;
+    long double tau;
+    std::vector<long double> payoffMatrix;
     Population * population;
+    
+    int currentGeneration = -1;
+    int numbCooperativeActions = 0;
 };
 
 #endif /* defined(___4100Unix__SimulationData__) */
