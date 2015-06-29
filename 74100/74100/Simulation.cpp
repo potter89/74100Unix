@@ -26,7 +26,7 @@ Simulation::Simulation(Population * population, int & i_maxGenerations, long dou
     
     /**/ //print information at the start te the simulation
     std::cout << "Simulation created!" << std::endl;
-    std::cout << "#Generations: "<< stateManager.getMaxGenerations() << std::endl;
+    std::cout << "#Generations: "<< *stateManager.getMaxGenerations() << std::endl;
     std::cout << "#Tags: "<< stateManager.getPopulation()->getNumberOfTags() << std::endl;
     std::cout << "Tau: "<< tau << std::endl;
     std::cout << "PayoffMatrix CC: "<< stateManager.getPayoffMatrix()->at(0) << std::endl;
