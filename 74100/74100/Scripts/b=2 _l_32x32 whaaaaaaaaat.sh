@@ -1,2 +1,0 @@
-osascript -e 'tell application "Terminal" to activate' -e 'tell application "System Events" to tell process "Terminal" to keystroke "n" using command down'
-osascript -e 'tell application "Terminal" to do script "cd /Users/elvio/Library/Developer/Xcode/DerivedData/74100Unix-ejivqlvprbolfvdawfcidasrzlxk/Build/Products/Release; ./74100Unix 1 Networks/l_32x32.txt l 10000 1 1 0 2 0 0 AverageTextFileDataSubscriber ConsoleDataSubscriber" in selected tab of the front window'

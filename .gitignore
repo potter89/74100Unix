@@ -56,3 +56,6 @@
 *.log
 *.idb
 *.user
+*.sdf
+74100/74100/Debug/74100.ilk
+74100/74100/TestClass.cpp
