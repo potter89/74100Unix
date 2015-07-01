@@ -65,9 +65,11 @@ void combine210OutputFiles(std::string folder){
         }
         //close combinedOutput textfile
         combinedOutputFile.close();
+        std::cout << "All done!" << std::endl;
     }else{
         std::cout << "Could not create the combined file" << std::endl;
     }
+    
 }
 
 //TODO: find ou what happens if the path is root, with no / in it
