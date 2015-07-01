@@ -30,5 +30,4 @@ bool customCin(T & input){
     }
 }
 
-
 #endif /* defined(___4100Unix__MiscCode__) */

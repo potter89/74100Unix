@@ -20,6 +20,8 @@ void printOptions(){
     
     std::cout << "--> 4: Generate a new ShellScript" << std::endl << std::endl;
     
+    std::cout << "--> 5: Combine simulation files" << std::endl << std::endl;
+    
     std::cout << "--> 9: EXIT!" << std::endl << std::endl;
     
     std::cout << std::endl << "Input-> ";
@@ -49,6 +51,12 @@ void handleUIRequest(Factory & factory){
     }
     else if (inputByUser == 4){
         factory.generateShellScript();
+    }else if (inputByUser == 5){
+        std::string pathToFolder = "";
+        std::cout << "Please enter the name of the folder (should be inside Results): " << std::endl;
+        std::cout << "Results/";
+        customCin(pathToFolder);
+        combine210OutputFiles(pathToFolder);
     }else{
         //command not found
         std::cout << "Command not recognized! Please try again!" << std::endl;

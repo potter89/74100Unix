@@ -14,6 +14,7 @@
 #include <stdlib.h> //for exiting the program
 #include "Factory.h" //for generating the various options
 //#include <limits> //for the ignore of cin stream, on wront input
+#include "CombineOutputFiles.h" //combine files functions
 
 void handleUIRequest(Factory & factory);
 void printOptions();

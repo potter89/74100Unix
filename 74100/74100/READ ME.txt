@@ -22,12 +22,14 @@ DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number
 
 
 ---- Console argv: ------------------------------------------------------------------------------------------------------------------------------------
-Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 1 1 0 1.05 0 -123456 AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
+Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 1 1 0 1.05 0 -123456 AverageTextFileDataSubscriber
 
         ./74100Unix          2                Networks/fc_512.txt   fc                10000         1     1 0 1.05 0     0       AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
-argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   Tau   Payoff_Matrix  RandSeed    DataSubscriber1 DataSubscriber2....
+argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   Tau   Payoff_Matrix  RandSeed    DataSubscriber
 
+Attention:
 If seed == 0, a true random seed is generated
+Only takes in a single datasub at the moment
 
 ---- HardCoded: --------------------------------------------------------------------------------------------------------------------------------------
 	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"s
