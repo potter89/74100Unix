@@ -338,6 +338,7 @@ void Factory::generateForwardBehind(){
         }
         //order vector
         std::sort(neighborIndexes.begin(),neighborIndexes.end());
+
         //create string
         for (double it = 0; it<neighborIndexes.size(); it++) {
             s += " " + std::to_string(neighborIndexes.at(it));
