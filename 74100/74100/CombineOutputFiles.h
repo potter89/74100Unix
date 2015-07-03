@@ -14,8 +14,9 @@
 #include <iostream> // std::cout
 #include <vector>
 #include <stdlib.h> // atoi
+#include <list>
 
 void combine210OutputFiles(std::string folderPath);
-int calculateAverage(std::vector<int> & vec);
+int calculateAverage(std::list<int> & vec);
 
 #endif /* defined(___4100Unix__CombineOutputFiles__) */

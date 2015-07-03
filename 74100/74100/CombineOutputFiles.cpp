@@ -13,7 +13,7 @@ void combine210OutputFiles(std::string folder){
     const int numbDuplicates = 100;
     const int lineWithCoopActions = 2; //line which holds the number with coop actions
     
-    std::vector<int> valuesToAvg;
+    std::list<int> valuesToAvg;
     
     //extract the initial start of the names(folder name should be the start of the files' names)
     // Results/1__bara.z4_500__10000__1.000000
@@ -74,13 +74,13 @@ void combine210OutputFiles(std::string folder){
 
 //TODO: find ou what happens if the path is root, with no / in it
 
-int calculateAverage(std::vector<int> & vec){
+int calculateAverage(std::list<int> & list){
     int result = 0;
-    if(vec.size() > 0){
-        for (double i=0; i<vec.size(); i++){
-            result += vec[i];
+    if(list.size() > 0){
+        for (auto iterator = list.begin();iterator != list.end();iterator++){
+            result += *iterator;
         }
-        result = result/vec.size();
+        result = result/list.size();
     }else{
         std::cout << "Error calculating avg, empty vector!!!" << std::endl;
     }

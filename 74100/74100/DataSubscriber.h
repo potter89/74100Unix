@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 #include "GlobalRandomGen.h"
 #include "SimulationData.h"
 
@@ -72,9 +73,9 @@ protected:
 	int _refreshRate;
 	int _refreshRateCounter = 0;// starting at 0 forces the first write immediately
 	int _average = -1; //starts at -1 to distinguish first write from the others
-	std::vector<int> _valuesToAverage;
+	std::list<int> _valuesToAverage;
 
-	int calculateAverage(std::vector<int> & inVec);
+	int calculateAverage(std::list<int> & inList);
 
 public:
     void update(const SimulationData & simData);
@@ -87,9 +88,9 @@ public:
 class AverageLastThousandDataSubscriber : public TextFileDataSubscriber{
 private:
     int lastThousand = -1; // holds total number of generations - 1000
-    std::vector<int> _valuesToAverage;
+    std::list<int> _valuesToAverage;
     
-    int calculateAverage(std::vector<int> & inVec);
+    int calculateAverage(std::list<int> & inList);
 public:
     void update(const SimulationData & simData);
     AverageLastThousandDataSubscriber(std::string fileName);
