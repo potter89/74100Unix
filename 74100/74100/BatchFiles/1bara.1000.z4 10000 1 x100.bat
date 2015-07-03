@@ -1,5 +1,7 @@
 cd "C:\Users\Elvio A\Documents\GitHub\74100Unix\74100\74100\Release"
 
+TIMEOUT /T 10 /NOBREAK
+
 start "" 74100.exe 1 Networks/bara.1000.z4.links bara.z4 10000 1 1 0 1.0 0 0 tds
 start "" 74100.exe 1 Networks/bara.1000.z4.links bara.z4 10000 1 1 0 1.05 0 0 tds
 start "" 74100.exe 1 Networks/bara.1000.z4.links bara.z4 10000 1 1 0 1.1 0 0 tds
