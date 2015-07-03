@@ -59,7 +59,11 @@ void ConsoleDataSubscriber::update(const SimulationData & simData) {
                 }
                 std::cout << "}";
             }
-            std::cout << "-" << auxAgent->fitness << " "; //print his fitness
+            if (auxAgent->fitness - (int)auxAgent->fitness > 0.0) { //for better allignment of values with decimals
+                std::cout << "-" << auxAgent->fitness << " "; //print his fitness
+            }else{
+                std::cout << "-" << auxAgent->fitness << "   "; //print his fitness
+            }
             if (auxAgent->fitness < 10) std::cout << " "; //just to better align
             
             

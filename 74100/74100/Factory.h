@@ -26,7 +26,7 @@ public:
     Simulation * createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers);
 
     void generateLatticeLinksTextFile();
-    void generateTwoForwardTwoBehind();
+    void generateForwardBehind();
     void generateFullyConnected();
     void generateShellScript();
     

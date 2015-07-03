@@ -280,76 +280,75 @@ void Factory::generateLatticeLinksTextFile(){
     myfile.close();
 }
 
-//TODO:Find out name for this graph, and also change the name of the created files
-//Generates a txt file containing a well Mixed Graph with the links of a population, with exact number of agents, as inputed by the user
-//agents are connected to the immediate (index) two agents after and two agents behind him (PS:it loops).
-void Factory::generateTwoForwardTwoBehind(){
-    int i = 0; //index of the Agent
-    std::string s = ""; //current agent line
+//Generates a txt file containing a well Mixed Graph with the links of a population, with exact number of agents, and average connectivity Z as inputed by the user
+//agents are connected to the immediate (index) half agents after and two agents behind him (PS:it loops!)
+void Factory::generateForwardBehind(){
+    int z; //average connectivity of the network
+    int halfZ; //cache how many forward and behind an agent will connect to
     int totalNumberOfAgents; //population will have exactly this number of agents in it
     
-    //ask for name of output file, to create the fileNamePath
-    std::cout << "Type the desired number of agents (Must be above 5!): " << std::endl;
+    std::cout << "Type the desired average connectivity z (should be a pair number): " << std::endl;
+    positiveIntCin(z);
+    int zPair = z % 2;
+    
+    while( zPair != 0) {
+        std::cout << "Please enter a non odd number (such as 2 or 4, etc): " << std::endl;
+        positiveIntCin(z);
+        zPair = z % 2;
+    }
+    halfZ = z/2;
+    
+    std::cout << "Type the desired number of agents (Must be above " + std::to_string(z+1) + "): " << std::endl;
     positiveIntCin(totalNumberOfAgents);
-    while (totalNumberOfAgents < 5){
-        std::cout << "Must be above 5! Type the desired number of agents: " << std::endl;
+    while (totalNumberOfAgents < z+1){
+        std::cout << "Must be above " + std::to_string(z+1) + "! Type the desired number of agents: " << std::endl;
         positiveIntCin(totalNumberOfAgents);
     }
     
-    //TODO:find out name..
     //Default FileNamePath creation
-    std::string fileNamePath = "Networks/tftb_" + std::to_string(totalNumberOfAgents) + ".txt";
+    std::string fileNamePath = "Networks/fb_z" + std::to_string(z) + "_" + std::to_string(totalNumberOfAgents) + ".txt";
     
     std::ofstream myfile;
     myfile.open(fileNamePath); //creates or overwrites existing file!
     
     myfile << totalNumberOfAgents << "\n"; //first line, has the total number of agents
     
-    //agent 0
-    s = "0 0 1 2";
-    s += " " + std::to_string(totalNumberOfAgents - 2);
-    s += " " + std::to_string(totalNumberOfAgents - 1);
-    s += '\n'; //0 1 2 totalNumberOfAgents-1 totalNumberOfAgents-2
-    myfile << s;
-    i++; s = "";
+    int index = 0; //index of the Agent
+    std::string s = ""; //current agent line
+    int it; //needed for helping knowing how many forward and back we have went already in picking neighbors
+    int neighbIndex; //sometimes subtracting or adding when calculating the neighbors index goes over the max number of agents or below zero, which means it completed the circle so it needs adjustment
+    std::vector<int> neighborIndexes; //its filled with unordered neighbor indexes
     
-    //agent 1
-    s = "1 0 0 2 3";
-    s += " " + std::to_string(totalNumberOfAgents - 1);
-    s += '\n';
-    myfile << s;
-    i++; s = "";
+    //agent #index
+    //index 0 index-halfZ index-halfZ-1 index-halfZ-2 ... index-halfZ index+1 index+2 ... index+halfZ
+    //        -------------     back     ---------------------------- ---------   forward   ---------
     
-    //agent 2 until totalNumberOfAgents - 3
-    for (int potter = 2; potter <= totalNumberOfAgents - 3; potter++){
-        s = std::to_string(i) + " 0";
-        s += " " + std::to_string(i - 2);
-        s += " " + std::to_string(i - 1);
-        s += " " + std::to_string(i + 1);
-        s += " " + std::to_string(i + 2);
-        s += '\n'; //i 0 i-2 i-1 i+1 i+2
+    //for each agent, totalNumberOfAgents times generate his string which contains his neighbors indexes
+    for (index = 0; index < totalNumberOfAgents; index++){
+        s += std::to_string(index) + " 0";
+        for (it = 0; it < halfZ; it++) { // back part
+            neighbIndex = index - halfZ + it;
+            if(neighbIndex < 0) neighborIndexes.push_back(totalNumberOfAgents+neighbIndex);
+            else neighborIndexes.push_back(neighbIndex);
+        }
+        for (it = 0; it < halfZ; it++) { // forward part
+            neighbIndex = index + 1 + it;
+            if(neighbIndex >= totalNumberOfAgents) neighborIndexes.push_back(neighbIndex-totalNumberOfAgents);
+            else neighborIndexes.push_back(neighbIndex);
+        }
+        //order vector
+        std::sort(neighborIndexes.begin(),neighborIndexes.end());
+        //create string
+        for (double it = 0; it<neighborIndexes.size(); it++) {
+            s += " " + std::to_string(neighborIndexes.at(it));
+        }
+        s += '\n';
         myfile << s;
-        i++; s = "";
+        s=""; neighborIndexes.clear();
     }
-    
-    //agent totalNumberOfAgents - 2
-    s = std::to_string(i) + " 0 0";
-    s += " " + std::to_string(i - 2);
-    s += " " + std::to_string(i - 1);
-    s += " " + std::to_string(i + 1);
-    s += '\n'; //i 0 i-2 i-1 i+1 0
-    myfile << s;
-    i++; s = "";
-    
-    //agent totalNumberOfAgents - 1
-    s = std::to_string(i) + " 0";
-    s += " " + std::to_string(i - 2);
-    s += " " + std::to_string(i - 1);
-    s += " 0 1";
-    s += '\n'; //i 0 i-2 i-1 i+1 0
-    myfile << s;
     myfile.close();
 }
+
 //Generates a txt file containing a well Mixed Graph with the links of a population, with exact number of agents, as inputed by the user
 //agents are connected to all the others in the population.
 void Factory::generateFullyConnected(){

@@ -14,7 +14,7 @@ void printOptions(){
     
     std::cout << "--> 1: Generate a new Lattice population" << std::endl << std::endl;
     
-    std::cout << "--> 2: Generate a new TwoForwardTwoBehind population" << std::endl << std::endl;
+    std::cout << "--> 2: Generate a new xForwardxBehind population" << std::endl << std::endl;
     
     std::cout << "--> 3: Generate a new FullyConnected population" << std::endl << std::endl;
     
@@ -44,7 +44,7 @@ void handleUIRequest(Factory & factory){
         factory.generateLatticeLinksTextFile();
     }
     else if (inputByUser == 2){
-        factory.generateTwoForwardTwoBehind();
+        factory.generateForwardBehind();
     }
     else if (inputByUser == 3){
         factory.generateFullyConnected();
