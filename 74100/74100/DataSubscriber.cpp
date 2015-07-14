@@ -161,7 +161,6 @@ bool TextFileDataSubscriber::emptyFile(std::string filename){
 	std::string tempString = "";
 	getline(possibleExistingFile, tempString);
 	if (tempString == ""){
-
 		//non existing file
 		//std::cout << "Non duplicate file! #" << _tentativeFileIndex << std::endl;
 		possibleExistingFile.close();
