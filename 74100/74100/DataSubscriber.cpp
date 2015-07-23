@@ -309,6 +309,41 @@ int AverageLastThousandDataSubscriber::calculateAverage(std::list<int> & inList)
     }
 }
 
+//TAG DIVERSITY Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+TagDiversityDataSubscriber::TagDiversityDataSubscriber(std::string fileName)
+	: TextFileDataSubscriber(fileName){}
+TagDiversityDataSubscriber::~TagDiversityDataSubscriber(){}
+
+
+void TagDiversityDataSubscriber::update(const SimulationData & simData){
+	//if it's the last generation
+	if ((simData.currentGeneration+1) == simData.maxGenerations){
+		if (!_outputTxtFile.is_open()){ //prepare file for writing
+			_outputTxtFile.open(_fileName, std::ios::app);
+		}
+
+		int numberOfTags = simData.population->getNumberOfTags();
+		if (numberOfTags == 0) numberOfTags++; //0 tags case is analogous to 1 tag, so this needs adjustment
+		
+		int * tagsCounter = new  int[numberOfTags]; //array holds number of agents with a given tag
+		for (int i = 0; i < numberOfTags; i++) tagsCounter[i] = 0; //initialize counters to zero
+		int numbOfAgents = simData.population->getSize();
+		std::vector<Agent> * cachePopulation = simData.population->getAgentsPtr();
+		
+		//for each agent, check his tag and update the array with a +1 on the tag's corresponding index
+		for (auto it = cachePopulation->begin(); it != cachePopulation->end(); it++){ 
+			tagsCounter[it->tag]++;
+		}
+
+		//print to file the number of agents with the tag
+		for (int i = 0; i < numberOfTags; i++){
+			_outputTxtFile << tagsCounter[i] << "\n";
+		}
+		
+		_outputTxtFile.close();
+		delete[] tagsCounter;
+	}
+}
 
 
 

@@ -25,7 +25,10 @@ class Simulation
     void oneShotInteraction(Agent & a, Agent & b);
     void gameTheoryGames(std::vector<Agent> & iPopulation);
     void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix);
-    
+	void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tau, std::vector<long double> & payoffMatrix);
+	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tau, std::vector<long double> & payoffMatrix);
+	
+
     void setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation);
     
     long double highestPayoffInMatrix(std::vector<long double> & payoffMatrix);

@@ -17,6 +17,7 @@
 #include <list>
 #include "GlobalRandomGen.h"
 #include "SimulationData.h"
+#include <new> //for the (nothrow) in TagDiversityDataSubscriber
 
 class DataSubscriber
 {
@@ -84,7 +85,7 @@ public:
 };
 
 
-//this DataSub writes once to a textFile
+//this DataSub writes once to a textFile, with the average number of cooperative actions of the last 1000 generations
 class AverageLastThousandDataSubscriber : public TextFileDataSubscriber{
 private:
     int lastThousand = -1; // holds total number of generations - 1000
@@ -97,5 +98,12 @@ public:
     ~AverageLastThousandDataSubscriber();
 };
 
+//this DataSub writes once to a textFile with the number of agents in the pop for each tag
+class TagDiversityDataSubscriber : public TextFileDataSubscriber{
+public:
+	void update(const SimulationData & simData);
+	TagDiversityDataSubscriber(std::string fileName);
+	~TagDiversityDataSubscriber();
+};
 
 #endif /* defined(___4100Unix__DataSubscriber__) */

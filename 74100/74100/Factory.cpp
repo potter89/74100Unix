@@ -12,10 +12,8 @@ Factory::Factory(){}
 Factory::~Factory(){}
 
 Simulation * Factory::createSimulation(std::string inputPath){
-    
     //parse text file
     parseConfiguration(inputPath);
-    
     Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
     //Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
     parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
@@ -173,9 +171,15 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
             if (subscribers[i] == "ConsoleDataSubscriber"){
                 _subscribersParsed.push_back(new ConsoleDataSubscriber());
             }
-            if (subscribers[i] == "SimpleConsoleDataSubscriber"){
-                _subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
-            }
+			if (subscribers[i] == "SimpleConsoleDataSubscriber"){
+				_subscribersParsed.push_back(new SimpleConsoleDataSubscriber());
+			}
+			//TODO:think about this name
+			if (subscribers[i] == "tagsDist"){
+				//tagsDist_1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
+				std::string filename = "tagsDist_" + createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+				_subscribersParsed.push_back(new TagDiversityDataSubscriber(filename));
+			}
         }
     }
     else{

@@ -36,9 +36,6 @@ void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){
     int totNumberOfTags = totalNumberOfTags;
     int randomNumber;
     
-    //0 tags should be the same as 1 tag!!!
-    if (totNumberOfTags <= 1) totNumberOfTags = 0;
-    
     //for each agent int the pop
     for (int i = 0; i < (int)agentsInPop.size(); i++){
         if (totNumberOfTags != 0){
@@ -204,7 +201,11 @@ void LatticePopulation::generateLinks(std::string i_source){
 //	gives a random strategy for each of the population's agents, either 0 or 1
 //	Parse agents from a text file to create a population
 void LatticePopulation::init(std::string source, int totalNumberOfTags, std::string type){
-    _numberOfTags = totalNumberOfTags;
+	//0 tags should be the same as 1 tag!!!
+	if (totalNumberOfTags <= 1) //0 tags should be the same as 1 tag!!!
+		_numberOfTags = 0; 
+	else
+		_numberOfTags = totalNumberOfTags;
     _type = type;
     generateLinks(source);
     generateRandomStrategies(totalNumberOfTags);
