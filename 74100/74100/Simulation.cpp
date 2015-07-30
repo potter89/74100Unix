@@ -8,11 +8,12 @@
 
 #include "Simulation.h"
 
-Simulation::Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers)
+Simulation::Simulation(Population * population, int & i_maxGenerations,
+	long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers)
 {
     //Initializing simulation information/data
     stateManager = SimulationStateManager();
-    stateManager.setSimulationData(population, i_maxGenerations, tau, payoffMatrix);
+	stateManager.setSimulationData(population, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
     
     //core vector with the agents
     agentsVectorPtr = stateManager.getPopulation()->getAgentsPtr();
@@ -28,14 +29,16 @@ Simulation::Simulation(Population * population, int & i_maxGenerations, long dou
     std::cout << "Simulation created!" << std::endl;
     std::cout << "#Generations: "<< *stateManager.getMaxGenerations() << std::endl;
     std::cout << "#Tags: "<< stateManager.getPopulation()->getNumberOfTags() << std::endl;
-    std::cout << "Tau: "<< tau << std::endl;
+	std::cout << "TauTag: " << tauTag << std::endl;
+	std::cout << "TauStrat: " << tauStrat << std::endl;
+	std::cout << "NoiseStrat: " << noiseStrat << std::endl;
+	std::cout << "NoiseTag: " << noiseTag << std::endl;
     std::cout << "PayoffMatrix CC: "<< stateManager.getPayoffMatrix()->at(0) << std::endl;
     std::cout << "PayoffMatrix CD: "<< stateManager.getPayoffMatrix()->at(1) << std::endl;
     std::cout << "PayoffMatrix DC: "<< stateManager.getPayoffMatrix()->at(2) << std::endl;
     std::cout << "PayoffMatrix DD: "<< stateManager.getPayoffMatrix()->at(3) << std::endl;
     //TODO: print out subs as well
     //*/
-    
 }
 Simulation::~Simulation(){}
 
@@ -51,7 +54,7 @@ void Simulation::runSimulation(){
             stateManager.notifyDataSubscribers(); //update DataSubscribers
             stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
         }
-        evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTau(), *stateManager.getPayoffMatrix());
+		evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTauTag(), *stateManager.getTauStrat(), *stateManager.getNoiseStrat(), *stateManager.getNoiseTag(), *stateManager.getPayoffMatrix());
         printPercentageDone(i); //uncomment to show in console the % of generations completed
     }
 }
@@ -189,9 +192,9 @@ long double Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsig
     }
 }
 
-void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tau, std::vector<long double> & payoffMatrix){
+void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
 	long double payoffDiff = neighbour.fitness - agent.fitness;
-	if (payoffDiff > 0) { //only considers changing strategy OR tag, if the neighbor's payoff is better than his own
+	if (payoffDiff > 0) { //only considers changing strategy (and tag), if the neighbor's payoff is better than his own
 		long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
 		long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
 
@@ -214,7 +217,7 @@ void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, lon
 			//Imitates tag given a probability Tau
 			random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
 			//std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
-			if (*stateManager.getTau() >= random0till1){
+			if (*stateManager.getTauStrat() >= random0till1){
 				agent.tag = neighbour.tag;
 				//printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 			}
@@ -222,7 +225,9 @@ void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, lon
 	}
 }
 
-void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix){
+
+
+void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
         /**
         printf("Agent: %i -------------------------------------------------------------\n", i);
@@ -238,11 +243,48 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
         printf("Chose: %d  fit: %Lf   #Neigh: %d  strat: ", randomNeighborIndex , iPopulation[randomNeighborIndex].fitness, (int)iPopulation[randomNeighborIndex].neighbors.size());
         for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
         
-		imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tau, payoffMatrix);
+		//imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+		imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
     }
 }
 
+void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
 
+	long double payoffDiff = neighbour.fitness - agent.fitness;
+	if (payoffDiff > 0) { //only considers changing strategy OR tag, if the neighbor's payoff is better than his own
+		long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
+		long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
+
+		long double p; //holds probability of imitating the other agent's strategy
+
+		//p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
+		p = (payoffDiff) /
+			(maxFitnessDifference(agent.neighbors.size(), neighbour.neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff));
+		//std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
+
+		long double random0till1; //long double between 0.0 and 1.0, inclusive
+		random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1();
+		//printf("p = %Lf and random: %Lf\n", p, random0till1);
+
+		if (p >= random0till1){
+			//TODO:create a new random gen for this
+			long double random0tillTauStratPlusTauTag = GlobalRandomGen::getInstance()->getRandomDouble0TillMax(tauTag + tauStrat); //if there is two tags, they will be tag 0 and 1, hence the -1; //TODO:calculate this
+			//std::cout << "random0tillTauStratPlusTauTag: " << random0tillTauStratPlusTauTag << std::endl;
+			//std::cout << "tauStrat: " << tauStrat << std::endl;
+
+			//only imitates tag OR strat
+			if (tauStrat > random0tillTauStratPlusTauTag){
+				//copy ONLY the strat
+				agent.strategy = neighbour.strategy;
+				//printf("COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nNow: ");
+			}
+			else{
+				agent.tag = neighbour.tag;
+				//printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+			}
+		}
+	}
+}
 
 
 //every 10% of the generations done, prints in console the progress

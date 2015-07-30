@@ -16,10 +16,14 @@ SimulationStateManager::~SimulationStateManager(){}
 
 
 //set the population to b used in this simulation, and also passed on to subs
-void SimulationStateManager::setSimulationData(Population * newPopulation, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix){
+void SimulationStateManager::setSimulationData(Population * newPopulation, int & i_maxGenerations,
+	long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     _simData.population = newPopulation;
     _simData.maxGenerations = i_maxGenerations;
-    _simData.tau = tau;
+	_simData.tauTag = tauTag;
+	_simData.tauStrat = tauStrat;
+	_simData.noiseStrat = noiseStrat;
+	_simData.noiseTag = noiseTag;
     _simData.payoffMatrix = payoffMatrix;
 }
 
@@ -31,8 +35,17 @@ int * SimulationStateManager::getMaxGenerations(){
     return &_simData.maxGenerations;
 }
 
-long double * SimulationStateManager::getTau(){
-    return &_simData.tau;
+long double * SimulationStateManager::getTauTag(){
+	return &_simData.tauTag;
+}
+long double * SimulationStateManager::getTauStrat(){
+	return &_simData.tauStrat;
+}
+long double * SimulationStateManager::getNoiseStrat(){
+	return &_simData.noiseStrat;
+}
+long double * SimulationStateManager::getNoiseTag(){
+	return &_simData.noiseTag;
 }
 
 std::vector<long double> * SimulationStateManager::getPayoffMatrix(){
