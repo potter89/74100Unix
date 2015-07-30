@@ -150,7 +150,6 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
                 oneShotInteraction(*currentAgent, iPopulation[nextItemInNeightbors]);//play a oneshot game with neighbor
             }
         }
-        
     }
 }
 

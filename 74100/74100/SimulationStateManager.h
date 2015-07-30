@@ -18,15 +18,15 @@ class SimulationStateManager
 {
     
     SimulationData _simData;
+    int _numbSubscribers = 0;
+    std::vector<DataSubscriber*> _dataSubscribers;
     
 public:
     SimulationStateManager();
     SimulationStateManager(int c, int d);
     ~SimulationStateManager();
     
-    int _numbSubscribers = 0;
-    std::vector<DataSubscriber*> _dataSubscribers;
-    
+
     int getNumbAttachedSubscribers();
     
     //setters of _simdata
