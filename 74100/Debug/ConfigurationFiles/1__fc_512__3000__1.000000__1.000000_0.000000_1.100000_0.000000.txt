@@ -1,0 +1,8 @@
+Population_Type: fc
+Links_file_Path: Networks/fc_512.txt
+Generations: 3000
+Number_of_tags: 1
+Tau: 1.0
+Payoff_Matrix: 1 0 1 0
+Percentages_of_tags_in_pop: 0 100
+DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber
