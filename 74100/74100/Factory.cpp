@@ -11,22 +11,11 @@
 Factory::Factory(){}
 Factory::~Factory(){}
 
-Simulation * Factory::createSimulation(std::string inputPath){
-    //parse text file
-    parseConfiguration(inputPath);
-    Population * popul = createPopulation(_linksFilePath, _populationType, _totalTags);
-    //Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-    parseDataSubscribers(_subscribers, _totalTags, _populationType, popul->getSize(), _totalGenerations, _tau, _payOffMatrix);
-    Simulation * s = new Simulation(popul, _totalGenerations, _tau, _payOffMatrix, _subscribersParsed);
-    clearParsedVariables();
-    return s;
-}
-
-Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers){
+Simulation * Factory::createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tauTag, long double tauStrat, long double noiseStrat, long double noiseTag, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers){
     Population * popul = createPopulation(linksPath, popType, totalTags);
     //Parse DataSubscribers, from text to known datasub types and store it in _subscribersParsed
-    parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tau, payoffMatrix);
-    Simulation * s = new Simulation(popul, i_maxGenerations, tau, payoffMatrix, _subscribersParsed);
+    parseDataSubscribers(dataSubscribers, totalTags, popType, popul->getSize(), i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+	Simulation * s = new Simulation(popul, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix, _subscribersParsed);
     clearParsedVariables();
     return s;
 }
@@ -59,85 +48,16 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
     return retPopulation;
 }
 
-void Factory::parseConfiguration(std::string inputPath){ //takes config file and creates a population
-    //Population_Type: LATTICE
-    //Links_file_Path : Networks / 5x5
-    //Generations : 10000
-    //Number_of_tags : 4
-    //Tau : 0.7
-    //Payoff_Matrix : 1 1 5 5
-    //percentages_of_tags_in_pop : 0 50 1 30 2 10 3 10
-    
-    //TODO:consider adding support for random seed input
-    
-    std::ifstream myfile(inputPath);
-    if (myfile.is_open())
-    {
-        _tempString = "";
-        size_t pos = 1;
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter);//population type
-        _populationType = _tempString.erase(0, pos + _delimiter.length());
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter);//links path
-        _linksFilePath = _tempString.erase(0, pos + _delimiter.length());
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter); //total generations
-        _totalGenerations = atoi(_tempString.erase(0, pos + _delimiter.length()).c_str());
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter);// number of tags
-        _totalTags = atoi(_tempString.erase(0, pos + _delimiter.length()).c_str());
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter); //_tau
-        _tau = atof(_tempString.erase(0, pos + _delimiter.length()).c_str());
-        
-        getline(myfile, _tempString);
-        pos = _tempString.find(_delimiter);
-        _tempString.erase(0, pos + _delimiter.length()); //removing the text "PayoffMatrix"
-        
-        while ((pos = _tempString.find(_delimiter)) != std::string::npos){ //for each of the tokens, delimited by a space
-            _payOffMatrix.push_back(atof(_tempString.substr(0, pos).c_str())); //add token to vector of long doubles
-            _tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
-        }
-        _payOffMatrix.push_back(atof(_tempString.c_str()));
-        
-        getline(myfile, _tempString); pos = _tempString.find(_delimiter); //TODO: percentages
-        
-        getline(myfile, _tempString);
-        pos = _tempString.find(_delimiter);
-        _tempString.erase(0, pos + _delimiter.length()); //removing the text "DataSubscribers:"
-        
-        while ((pos = _tempString.find(_delimiter)) != std::string::npos){ //for each of the tokens, delimited by a space
-            _subscribers.push_back(_tempString.substr(0, pos)); //add token to vector of strings
-            _tempString.erase(0, pos + _delimiter.length()); //eliminate the token and delimiter from the string
-        }
-        _subscribers.push_back(_tempString);
-        
-        /**
-         std::cout << "Config File:" << std::endl;
-         std::cout << "Population Type: " << _populationType << std::endl;
-         std::cout << "Links File Path: " << _linksFilePath << std::endl;
-         std::cout << "Total Generations: " << _totalGenerations << std::endl;
-         std::cout << "Total Tags: " << _totalTags << std::endl;
-         std::cout << "Tau: " << _tau << std::endl;
-         
-         //std::cout << "Payoff Matrix: " << pay << std::endl;
-         //std::cout << "Percentages of each tag" << linksFilePath << std::endl;
-         //*/
-        myfile.close();
-    }
-    else{
-        std::cout << "wrong configuration path given on-> " << inputPath << std::endl;
-    }
-}
-
 //auxiliar function that creates the filename to the files, to avoid code duplication on parseDataSubscribers
-std::string createFileName(const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
+std::string createFileName(const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, long double tauTag, long double tauStrat, long double noiseStrat, long double noiseTag, const std::vector<long double> payoffMatrix){
     std::string filename = "";
     filename += std::to_string(totalTags) + "__";
     filename += popType + "_" + std::to_string(sizePop) + "__";
     filename += std::to_string(i_maxGenerations) + "__";
-    filename += std::to_string(tau) + "__";
+	filename += std::to_string(tauTag) + "__";
+	filename += std::to_string(tauStrat) + "__";
+	filename += std::to_string(noiseStrat) + "__";
+	filename += std::to_string(noiseTag) + "__";
     for (int i = 0; i < payoffMatrix.size(); i++){
         filename += std::to_string(payoffMatrix[i]) + "_";
     }
@@ -148,24 +68,25 @@ std::string createFileName(const int totalTags, const std::string popType, const
 }
 
 //takes in strings parsed into _subscribers and creates known corresponding DataSubscriber
-void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix){
+void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, 
+	long double tauTag, long double tauStrat, long double noiseStrat, long double noiseTag, const std::vector<long double> payoffMatrix){
     //TODO: this shouldn't be here....
     _subscribersParsed.clear();
     if (!subscribers.empty()){
         for (int i = 0; i < subscribers.size(); i++){
             if (subscribers[i] == "TextFileDataSubscriber"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+				std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
                 _subscribersParsed.push_back(new TextFileDataSubscriber(filename));
             }
             if (subscribers[i] == "AverageTextFileDataSubscriber"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+				std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
                 _subscribersParsed.push_back(new AverageTextFileDataSubscriber(filename, i_maxGenerations));
             }
             if (subscribers[i] == "tds"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-                std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+				std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
                 _subscribersParsed.push_back(new AverageLastThousandDataSubscriber(filename));
             }
             if (subscribers[i] == "ConsoleDataSubscriber"){
@@ -177,7 +98,7 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
 			//TODO:think about this name
 			if (subscribers[i] == "tagsDist"){
 				//tagsDist_1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
-				std::string filename = "tagsDist_" + createFileName(totalTags, popType, sizePop, i_maxGenerations, tau, payoffMatrix);
+				std::string filename = "tagsDist_" + createFileName(totalTags, popType, sizePop, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
 				_subscribersParsed.push_back(new TagDiversityDataSubscriber(filename));
 			}
         }

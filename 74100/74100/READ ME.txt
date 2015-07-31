@@ -5,34 +5,36 @@ ALWAYS cd to where the executable is located alongside the following folders:
 ########### !!!! ########### !!!! ########### !!!! ########### !!!! ###########
 
 ---- (Folders in the root of the project) ------------------------------------------------------------------------------------------------------------
-ConfigurationFiles
 Networks
 Results
-Scripts
 
----- Config File: ------------------------------------------------------------------------------------------------------------------------------------
-Population_Type: fc														(pick just one: l (for lattice), xpto(there's only code for lattices, this field is used for data susbcribers))
+---- Config fields Description: ------------------------------------------------------------------------------------------------------------------------------------
+Population_Type: fc														(pick just one: l (for lattice), fc (fully connected), fb_z4 (forward Behind with z=4), bara.z4 (barabasi) (there's only code for lattices, this field is used for data susbcribers))
 Links_file_Path: Networks/fc_5.txt										(one path to the text files) .txt format or .links file format (see examples below)
 Generations: 3000														(one int)
 Number_of_tags: 1														(one int)
-Tau: 1.0																(one long double)
+TauStrat: 2.0															(one long double)
+TauTag: 1.0																(one long double)
+NoiseStrat: 0.0															(one long double)
+NoiseTag: 0.0															(one long double)
 Payoff_Matrix: 3 0 5 1													(long doubles)(Only four!) (Prisioner's'Dilemma example) ([0]=CC [1]=CD [2]=DC [3]=DD)
 Percentages_of_tags_in_pop: 0 100										(int)
 DataSubscribers: SimpleConsoleDataSubscriber TextFileDataSubscriber		(any number of the following: SimpleConsoleDataSubscriber TextFileDataSubscriber ConsoleDataSubscriber  AverageTextFileDataSubscriber tds(<- AverageLastThousandDataSubscriber) tagsDist (<- TagDiversityDataSubscriber))
 
 
 ---- Console argv: ------------------------------------------------------------------------------------------------------------------------------------
-Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 1 1 0 1.05 0 -123456 AverageTextFileDataSubscriber
+Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 2.0 1.0 0.0 0.0 1 0 1.05 0 -123456 AverageTextFileDataSubscriber
 
-        ./74100Unix          2                Networks/fc_512.txt   fc                10000         1     1 0 1.05 0     0       AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
-argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   Tau   Payoff_Matrix  RandSeed    DataSubscriber
+        ./74100Unix          2                Networks/fc_512.txt   fc                10000         2.0		 1.0		  0.0 	      0.0       1 0 1.05 0     0          AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
+argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   TauTag	 TauStrat	  NoiseStrat  NoiseTag	Payoff_Matrix  RandSeed   DataSubscribers
 
 Attention:
 If seed == 0, a true random seed is generated
-Only takes in a single datasub at the moment
+! Only takes in a single datasub at the moment
 
 ---- HardCoded: --------------------------------------------------------------------------------------------------------------------------------------
-	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"s
+	Print % of simulation done in console - in Simulation::runSimulation() comment line with "printPercentageDone(i);"
+	Multiple combine output files needs folderNames.txt present inside .\Results
 
 ---- File Formats: -------------------------------------
 @@@@@@@@@@@@ Links file:
@@ -60,3 +62,8 @@ example:
 3 0 0 1 2 4
 4 0 0 1 2 3
 
+
+folderNames.txt @@@@@@@@@@@@@@@
+
+First line: (name of folder)
+Second Line: (name of other folder..)
