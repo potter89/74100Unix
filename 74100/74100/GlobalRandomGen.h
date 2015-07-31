@@ -22,7 +22,6 @@ class GlobalRandomGen{
     std::mt19937 * _gen; //engine
     //and distribuitions
     std::uniform_real_distribution<double> _distribution0Till1;
-	std::uniform_real_distribution<double> _distributionDouble0TillMax;
     std::uniform_int_distribution<int> _distribuition0Till100;
     std::uniform_int_distribution<int> _distribuition0TillMax;
     
@@ -33,7 +32,6 @@ public:
     void setSeed(signed int newSeed); //sets a seed for the generator
     signed int getSeed(); //returns current _seed
     long double getRandomF0Till1();
-	long double getRandomDouble0TillMax(double max);
     int getRandomI0Till100();
     int getRandomTillMax(int max);
 };
