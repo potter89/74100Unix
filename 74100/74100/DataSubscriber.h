@@ -23,7 +23,7 @@ class DataSubscriber
 {
 public:
     DataSubscriber();
-    virtual ~DataSubscriber();
+    ~DataSubscriber();
     
     virtual void update(const SimulationData & simData) = 0;
 };

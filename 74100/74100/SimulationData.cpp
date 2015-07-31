@@ -10,6 +10,4 @@
 
 SimulationData::SimulationData(){}
 
-SimulationData::~SimulationData(){
-    delete population;
-}
+SimulationData::~SimulationData(){}

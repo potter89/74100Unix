@@ -20,7 +20,7 @@ class Population
 {
 public:
     Population();
-    virtual ~Population();
+    ~Population();
     
     int getSize();
     int getNumberOfTags();
