@@ -44,24 +44,22 @@ int main(int argc, const char * argv[])
         handleUIRequest(factory);
 	}
 	else{
-        if (argc >= 10){
+        if (argc == 2){
+			//parse config.txt file path
+			std::string configFilePath = argv[1];
+			simulation = factory.createSimulation(configFilePath);
+			simulation->runSimulation();
+		}
+        else if (argc >= 10){
 			//PARSE command line arguments
-			//./74100Unix				   2                Networks / fc_512.txt fc                10000         2.0	    1.0		  0.0 	      0.0       1 0 1.05 0     0          AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
-			//argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   TauTag	TauStrat  NoiseStrat  NoiseTag	Payoff_Matrix  RandSeed   DataSubscribers
-			
-			//0								1				2						3				4				5	6			7			8		9				10			11
-
-			int argvIndex = 0; //to store the last position of argv parsed
+            int argvIndex = 0; //to store the last position of argv parsed
             
             int numbTags = atoi(argv[++argvIndex]);
 			std::string linksPath = argv[++argvIndex];
 			std::string populationType = argv[++argvIndex];
 			int numbGenerations = atoi(argv[++argvIndex]);
 
-            long double tauTag = atof(argv[++argvIndex]);
-			long double tauStrat = atof(argv[++argvIndex]);
-			long double noiseStrat = atof(argv[++argvIndex]);
-			long double noiseTag = atof(argv[++argvIndex]);
+            long double tau = atof(argv[++argvIndex]);
             
 			std::vector<long double> payoffMatrix;
 			for (int i = 0; i < 4; i++){ //4 payoff matrix numbers
@@ -80,7 +78,7 @@ int main(int argc, const char * argv[])
 				dataSubscribers.push_back(argv[++argvIndex]);
 			}
 
-			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix, dataSubscribers);
+			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tau, payoffMatrix, dataSubscribers);
 			simulation->runSimulation();
 		}
 	}

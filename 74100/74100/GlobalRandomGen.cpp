@@ -36,18 +36,11 @@ long double GlobalRandomGen::getRandomF0Till1(){
     return _distribution0Till1(*_gen);
 }
 
-long double GlobalRandomGen::getRandomDouble0TillMax(double max){
-	//TODO: there's room for optimization if we store the max value, and do an if instead of setting every time
-	_distributionDouble0TillMax = std::uniform_real_distribution<double>(0.0, max);
-	return _distributionDouble0TillMax(*_gen);
-}
-
 int GlobalRandomGen::getRandomI0Till100(){
     return _distribuition0Till100(*_gen);
 }
 
 int GlobalRandomGen::getRandomTillMax(int max){
-	//TODO: there's room for optimization if we store the max value, and do an if instead of setting every time
     _distribuition0TillMax = std::uniform_int_distribution<int>(0, max);
     return _distribuition0TillMax(*_gen);
 }
