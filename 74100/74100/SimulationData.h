@@ -21,7 +21,11 @@ public:
     ~SimulationData();
     
     int maxGenerations;
-    long double tau;
+	long double tauTag;
+	long double tauStrat;
+	long double noiseStrat;
+	long double noiseTag;
+
     std::vector<long double> payoffMatrix;
     Population * population;
     

@@ -21,10 +21,9 @@ class Factory
 public:
     Factory();
     ~Factory();
-    
-    
-    Simulation * createSimulation(std::string inputPath);
-    Simulation * createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations, long double tau, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers);
+
+	Simulation * createSimulation(int totalTags, std::string linksPath, std::string popType, int i_maxGenerations,
+		long double tauTag, long double tauStrat, long double noiseStrat, long double noiseTag, std::vector<long double> payoffMatrix, std::vector<std::string> & dataSubscribers);
 
     void generateLatticeLinksTextFile();
     void generateForwardBehind();
@@ -45,8 +44,8 @@ private:
     std::string _tempString = "";
     std::string const _delimiter = " ";
 
-	void parseConfiguration(std::string inputPath);
-	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations, const long double tau, const std::vector<long double> payoffMatrix);
+	void parseDataSubscribers(const std::vector<std::string> & subscribers, const int totalTags, const std::string popType, const int sizePop, const int i_maxGenerations,
+		long double tauTag, long double tauStrat, long double noiseStrat, long double noiseTag, const std::vector<long double> payoffMatrix);
 
 	Population * createPopulation(std::string linksPath, std::string populationType, int totalTags);
 

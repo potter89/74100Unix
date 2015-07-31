@@ -24,10 +24,9 @@ class Simulation
 
     void oneShotInteraction(Agent & a, Agent & b);
     void gameTheoryGames(std::vector<Agent> & iPopulation);
-    void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tau, std::vector<long double> & payoffMatrix);
-	void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tau, std::vector<long double> & payoffMatrix);
-	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tau, std::vector<long double> & payoffMatrix);
-	
+	void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+	void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
 
     void setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation);
     
@@ -42,7 +41,7 @@ class Simulation
     std::vector<Agent> * agentsVectorPtr; //just caching the agents vector, because it's used extensively
     
 public:
-    Simulation(Population * population, int & i_maxGenerations, long double & tau, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
+	Simulation(Population * population, int & i_maxGenerations, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
     
     ~Simulation();
     
