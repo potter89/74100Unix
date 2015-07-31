@@ -76,7 +76,6 @@ void LatticePopulation::parseDotLinksFile(std::string i_source){
         
         //DO NOT DELETE - read first line, looking for the number of agents to include -
         getline(myfile, populationSizeString);
-        populationSize = atoi(populationSizeString.c_str());
         
         //parsing each line, for each agent.
         //Format:AgentIndex NumbNeighbors SignalBit  NeighborIndex NeighborIndex ... (two spaces!!)
@@ -133,7 +132,6 @@ void LatticePopulation::parseDotTxtLinksFile(std::string i_source){
         
         //DO NOT DELETE - read first line, looking for the number of agents to include -
         getline(myfile, populationSizeString);
-        populationSize = atoi(populationSizeString.c_str());
         
         //parsing each line, for each agent.
         //Format:AgentIndex SignalBit NeighborIndex NeighborIndex ...

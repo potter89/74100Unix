@@ -249,21 +249,53 @@ void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long do
             long double random0tillTauStratPlusTauTag = GlobalRandomGen::getInstance()->getRandomDouble0TillMax(tauTag + tauStrat); //if there is two tags, they will be tag 0 and 1, hence the -1; //TODO:calculate this
             //std::cout << "random0tillTauStratPlusTauTag: " << random0tillTauStratPlusTauTag << std::endl;
             //std::cout << "tauStrat: " << tauStrat << std::endl;
+            double probabilityOfNoise = 0;
+            int randomNumber = 0;
+            
             
             //only imitates tag OR strat
             if (tauStrat > random0tillTauStratPlusTauTag){
                 //copy ONLY the strat
-                agent.strategy = neighbour.strategy;
-                //printf("COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nNow: ");
+
+                //for each of the strategies, induce noise given probability noiseStrat
+                for (auto it = agent.strategy.begin(); it != agent.strategy.end(); it++) {
+                    probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
+                    
+                    if (noiseStrat >= probabilityOfNoise) {
+                        //include noise
+                        randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(1);
+                        agent.strategy[*it] = randomNumber;
+                        //std::cout << "Noise in strat!!!!" << std::endl;
+                    }else{
+                        //simply copy STRAT[i] from neighbour
+                        agent.strategy[*it] = neighbour.strategy[*it];
+                        //printf("COPIED strat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nNow: ");
+                    }
+                }
             }
             else{
-                agent.tag = neighbour.tag;
-                //printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+                //copy only the tag, if there's more than one
+                int numbTags = stateManager.getPopulation()->getNumberOfTags();
+                
+                if (numbTags > 0) {
+                    
+                    //induce noise
+                    probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
+                    if (noiseTag >= probabilityOfNoise) {
+                        //include noise, random EXISTING tag
+                        randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numbTags);
+                        agent.tag = randomNumber;
+                        //std::cout << "Noise in tag!!!!!" << std::endl;
+                    }else{
+                        //simply copy TAG from neighbour
+                        agent.tag = neighbour.tag;
+                        //printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
+                    }
+                }
             }
         }
     }
 }
-
 
 void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
@@ -285,7 +317,6 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
 		imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
     }
 }
-
 
 
 //every 10% of the generations done, prints in console the progress

@@ -92,7 +92,5 @@ int main(int argc, const char * argv[])
 //	char i;
 //	std::cin >> i;
 
-    
-    
 	return 0;
 }
