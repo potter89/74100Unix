@@ -80,6 +80,9 @@ int main(int argc, const char * argv[])
 
 			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tau, payoffMatrix, dataSubscribers);
 			simulation->runSimulation();
+            
+            
+            delete simulation; //free up dynamic memory
 		}
 	}
 	//*/
@@ -88,5 +91,7 @@ int main(int argc, const char * argv[])
 //	char i;
 //	std::cin >> i;
 
+    
+    
 	return 0;
 }
