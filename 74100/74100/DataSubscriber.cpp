@@ -32,7 +32,7 @@ void ConsoleDataSubscriber::update(const SimulationData & simData) {
         //2 or more tags, prints tag, startegy and fitness
         //4_{0,1,0,1,0,}-3 2_{0,1,0,1,0,}-3
         //etc.....
-        Agent * auxAgent;
+        Agent * auxAgent = nullptr;
         bool lastInRow = true;
         int index = 0;
         int auxStratSize = 0;
@@ -93,7 +93,7 @@ void ConsoleDataSubscriber::update(const SimulationData & simData) {
         //0_4_{0,1,0,1,0,}-3
         //1_2_{0,1,0,1,0,}-3
         //etc.....
-        Agent * auxAgent;
+        Agent * auxAgent = nullptr;
         int index = 0; //agents index
         int auxStratSize = 0;
         const int MAXAgentsPerLine = 5; //max agents printed per line in the console
@@ -217,7 +217,9 @@ AverageTextFileDataSubscriber::AverageTextFileDataSubscriber(std::string filenam
 		_refreshRate = totalGenerations * 0.01 : // to print 100 times only
 		_refreshRate = 0; //else prints at all times
 }
-AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){}
+AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){
+    printf("Deleting datasub\n");
+}
 
 //returns the average value of the contents of the vector
 int AverageTextFileDataSubscriber::calculateAverage(std::list<int> & inList){
@@ -327,7 +329,7 @@ void TagDiversityDataSubscriber::update(const SimulationData & simData){
 		
 		int * tagsCounter = new  int[numberOfTags]; //array holds number of agents with a given tag
 		for (int i = 0; i < numberOfTags; i++) tagsCounter[i] = 0; //initialize counters to zero
-		int numbOfAgents = simData.population->getSize();
+		//int numbOfAgents = simData.population->getSize();
 		std::vector<Agent> * cachePopulation = simData.population->getAgentsPtr();
 		
 		//for each agent, check his tag and update the array with a +1 on the tag's corresponding index

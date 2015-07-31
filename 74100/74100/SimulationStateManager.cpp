@@ -10,7 +10,12 @@
 
 SimulationStateManager::SimulationStateManager(){}
 
-SimulationStateManager::~SimulationStateManager(){}
+SimulationStateManager::~SimulationStateManager(){
+   std::cout << "Deleting statemanager" << std::endl;
+    for (auto it=_dataSubscribers.begin(); it!=_dataSubscribers.end(); it++) {
+        delete *it;
+    }
+}
 
 
 

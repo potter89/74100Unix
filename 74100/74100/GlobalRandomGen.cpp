@@ -21,6 +21,10 @@ GlobalRandomGen * GlobalRandomGen::getInstance(){
     return _globalRandomGen_instance;
 }
 
+
+
+
+
 void GlobalRandomGen::setSeed(signed int newSeed){
     printf("GlobalRand -> Set new seed: %d \n", newSeed);
     delete _gen; //delete previous engine
@@ -31,6 +35,10 @@ void GlobalRandomGen::setSeed(signed int newSeed){
 signed int GlobalRandomGen::getSeed(){
     return _seed;
 }
+
+
+
+
 
 long double GlobalRandomGen::getRandomF0Till1(){
     return _distribution0Till1(*_gen);

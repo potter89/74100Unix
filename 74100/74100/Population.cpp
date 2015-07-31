@@ -29,7 +29,9 @@ std::vector<Agent> * Population::getAgentsPtr(){
 
 //Lattice cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ss
 LatticePopulation::LatticePopulation(){}
-LatticePopulation::~LatticePopulation(){}
+LatticePopulation::~LatticePopulation(){
+    printf("Deleting Population\n");
+}
 
 //generates random tag, from 0 to totalNumberOfTags-1, and fills <_strategy> with random 0 and 1's
 void LatticePopulation::generateRandomStrategies(int totalNumberOfTags){

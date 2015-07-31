@@ -19,7 +19,7 @@ class GlobalRandomGen{
     
     signed int _seed = -1;
     
-    std::mt19937 * _gen; //engine
+    std::mt19937 * _gen = nullptr; //engine
     //and distribuitions
     std::uniform_real_distribution<double> _distribution0Till1;
 	std::uniform_real_distribution<double> _distributionDouble0TillMax;

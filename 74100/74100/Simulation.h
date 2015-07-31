@@ -15,9 +15,6 @@
 #include "SimulationStateManager.h"
 #include "DataSubscriber.h"
 
-//TODO:delete this, testing the observer thing. should be in factory!!!
-#include "DataSubscriber.h"
-
 class Simulation
 {
     SimulationStateManager stateManager;
@@ -38,7 +35,7 @@ class Simulation
 	int _percentage = 0; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
 
-    std::vector<Agent> * agentsVectorPtr; //just caching the agents vector, because it's used extensively
+    std::vector<Agent> * agentsVectorPtr = nullptr; //just caching the agents vector, because it's used extensively
     
 public:
 	Simulation(Population * population, int & i_maxGenerations, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);

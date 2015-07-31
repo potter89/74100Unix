@@ -13,9 +13,6 @@
 
 class SimulationData
 {
-
-    
-    
 public:
     SimulationData();
     ~SimulationData();
@@ -27,7 +24,7 @@ public:
 	long double noiseTag;
 
     std::vector<long double> payoffMatrix;
-    Population * population;
+    Population * population = nullptr;
     
     int currentGeneration = -1;
     int numbCooperativeActions = 0;

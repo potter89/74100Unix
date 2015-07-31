@@ -34,7 +34,9 @@ Agent::Agent(const Agent &o){
     neighbors = o.neighbors;
 }
 
-Agent::~Agent(){}
+Agent::~Agent(){
+    //printf("Deleting agent\n");
+}
 
 int Agent::getIndex(){
     return _index;

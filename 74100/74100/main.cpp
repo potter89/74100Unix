@@ -25,9 +25,8 @@ GlobalRandomGen * GlobalRandomGen::_globalRandomGen_instance = 0;
 int main(int argc, const char * argv[])
 {
     //tests
-	/**
+	/**/
     TestClass t;
-    t.testdoubleatof();
     //*/
     
     /**/
@@ -35,7 +34,7 @@ int main(int argc, const char * argv[])
     Factory factory;
     
     //main simulation to execute
-    Simulation * simulation;
+    Simulation * simulation = nullptr;
     
     //for (int a = 0; a < argc; a++) { std::cout << a << ": " << argv[a] << std::endl; }
     
@@ -49,7 +48,7 @@ int main(int argc, const char * argv[])
 			//./74100Unix				   2                Networks / fc_512.txt fc                10000         2.0	    1.0		  0.0 	      0.0       1 0 1.05 0     0          AverageTextFileDataSubscriber SimpleConsoleDataSubscriber
 			//argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   TauTag	TauStrat  NoiseStrat  NoiseTag	Payoff_Matrix  RandSeed   DataSubscribers
 			
-			//0								1				2						3				4				5	6			7			8		9				10			11
+			//0								1				2						3				4				5	    6		  7           8         9              10         11
 
 			int argvIndex = 0; //to store the last position of argv parsed
             
@@ -88,7 +87,7 @@ int main(int argc, const char * argv[])
 		}
 	}
 	//*/
-//
+
 //	printf("Input any char to exit. Thank you for flying with us :) ... ");
 //	char i;
 //	std::cin >> i;

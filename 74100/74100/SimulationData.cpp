@@ -11,5 +11,9 @@
 SimulationData::SimulationData(){}
 
 SimulationData::~SimulationData(){
-    delete population;
+    printf("Deleting simulationData\n");
+    
+    if (population != nullptr) {
+        delete population;
+    }
 }
