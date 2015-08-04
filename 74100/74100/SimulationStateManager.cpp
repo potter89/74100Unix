@@ -57,6 +57,13 @@ std::vector<long double> * SimulationStateManager::getPayoffMatrix(){
     return &_simData.payoffMatrix;
 }
 
+unsigned int * SimulationStateManager::getStrategyChangeCounter(){
+    return &_simData.strategyChangeCounter;
+}
+int * SimulationStateManager::getCurrentGenerationCounter(){
+    return &_simData.currentGeneration;
+}
+
 //returns how many subscribers are attached
 int SimulationStateManager::getNumbAttachedSubscribers(){
     return _numbSubscribers;
@@ -98,4 +105,8 @@ void SimulationStateManager::incrementCooperativeActions(){
 //reset's counter of cooperative actions
 void SimulationStateManager::resetStateForNextGeneration(){
     _simData.numbCooperativeActions = 0;
+}
+
+void SimulationStateManager::incrementStrategyChangeCounter(){
+    _simData.strategyChangeCounter++;
 }

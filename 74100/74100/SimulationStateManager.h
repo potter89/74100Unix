@@ -32,6 +32,7 @@ public:
     //setters of _simdata
 	void setSimulationData(Population * population, int & i_maxGenerations,
 		long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+    
     void incCurrentGeneration();
     
     //getters of _simdata
@@ -42,6 +43,8 @@ public:
 	long double * getNoiseStrat();
 	long double * getNoiseTag();
     std::vector<long double> * getPayoffMatrix();
+    unsigned int * getStrategyChangeCounter();
+    int * getCurrentGenerationCounter();
 
     
     //setup subs
@@ -52,6 +55,7 @@ public:
     //simulation changes updating functions
     void incrementCooperativeActions();
     void resetStateForNextGeneration();
+    void incrementStrategyChangeCounter();
     
 };
 

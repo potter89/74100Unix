@@ -19,9 +19,11 @@ class Simulation
 {
     SimulationStateManager stateManager;
 
+    void runOneGeneration();
     void oneShotInteraction(Agent & a, Agent & b);
     void gameTheoryGames(std::vector<Agent> & iPopulation);
 	void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+    
 	void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
 	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
 
@@ -32,8 +34,10 @@ class Simulation
     long double maxFitnessDifference(unsigned long numbNeiborsA, unsigned long numbNeiborsB, long double maxPayoffPossible, long double minPayoffPossible); //maxFitnessDifference between two agents
 
 	void printPercentageDone(int & iGeneration);
-	int _percentage = 0; //how much percentage of work has been calculated already
+	int _percentage = 1; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
+    
+    void printPercentageStrategyChangesDone(int currentNumberChanges);
 
     std::vector<Agent> * agentsVectorPtr = nullptr; //just caching the agents vector, because it's used extensively
     

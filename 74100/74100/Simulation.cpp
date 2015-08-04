@@ -40,6 +40,7 @@ Simulation::Simulation(Population * population, int & i_maxGenerations,
     //TODO: print out subs as well
     //*/
 }
+
 Simulation::~Simulation(){
     printf("Deleting simulation\n");
 }
@@ -48,17 +49,38 @@ void Simulation::runSimulation(){
     //TODO: it's not updating datasubs after last egt
     //make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
     //Subscribers need to be updated at the end of each generation
-    for (int i = 0; i < *stateManager.getMaxGenerations(); i++){
-        stateManager.incCurrentGeneration(); //So data subs know which generation it is. First calls makes it start at zero
-        gameTheoryGames(*agentsVectorPtr);
-        setFittnessAndResetPayoffs(*agentsVectorPtr);
-        if (stateManager.getNumbAttachedSubscribers() != 0) {
-            stateManager.notifyDataSubscribers(); //update DataSubscribers
-            stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
+    
+    if (*stateManager.getMaxGenerations() <= 0) {
+        //run until a certain number of StrategyChanges
+        unsigned int maxStrategyChanges = 10000 * stateManager.getPopulation()->getSize();
+        
+        while (*stateManager.getStrategyChangeCounter() <= maxStrategyChanges) {
+            runOneGeneration();
+            printPercentageStrategyChangesDone(*stateManager.getStrategyChangeCounter());
         }
-		evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTauTag(), *stateManager.getTauStrat(), *stateManager.getNoiseStrat(), *stateManager.getNoiseTag(), *stateManager.getPayoffMatrix());
-        printPercentageDone(i); //uncomment to show in console the % of generations completed
+        std::cout << "Number of strategy changes: " << *stateManager.getStrategyChangeCounter() << std::endl;
+    }else{
+        //run for specific number of generations
+        for (int i = 0; i < *stateManager.getMaxGenerations(); i++){
+            
+            runOneGeneration();
+            
+            printPercentageDone(i); //show in console the % of generations completed
+        }
+        
     }
+}
+
+
+void Simulation::runOneGeneration(){
+    stateManager.incCurrentGeneration(); //So data subs know which generation it is. First calls makes it start at zero
+    gameTheoryGames(*agentsVectorPtr);
+    setFittnessAndResetPayoffs(*agentsVectorPtr);
+    if (stateManager.getNumbAttachedSubscribers() != 0) {
+        stateManager.notifyDataSubscribers(); //update DataSubscribers
+        stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
+    }
+    evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTauTag(), *stateManager.getTauStrat(), *stateManager.getNoiseStrat(), *stateManager.getNoiseTag(), *stateManager.getPayoffMatrix());
 }
 
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
@@ -256,7 +278,9 @@ void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long do
             //only imitates tag OR strat
             if (tauStrat > random0tillTauStratPlusTauTag){
                 //copy ONLY the strat
-
+                
+                stateManager.incrementStrategyChangeCounter();
+                
                 //for each of the strategies, induce noise given probability noiseStrat
                 for (auto it = agent.strategy.begin(); it != agent.strategy.end(); it++) {
                     probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
@@ -319,12 +343,24 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
 }
 
 
-//every 10% of the generations done, prints in console the progress
+//GOAL is hitting a certain number of generations - > every 10% of the generations done, prints in console the progress
 void Simulation::printPercentageDone(int & iGeneration){
     
     if (_tenPercentGenerations == -1) _tenPercentGenerations = ((*stateManager.getMaxGenerations()) * 0.1);
     
     if (_percentage * _tenPercentGenerations == iGeneration){
+        printf("%%%%  %%%%  %%%%  %%%%  -- Progress: %d%%  -- %%%%  %%%%  %%%%  %%%%\n",(_percentage * 10));
+        _percentage++;
+    }
+}
+
+//GOAL is hitting a certain number of strategy changes - > every 10% of the generations done, prints in console the progress
+void Simulation::printPercentageStrategyChangesDone(int currentNumberChanges){
+    if (_tenPercentGenerations == -1) _tenPercentGenerations = (stateManager.getPopulation()->getSize()) * 1000;
+    
+    int nextMilestoneGeneration = _percentage * _tenPercentGenerations; //milestone representing 10%
+    
+    if (nextMilestoneGeneration <= currentNumberChanges){
         printf("%%%%  %%%%  %%%%  %%%%  -- Progress: %d%%  -- %%%%  %%%%  %%%%  %%%%\n",(_percentage * 10));
         _percentage++;
     }
