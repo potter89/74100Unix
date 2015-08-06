@@ -45,33 +45,34 @@ Simulation::~Simulation(){
     printf("Deleting simulation\n");
 }
 
+//TODO: add comment
 void Simulation::runSimulation(){
-    //TODO: it's not updating datasubs after last egt
-    //make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
-    //Subscribers need to be updated at the end of each generation
     
-    if (*stateManager.getMaxGenerations() <= 0) {
+    if (*stateManager.getMaxGenerations() > 0) {
+        //run for specific number of generations
+        for (int i = 0; i < *stateManager.getMaxGenerations(); i++){
+            runOneGeneration();
+            printPercentageDone(i); //show in console the % of generations completed
+        }
+        
+    }else{
         //run until a certain number of StrategyChanges
         unsigned int maxStrategyChanges = 10000 * stateManager.getPopulation()->getSize();
         
         while (*stateManager.getStrategyChangeCounter() <= maxStrategyChanges) {
             runOneGeneration();
             printPercentageStrategyChangesDone(*stateManager.getStrategyChangeCounter());
+            
         }
         std::cout << "Number of strategy changes: " << *stateManager.getStrategyChangeCounter() << std::endl;
-    }else{
-        //run for specific number of generations
-        for (int i = 0; i < *stateManager.getMaxGenerations(); i++){
-            
-            runOneGeneration();
-            
-            printPercentageDone(i); //show in console the % of generations completed
-        }
-        
     }
+    
+    //inform datasubs that the simulation is over
+    stateManager.notifyDataSubscribersGameOver();
+    
 }
 
-
+//make agents play eachother, calculate their fitness and decide if they should update their tag/strategy
 void Simulation::runOneGeneration(){
     stateManager.incCurrentGeneration(); //So data subs know which generation it is. First calls makes it start at zero
     gameTheoryGames(*agentsVectorPtr);

@@ -18,7 +18,7 @@ DataSubscriber::~DataSubscriber(){}
 ConsoleDataSubscriber::ConsoleDataSubscriber(){}
 ConsoleDataSubscriber::~ConsoleDataSubscriber(){}
 
-
+void ConsoleDataSubscriber::updateAfterFinish(const SimulationData & simData) {}
 void ConsoleDataSubscriber::update(const SimulationData & simData) {
     //Prints the number of cooperative actions performed in the console
     printf("\n\n"); //separation from what might be in the console
@@ -136,6 +136,8 @@ void ConsoleDataSubscriber::update(const SimulationData & simData) {
 SimpleConsoleDataSubscriber::SimpleConsoleDataSubscriber(){}
 SimpleConsoleDataSubscriber::~SimpleConsoleDataSubscriber(){}
 
+void SimpleConsoleDataSubscriber::updateAfterFinish(const SimulationData & simData) {}
+
 void SimpleConsoleDataSubscriber::update(SimulationData const & simData){
 	//Prints the number of cooperative actions performed in the console
     if (refreshRateCounter <= 0){ //only prints once in REFRESHRATE times
@@ -196,6 +198,7 @@ void TextFileDataSubscriber::setNonDuplicateOutputFileName(){
 	}
 }
 
+void TextFileDataSubscriber::updateAfterFinish(const SimulationData &simData){}
 
 //Writes the updates to a text file
 void TextFileDataSubscriber::update(const SimulationData & simData){
@@ -237,6 +240,7 @@ int AverageTextFileDataSubscriber::calculateAverage(std::list<int> & inList){
     }
 }
 
+void AverageTextFileDataSubscriber::updateAfterFinish(const SimulationData &simData){}
 
 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
 void AverageTextFileDataSubscriber::update(const SimulationData & simData){
@@ -273,25 +277,25 @@ AverageLastThousandDataSubscriber::AverageLastThousandDataSubscriber(std::string
 : TextFileDataSubscriber(fileName){}
 AverageLastThousandDataSubscriber::~AverageLastThousandDataSubscriber(){}
 
+void AverageLastThousandDataSubscriber::updateAfterFinish(const SimulationData &simData){
+    //if it's the last generation, average values and print to file
+    int avg = calculateAverage(_valuesToAverage);
+    
+    if (!_outputTxtFile.is_open()){
+        _outputTxtFile.open(_fileName, std::ios::app);
+    }
+    _outputTxtFile << avg << "\n";
+    _outputTxtFile.close();
+}
+
 void AverageLastThousandDataSubscriber::update(const SimulationData & simData){
-    if (lastThousand == -1) {
-        //if it's being updated for the first time, it needs to initialize when the lastThousand starts
-        if (simData.maxGenerations >= 1000) lastThousand = simData.maxGenerations - 1000;
-        else lastThousand = 0;
+    //fills the vector only with the last thousand generation's values
+    if (_valuesToAverage.size() <1000) {
+        _valuesToAverage.push_back(simData.numbCooperativeActions);
     }else{
-        //fills the vector only with the last thousand generation's values
-        if (simData.currentGeneration >= lastThousand) {
-            _valuesToAverage.push_back(simData.numbCooperativeActions);
-            if ((simData.currentGeneration+1) == simData.maxGenerations) { //if it's the last generation, average values and print to file
-                int avg = calculateAverage(_valuesToAverage);
-                
-                if (!_outputTxtFile.is_open()){
-                    _outputTxtFile.open(_fileName, std::ios::app);
-                }
-                _outputTxtFile << avg << "\n";
-                _outputTxtFile.close();
-            }
-        }
+        //if it has 1000+ values, take out the oldest, and put in a newer one
+        _valuesToAverage.pop_front();
+        _valuesToAverage.push_back(simData.numbCooperativeActions);
     }
 }
 
@@ -316,6 +320,7 @@ TagDiversityDataSubscriber::TagDiversityDataSubscriber(std::string fileName)
 	: TextFileDataSubscriber(fileName){}
 TagDiversityDataSubscriber::~TagDiversityDataSubscriber(){}
 
+void TagDiversityDataSubscriber::updateAfterFinish(const SimulationData &simData){}
 
 void TagDiversityDataSubscriber::update(const SimulationData & simData){
 	//if it's the last generation

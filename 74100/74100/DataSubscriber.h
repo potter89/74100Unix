@@ -26,6 +26,7 @@ public:
     virtual ~DataSubscriber();
     
     virtual void update(const SimulationData & simData) = 0;
+    virtual void updateAfterFinish(const SimulationData & simData) = 0;
 };
 
 
@@ -33,6 +34,7 @@ class ConsoleDataSubscriber : public DataSubscriber
 {
 public:
     void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
     ConsoleDataSubscriber();
     ~ConsoleDataSubscriber();
 };
@@ -46,6 +48,7 @@ private:
     
 public:
     void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
     SimpleConsoleDataSubscriber();
     ~SimpleConsoleDataSubscriber();
 };
@@ -63,6 +66,7 @@ protected:
 
 public:
     void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
 	TextFileDataSubscriber(std::string fileName);
 	~TextFileDataSubscriber();
 };
@@ -80,6 +84,7 @@ protected:
 
 public:
     void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
 	AverageTextFileDataSubscriber(std::string fileName, int totalGenerations);
 	~AverageTextFileDataSubscriber();
 };
@@ -94,6 +99,7 @@ private:
     int calculateAverage(std::list<int> & inList);
 public:
     void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
     AverageLastThousandDataSubscriber(std::string fileName);
     ~AverageLastThousandDataSubscriber();
 };
@@ -102,6 +108,7 @@ public:
 class TagDiversityDataSubscriber : public TextFileDataSubscriber{
 public:
 	void update(const SimulationData & simData);
+    void updateAfterFinish(const SimulationData & simData);
 	TagDiversityDataSubscriber(std::string fileName);
 	~TagDiversityDataSubscriber();
 };

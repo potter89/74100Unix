@@ -98,6 +98,14 @@ void SimulationStateManager::notifyDataSubscribers(){
     }
 }
 
+//calls function updateAfterFinish of every subscriber
+void SimulationStateManager::notifyDataSubscribersGameOver(){
+    for (int i = 0; i < _numbSubscribers; i++){ //for each of them, call their update function
+        _dataSubscribers[i]->updateAfterFinish(_simData);
+    }
+}
+
+
 void SimulationStateManager::incrementCooperativeActions(){
     _simData.numbCooperativeActions++;
 }

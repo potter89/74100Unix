@@ -51,6 +51,7 @@ public:
     void attachDataSubscriber(DataSubscriber * newSub);
     void detatchDataSubscriber(DataSubscriber * newSub);
     void notifyDataSubscribers();
+    void notifyDataSubscribersGameOver();
     
     //simulation changes updating functions
     void incrementCooperativeActions();
