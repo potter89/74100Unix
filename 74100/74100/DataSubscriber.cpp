@@ -283,8 +283,8 @@ void AverageLastThousandDataSubscriber::updateAfterFinish(const SimulationData &
     
     if (!_outputTxtFile.is_open()){
         _outputTxtFile.open(_fileName, std::ios::app);
+		_outputTxtFile << avg << "\n";
     }
-    _outputTxtFile << avg << "\n";
     _outputTxtFile.close();
 }
 
