@@ -118,7 +118,7 @@ void LatticePopulation::parseDotLinksFile(std::string i_source){
 }
 
 void LatticePopulation::parseDotTxtLinksFile(std::string i_source){
-    int populationSize; //number of agents in the network, specified at the first line of the file
+    //int populationSize; //number of agents in the network, specified at the first line of the file
     std::vector<Agent> tempPopulation; //stores the parsed agents, will be returned
     std::vector<int> tempNeighbors; //stores a list of neighbors of the current parsed agent
     int tempIndex; //index for the current parsed agent

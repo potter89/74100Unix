@@ -19,6 +19,8 @@
 #include <fstream>
 #include "GlobalRandomGen.h" //for GlobalRandom
 #include <cstdlib> //for atof
+#include "Agent.h"
+#include <memory>
 
 class TestClass
 {
@@ -46,6 +48,8 @@ public:
     void testGenerateRandMax();
     
     void testdoubleatof();
+    
+    void testSmartPointer();
     
 };
 

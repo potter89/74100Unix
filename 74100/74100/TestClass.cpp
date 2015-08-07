@@ -8,8 +8,19 @@
 
 #include "TestClass.h"
 
-TestClass::TestClass(){}
+TestClass::TestClass(){
+}
 TestClass::~TestClass(){}
+
+void TestClass::testSmartPointer(){
+    std::vector<std::unique_ptr<Agent>> agents(10000);
+    std::vector<int> neighbours = {0,1,2};
+    
+    for (int i = 0; i<10000; i++) {
+        std::unique_ptr<Agent> auxAgent(new Agent(0, 0, neighbours));
+        agents[i] = move(auxAgent);
+    }
+}
 
 void TestClass::testdoubleatof(){
     std::string s_double = "0.0000000009";

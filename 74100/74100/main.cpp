@@ -24,10 +24,10 @@ GlobalRandomGen * GlobalRandomGen::_globalRandomGen_instance = 0;
 
 int main(int argc, const char * argv[])
 {
-    //tests
-	/**/
-    TestClass t;
-    //*/
+    //tests, whithin local scope
+    //if (true) TestClass t;
+    
+    
     
     /**/
     //Factory will create populations and simulations

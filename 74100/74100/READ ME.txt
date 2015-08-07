@@ -29,6 +29,7 @@ Example: ./74100Unix 2 Networks/fc_512.txt fc 10000 2.0 1.0 0.0 0.0 1 0 1.05 0 -
 argv[0]:path to executable   Number_of_tags   Links_file_Path       Population_Type   Generations   TauTag	 TauStrat	  NoiseStrat  NoiseTag	Payoff_Matrix  RandSeed   DataSubscribers
 
 Attention:
+If Generations == 0, it will finish when there have been (10000 * PopulationSize) strategy changes
 If seed == 0, a true random seed is generated
 ! Only takes in a single datasub at the moment
 

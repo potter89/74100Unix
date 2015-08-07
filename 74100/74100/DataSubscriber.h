@@ -93,7 +93,6 @@ public:
 //this DataSub writes once to a textFile, with the average number of cooperative actions of the last 1000 generations
 class AverageLastThousandDataSubscriber : public TextFileDataSubscriber{
 private:
-    int lastThousand = -1; // holds total number of generations - 1000
     std::list<int> _valuesToAverage;
     
     int calculateAverage(std::list<int> & inList);
