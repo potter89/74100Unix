@@ -42,7 +42,7 @@ int main(int argc, const char * argv[])
         //no input, prompt input
         handleUIRequest(factory);
 	}
-	else{
+	else{        
         if (argc >= 10){
 			//PARSE command line arguments
 			//./74100Unix				   2                Networks / fc_512.txt fc                10000         2.0	    1.0		  0.0 	      0.0       1 0 1.05 0     0          AverageTextFileDataSubscriber SimpleConsoleDataSubscriber

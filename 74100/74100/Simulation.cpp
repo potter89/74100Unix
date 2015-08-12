@@ -252,6 +252,7 @@ void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, lon
 void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     
     long double payoffDiff = neighbour.fitness - agent.fitness;
+    
     if (payoffDiff > 0) { //only considers changing strategy OR tag, if the neighbor's payoff is better than his own
         long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
         long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
