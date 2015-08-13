@@ -45,6 +45,7 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
     //TODO: meanwhile, everything should work with a lattice population type class
     retPopulation = new LatticePopulation();
     retPopulation->init(path, totalTags, type);
+    if(retPopulation->getSize() <= 0) exit(false); //error creating the population, shouldn't continue running sim
     return retPopulation;
 }
 

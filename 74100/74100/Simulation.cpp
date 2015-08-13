@@ -29,10 +29,10 @@ Simulation::Simulation(Population * population, int & i_maxGenerations,
     std::cout << "Simulation created!" << std::endl;
     std::cout << "#Generations: "<< *stateManager.getMaxGenerations() << std::endl;
     std::cout << "#Tags: "<< stateManager.getPopulation()->getNumberOfTags() << std::endl;
-	std::cout << "TauTag: " << tauTag << std::endl;
-	std::cout << "TauStrat: " << tauStrat << std::endl;
-	std::cout << "NoiseStrat: " << noiseStrat << std::endl;
-	std::cout << "NoiseTag: " << noiseTag << std::endl;
+	std::cout << "TauTag: " << *stateManager.getTauTag() << std::endl;
+	std::cout << "TauStrat: " << *stateManager.getTauStrat() << std::endl;
+	std::cout << "NoiseStrat: " << *stateManager.getNoiseStrat() << std::endl;
+	std::cout << "NoiseTag: " << *stateManager.getNoiseTag() << std::endl;
     std::cout << "PayoffMatrix CC: "<< stateManager.getPayoffMatrix()->at(0) << std::endl;
     std::cout << "PayoffMatrix CD: "<< stateManager.getPayoffMatrix()->at(1) << std::endl;
     std::cout << "PayoffMatrix DC: "<< stateManager.getPayoffMatrix()->at(2) << std::endl;
@@ -47,6 +47,9 @@ Simulation::~Simulation(){
 
 //TODO: add comment
 void Simulation::runSimulation(){
+    aux_Hi_Payoff = highestPayoffInMatrix(*stateManager.getPayoffMatrix()); //caching both these variables
+    aux_Lo_Payoff = lowestPayoffInMatrix(*stateManager.getPayoffMatrix());
+    
     
     if (*stateManager.getMaxGenerations() > 0) {
         //run for specific number of generations
@@ -84,16 +87,18 @@ void Simulation::runOneGeneration(){
     evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTauTag(), *stateManager.getTauStrat(), *stateManager.getNoiseStrat(), *stateManager.getNoiseTag(), *stateManager.getPayoffMatrix());
 }
 
+//updates the payoffs of the two agents, simulating a one shot game theory interaction
 void Simulation::oneShotInteraction(Agent & a, Agent & b){
     long double payoffA = 0.0f; //payoff earned by A in this specific game
     long double payoffB = 0.0f; //payoff earned by B in this specific game
     
     int aStrategyPlayingOther = a.strategy[b.tag];
     int bStrategyPlayingOther = b.strategy[a.tag];
+
     /**
      std::cout << b.getIndex() << " has strategy {";
      for (int x = 0; x < b.strategy.size(); x++){
-     std::cout << b.strategy[x] << ", ";
+        std::cout << b.strategy[x] << ", ";
      }
      std::cout << "} and tag: " << b.tag << " and current payoff: " << b.payoff << std::endl;
      //*/
@@ -144,22 +149,20 @@ void Simulation::oneShotInteraction(Agent & a, Agent & b){
     b.payoff += payoffB;
     /**
      std::cout << a.getIndex() << " receives Payoff: " << payoffA << " totaling: " << a.payoff << ".";
-     std::cout << "And " << b.getIndex() << " receives:" << payoffB << " totaling: " << b.payoff << "." << std::endl;
-     //*/
+     std::cout << "And " << b.getIndex() << " receives:" << payoffB << " totaling: " << b.payoff << "." << std::endl; //*/
 }
 
 //population plays games between neighbors, once
 void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
     Agent * currentAgent = nullptr;
     int currentAgentIndex;
-    std::vector<int> currentNeighbors;
-    int nextItemInNeightbors;
+    std::vector<int> currentAgentsNeighbours;
+    int nextIndexInNeightbours;
     
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
-        //TODO: change to pointers
         currentAgent = &iPopulation[i];
         currentAgentIndex = currentAgent->getIndex();
-        currentNeighbors = currentAgent->neighbors;
+        currentAgentsNeighbours = currentAgent->neighbors;
         /**
          std::cout << "Agent " << currentAgent->getIndex() << "------------------------------------------" << std::endl;
          std::cout << currentAgent->getIndex() << " has strategy {";
@@ -169,10 +172,10 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
          std::cout << "} and tag: " << currentAgent->tag << " and current payoff: " << currentAgent->payoff << std::endl; //*/
          
         
-        for (unsigned int ii = 0; ii < (iPopulation[i].neighbors.size()); ii++){ // go through his neighbors
-            nextItemInNeightbors = currentNeighbors[ii];
-            if (currentAgentIndex < nextItemInNeightbors){ //if his index is lower than their's
-                oneShotInteraction(*currentAgent, iPopulation[nextItemInNeightbors]);//play a oneshot game with neighbor
+        for (unsigned int ii = 0; ii < (iPopulation[i].neighbors.size()); ii++){ // go through each of his neighbors
+            nextIndexInNeightbours = currentAgentsNeighbours[ii];
+            if (currentAgentIndex < nextIndexInNeightbours){ //if his index is lower than their's (to make sure there are no repetiting interactions)
+                oneShotInteraction(*currentAgent, iPopulation[nextIndexInNeightbours]);//play a oneshot game with neighbour
             }
         }
     }
@@ -219,10 +222,7 @@ long double Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsig
 void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
 	long double payoffDiff = neighbour.fitness - agent.fitness;
 	if (payoffDiff > 0) { //only considers changing strategy (and tag), if the neighbor's payoff is better than his own
-		long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
-		long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
-
-		long double p; //holds probability of imitating the other agent's strategy
+        long double p; //holds probability of imitating the other agent's strategy
 
 		//p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
 		p = (payoffDiff) /
@@ -254,9 +254,6 @@ void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long do
     long double payoffDiff = neighbour.fitness - agent.fitness;
     
     if (payoffDiff > 0) { //only considers changing strategy OR tag, if the neighbor's payoff is better than his own
-        long double aux_Hi_Payoff = highestPayoffInMatrix(payoffMatrix);
-        long double aux_Lo_Payoff = lowestPayoffInMatrix(payoffMatrix);
-        
         long double p; //holds probability of imitating the other agent's strategy
         
         //p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)

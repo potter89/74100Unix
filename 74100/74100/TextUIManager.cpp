@@ -40,7 +40,7 @@ void handleUIRequest(Factory & factory){
     
     if (inputByUser == 9) {
         //close program
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
     else if (inputByUser == 1) {
         factory.generateLatticeLinksTextFile();

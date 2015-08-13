@@ -167,6 +167,7 @@ void LatticePopulation::parseDotTxtLinksFile(std::string i_source){
     }
     else{
         std::cout << "Links txt not found! -> " << source << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 

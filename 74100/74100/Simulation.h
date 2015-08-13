@@ -15,6 +15,7 @@
 #include "SimulationStateManager.h"
 #include "DataSubscriber.h"
 
+
 class Simulation
 {
     SimulationStateManager stateManager;
@@ -33,6 +34,10 @@ class Simulation
     long double lowestPayoffInMatrix(std::vector<long double> & payoffMatrix);
     long double maxFitnessDifference(unsigned long numbNeiborsA, unsigned long numbNeiborsB, long double maxPayoffPossible, long double minPayoffPossible); //maxFitnessDifference between two agents
 
+    long double aux_Hi_Payoff;
+    long double aux_Lo_Payoff;
+    
+    
 	void printPercentageDone(int & iGeneration);
 	int _percentage = 1; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total

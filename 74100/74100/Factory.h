@@ -15,7 +15,6 @@
 #include <fstream>
 #include <algorithm>    // std::sort
 
-
 class Factory
 {
 public:
