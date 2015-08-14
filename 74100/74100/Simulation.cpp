@@ -336,8 +336,8 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
         printf("Chose: %d  fit: %Lf   #Neigh: %d  strat: ", randomNeighborIndex , iPopulation[randomNeighborIndex].fitness, (int)iPopulation[randomNeighborIndex].neighbors.size());
         for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
         
-		//imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
-		imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+		imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+		//imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
     }
 }
 
