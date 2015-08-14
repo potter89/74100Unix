@@ -150,7 +150,7 @@ void SimpleConsoleDataSubscriber::update(SimulationData const & simData){
 }
 
 
-//Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 TextFileDataSubscriber::TextFileDataSubscriber(std::string filename) : 
 _paramFileName(filename)
 {
@@ -212,7 +212,7 @@ void TextFileDataSubscriber::update(const SimulationData & simData){
 	//std::cout << _tentativeFileIndex << " writing " << std::endl;
 }
 
-//AVERAGE Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//AVERAGE Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 AverageTextFileDataSubscriber::AverageTextFileDataSubscriber(std::string filename, int totalGenerations) 
 : TextFileDataSubscriber(filename)
 {
@@ -272,7 +272,7 @@ void AverageTextFileDataSubscriber::update(const SimulationData & simData){
 }
 
 
-//Average LAST thousand Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//Average LAST thousand Text File Subscriber cl@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 AverageLastThousandDataSubscriber::AverageLastThousandDataSubscriber(std::string fileName)
 : TextFileDataSubscriber(fileName){}
 AverageLastThousandDataSubscriber::~AverageLastThousandDataSubscriber(){}
@@ -351,20 +351,3 @@ void TagDiversityDataSubscriber::update(const SimulationData & simData){
 		delete[] tagsCounter;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

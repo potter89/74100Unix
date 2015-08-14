@@ -241,7 +241,7 @@ void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, lon
 			//Imitates tag given a probability Tau
 			random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
 			//std::cout << "_tau = " << _tau << " and random:" << random0till1 << std::endl;
-			if (*stateManager.getTauStrat() >= random0till1){
+			if (*stateManager.getTauTag() >= random0till1){
 				agent.tag = neighbour.tag;
 				//printf(" COPIED TAG@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
 			}
