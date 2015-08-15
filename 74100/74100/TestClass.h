@@ -21,6 +21,7 @@
 #include <cstdlib> //for atof
 #include "Agent.h"
 #include <memory>
+#include <list>
 
 class TestClass
 {
@@ -50,6 +51,8 @@ public:
     void testdoubleatof();
     
     void testSmartPointer();
+    
+    void testAddindToIteratingVector();
     
 };
 

@@ -25,9 +25,7 @@ GlobalRandomGen * GlobalRandomGen::_globalRandomGen_instance = 0;
 int main(int argc, const char * argv[])
 {
     //tests, whithin local scope
-    //if (true) TestClass t;
-    
-    
+    //TestClass t;
     
     /**/
     //Factory will create populations and simulations
@@ -35,8 +33,6 @@ int main(int argc, const char * argv[])
     
     //main simulation to execute
     Simulation * simulation = nullptr;
-    
-    //for (int a = 0; a < argc; a++) { std::cout << a << ": " << argv[a] << std::endl; }
     
 	if (argc == 1){
         //no input, prompt input
@@ -80,8 +76,8 @@ int main(int argc, const char * argv[])
 			}
 
 			simulation = factory.createSimulation(numbTags, linksPath, populationType, numbGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix, dataSubscribers);
-			simulation->runSimulation();
-            
+			
+            simulation->runSimulation();
             
             delete simulation; //free up dynamic memory
 		}

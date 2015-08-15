@@ -9,8 +9,31 @@
 #include "TestClass.h"
 
 TestClass::TestClass(){
+
 }
 TestClass::~TestClass(){}
+
+void TestClass::testAddindToIteratingVector(){
+    
+    std::list<int> numbersToDuplicate = {1,2,3}; //inicial vector
+    
+    //print vector
+    std::cout << "Initial state: " << std::endl;
+    for (auto it = numbersToDuplicate.begin(); it != numbersToDuplicate.end(); it++) {
+        std::cout << *it << std::endl;
+    }
+    
+    //duplicate vector elements, from end to start
+    for (auto it = numbersToDuplicate.begin(); it != numbersToDuplicate.end(); it++) {
+        numbersToDuplicate.push_front(*it);
+    }
+    
+    //print vector
+    std::cout << "Final state: " << std::endl;
+    for (auto it = numbersToDuplicate.begin(); it != numbersToDuplicate.end(); it++) {
+        std::cout << *it << std::endl;
+    }
+}
 
 void TestClass::testSmartPointer(){
     std::vector<std::unique_ptr<Agent>> agents(10000);
