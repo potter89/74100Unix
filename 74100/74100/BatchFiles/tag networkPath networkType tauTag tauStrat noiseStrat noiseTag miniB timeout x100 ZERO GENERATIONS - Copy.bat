@@ -31,26 +31,5 @@ TIMEOUT /T %timeout% /NOBREAK
 set /A counter=%counter%-1
 rem echo counter is %counter%
 
-if %counter%==0 goto ParseFolderName
+if %counter%==0 exit
 goto Main
-
-
-:ParseFolderName
-::does only one cycle of the loop, retreieves filename based on barabasi or other types
-for /f "tokens=1,2,3,4,5,6,7,8,9,10* delims=_" %%a in ('dir /b Results\*.txt') do (
-
-echo.%%b | findstr /C:"bara" 1>nul
-
-if errorlevel 1 (
-  set folderName=%%a__%%b_%%c_%%d__%%e__%%f__%%g__%%h__%%i
-) ELSE (
-  set folderName=%%a__%%b_%%c__%%d__%%e__%%f__%%g__%%h
-)
-goto MoveFiles
-)
-
-:MoveFiles
-md ".\Results\%folderName%"
-move /-y ".\Results\*.txt" ".\Results\%folderName%\"
-
-exit

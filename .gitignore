@@ -58,6 +58,6 @@
 *.user
 *.sdf
 74100/74100/Debug/74100.ilk
-74100/74100/TestClass.cpp
+74100/74100/Results/*
 74100/74100/Debug/Results/*
 74100/74100/Release/Results/*

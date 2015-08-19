@@ -29,7 +29,7 @@ start "" 74100.exe %tag% %networkPath% %networkType% 10000 %tauTag% %tauStrat% %
 TIMEOUT /T %timeout% /NOBREAK
 
 set /A counter=%counter%-1
-echo counter is %counter%
+rem echo counter is %counter%
 
 if %counter%==0 goto ParseFolderName
 goto Main

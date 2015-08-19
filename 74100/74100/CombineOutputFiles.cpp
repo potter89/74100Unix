@@ -8,10 +8,22 @@
 
 #include "CombineOutputFiles.h"
 
+bool isInteger(const std::string & s)
+{
+	if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) return false;
+
+	char * p;
+	strtol(s.c_str(), &p, 10);
+
+	return (*p == 0);
+}
+
 void combineOutputFiles(std::string folder, int bIncrement){
+	if (folder == "") return; //do nothing if no path is given
+	
 	//HARDCODED constants
 	const int numbDuplicates = 100;
-	const int lineWithCoopActions = 2; //line which holds the number with coop actions
+	const int lineWithCoopActions = 2; //line which holds the number with coop actions. 2 = second line.
 
 	std::list<int> valuesToAvg;
 
@@ -24,9 +36,10 @@ void combineOutputFiles(std::string folder, int bIncrement){
 	//create and open a new combinedOutput textfile
 	std::ofstream combinedOutputFile;
 	std::string fullCombinedNamePath = "Results/combOut_" + folderName + ".txt";
-	combinedOutputFile.open(fullCombinedNamePath); //TODO:check if this works for setting the filename
+	combinedOutputFile.open(fullCombinedNamePath);
 	if (combinedOutputFile.is_open()) {
 		std::ifstream auxSimulationFile; std::string auxString = "", auxFileName = "";
+		
 		//for each value of b (cheater's advantage), from 1.0 to 2.0, inclusive
 		for (int b = 100; b <= 200; b += bIncrement) { //after division by 100.0f, b goes from 1.0 to 2.0, with increments of 0.05f (when bIncrement=5), without loss of precision
 			//look for all the repeated files of the same b
@@ -36,13 +49,26 @@ void combineOutputFiles(std::string folder, int bIncrement){
 
 				auxSimulationFile.open(auxFileName);
 				if (auxSimulationFile.is_open()) {
-					//store their values, which are kept in the last line of the file, on the second line
+					//store each duplicate's value, which is kept in the last line of the file, the second line
 					for (int it = 1; it <= lineWithCoopActions; it++) getline(auxSimulationFile, auxString); //only the content of the line with coop actions ends up in auxString
-					valuesToAvg.push_back(atoi(auxString.c_str()));
+					if (auxString != ""){
+						if (isInteger(auxString.c_str()))
+							valuesToAvg.push_back(atoi(auxString.c_str()));
+						else
+							std::cout << std::endl << "It's not a number!! -> b:" << (b / 100.0f) << "  #" << i << std::endl << std::endl;
+					}
+					else{
+						//there's nothing on the line!
+						std::cout << std::endl << "There's something missing in file -> b:" << (b / 100.0f) << "  #" << i << std::endl << std::endl;
+					}
+					if (getline(auxSimulationFile, auxString)){
+						printf("\nFile has over three lines!! -> %s \n", auxFileName.c_str());
+					}
+
 					auxSimulationFile.close();
 				}
 				else{
-					std::cout << std::endl << "Failed in opening file -> b:" << (b / 100.0f) << "  #" << i << std::endl << std::endl;
+					std::cout << std::endl << "Failed in opening file -> b:" << (b / 100.0f) << "  #" << i << " in " << folderName << std::endl << std::endl;
 				}
 			}
 			//average the values
@@ -68,8 +94,10 @@ void multipleCombineOutputFiles(int bIncrement){
 	if (myfile.is_open())
 	{
 		while (getline(myfile, auxFolderName)){
-			std::cout << "Combining " + auxFolderName << std::endl;
-			combineOutputFiles(auxFolderName, bIncrement);
+			if (auxFolderName != ""){
+				std::cout << "Combining " + auxFolderName << std::endl;
+				combineOutputFiles(auxFolderName, bIncrement);
+			}
 		}
 		std::cout << "All files processed. Press any key to continue..." << std::endl;
 		int aux; std::cin >> aux;
