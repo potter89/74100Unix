@@ -3,18 +3,6 @@
 
 :MainFb
 
-start "" "tag networkPath networkType tauTag tauStrat noiseStrat noiseTag miniB timeout x100 ZERO GENERATIONS" 8 Networks/bara.500.z4.links bara.z4 1 5 0 0 15
-timeout /T 1520 /NOBREAK
-
-start "" "tag networkPath networkType tauTag tauStrat noiseStrat noiseTag miniB timeout x100 ZERO GENERATIONS" 8 Networks/bara.500.z4.links bara.z4 1 4.5 0 0 15
-timeout /T 1520 /NOBREAK
-
-start "" "tag networkPath networkType tauTag tauStrat noiseStrat noiseTag miniB timeout x100 ZERO GENERATIONS" 8 Networks/fb_z4_500.txt fb_z4 1 0.5 0 0 15
-timeout /T 1520 /NOBREAK
-
-
-exit
-
 timeout /T 10 /NOBREAK
 
 start "" "tag networkPath networkType tauTag tauStrat noiseStrat noiseTag miniB timeout x100" 8 Networks/bara.500.z4.links bara.z4 1 1 0.5 0.5 3

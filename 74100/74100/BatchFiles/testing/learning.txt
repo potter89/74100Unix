@@ -1,0 +1,4 @@
+/WAIT makes it wait for batch to end
+
+echo No|move /-y ".\Results\*.txt" ".\Results\%folderName%\"
+echo No makes it NOT overwrite any files. having echo is important somehow
