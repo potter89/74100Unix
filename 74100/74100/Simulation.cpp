@@ -81,7 +81,7 @@ void Simulation::runOneGeneration(){
     setFittnessAndResetPayoffs(*agentsVectorPtr);
     if (stateManager.getNumbAttachedSubscribers() != 0) {
         stateManager.notifyDataSubscribers(); //update DataSubscribers
-        stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation
+        stateManager.resetStateForNextGeneration(); //resets the variables who need to be reset each generation related to data subscribers
     }
     evolutionaryGameTheory(*agentsVectorPtr, *stateManager.getTauTag(), *stateManager.getTauStrat(), *stateManager.getNoiseStrat(), *stateManager.getNoiseTag(), *stateManager.getPayoffMatrix());
 }
@@ -166,7 +166,7 @@ void Simulation::gameTheoryGames(std::vector<Agent> & iPopulation){
          std::cout << "Agent " << currentAgent->getIndex() << "------------------------------------------" << std::endl;
          std::cout << currentAgent->getIndex() << " has strategy {";
          for (int x = 0; x < currentAgent->strategy.size(); x++){
-         //std::cout << currentAgent->strategy[x] << ", ";
+             std::cout << currentAgent->strategy[x] << ", ";
          }
          std::cout << "} and tag: " << currentAgent->tag << " and current payoff: " << currentAgent->payoff << std::endl; //*/
          
@@ -218,63 +218,46 @@ long double Simulation::maxFitnessDifference(unsigned long numbNeiborsOfA, unsig
     }
 }
 
-//TODO: consider making this case happen when tautag and taustrat are both 0
-void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
-	
-    long double payoffDiff = neighbour.fitness - agent.fitness;
-	if (payoffDiff > 0) { //only considers changing strategy (and tag), if the neighbor's payoff is better than his own
-        long double p; //holds probability of imitating the other agent's strategy
-
-		//p=(fitness_j-fitness_i) / (Diferenca maxima possivel entre fitness)
-		p = (payoffDiff) /
-			(maxFitnessDifference(agent.neighbors.size(), neighbour.neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff));
-		//std::cout << "p = (" << iPopulation[randomNeighborIndex].fitness << "-" << iPopulation[i].fitness << ") / " << maxFitnessDifference(iPopulation[i].neighbors.size(), iPopulation[randomNeighborIndex].neighbors.size(), aux_Hi_Payoff, aux_Lo_Payoff) << std::endl;
-
-		long double random0till1; //long double between 0.0 and 1.0, inclusive
-		random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1();
-		//printf("p = %Lf and random: %Lf\n", p, random0till1);
-        
-		if (p >= random0till1){
-			//ALWAYS imitates strategy
-            
-            double probabilityOfNoise = 0;
-            int randomNumber = 0;
+void Simulation::copyNeighboursStrategy(Agent & agent, Agent & neighbour, long double & noiseStrat){
+    long double probabilityOfNoise = 0;
+    int randomNumber = 0;
     
-            stateManager.incrementStrategyChangeCounter();
-            
-            //for each of the strategies, induce noise given probability noiseStrat
-            for (auto it = agent.strategy.begin(); it != agent.strategy.end(); it++) {
-                probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
-                if (noiseStrat >= probabilityOfNoise) {
-                    //include noise
-                    randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(1);
-                    agent.strategy[*it] = randomNumber;
-                }else{
-                    //simply copy STRAT[i] from neighbour
-                    agent.strategy[*it] = neighbour.strategy[*it];
-                }
-            }
+    //for each of the strategies, induce noise given probability noiseStrat
+    for (auto it = agent.strategy.begin(); it != agent.strategy.end(); it++) {
+        probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
+        printf("noiseStrat = %Lf and random: %Lf\n", noiseStrat, probabilityOfNoise);
         
-            //Imitates tag given a probability Tau
-            random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
-            int numbTags = stateManager.getPopulation()->getNumberOfTags();
-            if (numbTags > 0) {
-                //induce noise
-                probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
-                if (noiseTag >= probabilityOfNoise) {
-                    //include noise, random EXISTING tag
-                    randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numbTags);
-                    agent.tag = randomNumber;
-                }else{
-                    //simply copy TAG from neighbour
-                    agent.tag = neighbour.tag;
-                }
-            }
+        if (noiseStrat >= probabilityOfNoise) {
+            //include noise
+            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(1);
+            agent.strategy[*it] = randomNumber;
+        }else{
+            //simply copy STRAT[i] from neighbour
+            agent.strategy[*it] = neighbour.strategy[*it];
         }
-	}
+    }
 }
-//This imitation process allows the study of the timescale of
-void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
+
+void Simulation::copyNeighboursTag(Agent & agent, Agent & neighbour, int numberOfAvailableTags, long double & noiseTag){
+    long double probabilityOfNoise = 0;
+    int randomNumber = 0;
+
+    if (numberOfAvailableTags > 0) {
+        //induce noise
+        probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
+        printf("noiseTag = %Lf and random: %Lf\n", noiseTag, probabilityOfNoise);
+        if (noiseTag >= probabilityOfNoise) {
+            //include noise, random EXISTING tag
+            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numberOfAvailableTags);
+            agent.tag = randomNumber;
+        }else{
+            //simply copy TAG from neighbour
+            agent.tag = neighbour.tag;
+        }
+    }
+}
+
+void Simulation::imitationProcess(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     
     long double payoffDiff = neighbour.fitness - agent.fitness;
     if (payoffDiff > 0) { //only considers changing strategy OR tag, if the neighbor's payoff is better than his own
@@ -290,58 +273,55 @@ void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long do
         random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1();
         //printf("p = %Lf and random: %Lf\n", p, random0till1);
         
-        
+        //choose which evolutionary copying process to use
         if (imitationProbability >= random0till1){
-            //TODO:create a new random gen for this
-            long double random0tillTauStratPlusTauTag = GlobalRandomGen::getInstance()->getRandomDouble0TillMax(tauTag + tauStrat);
-            //std::cout << "random0tillTauStratPlusTauTag: " << random0tillTauStratPlusTauTag << std::endl;
-            //std::cout << "tauStrat: " << tauStrat << std::endl;
-            
-            double probabilityOfNoise = 0;
-            int randomNumber = 0;
-            
-            //only imitates tag OR strat
-            if (tauStrat > random0tillTauStratPlusTauTag){
-                //copy ONLY the strat
-                
-                stateManager.incrementStrategyChangeCounter();
-                
-                //for each of the strategies, induce noise given probability noiseStrat
-                for (auto it = agent.strategy.begin(); it != agent.strategy.end(); it++) {
-                    probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
-                    if (noiseStrat >= probabilityOfNoise) {
-                        //include noise
-                        randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(1);
-                        agent.strategy[*it] = randomNumber;
-                    }else{
-                        //simply copy STRAT[i] from neighbour
-                        agent.strategy[*it] = neighbour.strategy[*it];
-                    }
-                }
-            }
-            else{
-                //copy only the tag  (if there's more than one)
-                int numbTags = stateManager.getPopulation()->getNumberOfTags();
-                if (numbTags > 0) {
-                    //induce noise
-                    probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
-                    if (noiseTag >= probabilityOfNoise) {
-                        //include noise, random EXISTING tag
-                        randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numbTags);
-                        agent.tag = randomNumber;
-                    }else{
-                        //simply copy TAG from neighbour
-                        agent.tag = neighbour.tag;
-                    }
-                }
+            if (tauStrat == 0 && tauTag == 0) {
+                //Copy strat and sometimes tag
+                imitationProcessSingleTau(agent, neighbour, tauTag, noiseStrat, noiseTag);
+            }else{
+                //copy strat OR copy tag, "imitationProcessAlpha"
+                imitationProcessAlpha(agent, neighbour, tauTag, tauStrat, noiseStrat, noiseStrat);
             }
         }
     }
 }
 
+void Simulation::imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & noiseStrat, long double & noiseTag){
+    
+    //ALWAYS imitates strategy
+    copyNeighboursStrategy(agent,neighbour,noiseStrat);
+    stateManager.incrementStrategyChangeCounter();
+    
+    //Imitates tag given a probability Tau
+    long double random0till1 = GlobalRandomGen::getInstance()->getRandomF0Till1(); //long double between 0.0 and 1.0, inclusive
+    if (tauTag > random0till1) {
+        copyNeighboursTag(agent, neighbour, stateManager.getPopulation()->getNumberOfTags(), noiseTag);
+    }
+}
+
+//TODO: continue comment -> This imitation process allows the study of the timescale of
+void Simulation::imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag){
+    
+    //TODO:create a new random gen for this, performance?
+    long double random0tillTauStratPlusTauTag = GlobalRandomGen::getInstance()->getRandomDouble0TillMax(tauTag + tauStrat);
+    //std::cout << "random0tillTauStratPlusTauTag: " << random0tillTauStratPlusTauTag << std::endl;
+    //std::cout << "tauStrat: " << tauStrat << std::endl;
+    
+    //only imitates tag OR strat
+    if (tauStrat > random0tillTauStratPlusTauTag){
+        //copy ONLY the strat
+        copyNeighboursStrategy(agent, neighbour, noiseStrat);
+        stateManager.incrementStrategyChangeCounter();
+    }
+    else{
+        //copy only the tag  (if there's more than one)
+        copyNeighboursTag(agent, neighbour, stateManager.getPopulation()->getNumberOfTags(), noiseTag);
+    }
+}
+
 void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix){
     for (int i = 0; i < (int)iPopulation.size(); i++){ //for each agent in the population
-        /**
+        /**/
         printf("Agent: %i -------------------------------------------------------------\n", i);
         printf("Has      fit: %Lf #Neigh: %i", iPopulation[i].fitness, (int)iPopulation[i].neighbors.size());
         printf(" tag: %i strat: ", iPopulation[i].tag);
@@ -351,18 +331,12 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
         //pick a random neighbor
         int randomIndex = GlobalRandomGen::getInstance()->getRandomTillMax((unsigned int)iPopulation[i].neighbors.size()-1); //generates random number between 0 and sizeof vector neighbors, minus one as we want one of the indexes;
         int randomNeighborIndex = iPopulation[i].neighbors[randomIndex]; //goes to that index to get the neighbors population index
-        /**
+        /**/
         printf("Chose: %d  fit: %Lf   #Neigh: %d  strat: ", randomNeighborIndex , iPopulation[randomNeighborIndex].fitness, (int)iPopulation[randomNeighborIndex].neighbors.size());
         for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
         
-        //choose which evolutionary copying process to use
-        if (tauStrat == 0 && tauTag == 0) {
-            //Copy strat and sometimes tag
-            imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
-        }else{
-            //Alpha process
-            imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
-        }
+        imitationProcess(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+
     }
 }
 

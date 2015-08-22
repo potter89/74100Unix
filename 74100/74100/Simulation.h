@@ -25,9 +25,13 @@ class Simulation
     void gameTheoryGames(std::vector<Agent> & iPopulation);
 	void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
     
-	void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
-	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+    void imitationProcess(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
+    void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & noiseStrat, long double & noiseTag);
+	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag);
 
+    void copyNeighboursTag(Agent & agent, Agent & neighbour, int numberOfAvailableTags, long double & noiseTag);
+    void copyNeighboursStrategy(Agent & agent, Agent & neighbour, long double & noiseStrat);
+    
     void setFittnessAndResetPayoffs(std::vector<Agent> & iPopulation);
     
     long double highestPayoffInMatrix(std::vector<long double> & payoffMatrix);
