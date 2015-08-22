@@ -356,12 +356,12 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
         for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
         
         //choose which evolutionary copying process to use
-        if (tauStrat != 0 && tauTag != 0) {
-            //Alpha process
-            imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
-        }else{
+        if (tauStrat == 0 && tauTag == 0) {
             //Copy strat and sometimes tag
             imitationProcessSingleTau(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
+        }else{
+            //Alpha process
+            imitationProcessAlpha(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
         }
     }
 }
