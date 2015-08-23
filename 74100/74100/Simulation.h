@@ -26,7 +26,7 @@ class Simulation
 	void evolutionaryGameTheory(std::vector<Agent> & iPopulation, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
     
     void imitationProcess(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix);
-    void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & tauTag, long double & noiseStrat, long double & noiseTag);
+    void imitationProcessSingleTau(Agent & agent, Agent & neighbour, long double & noiseStrat, long double & noiseTag);
 	void imitationProcessAlpha(Agent & agent, Agent & neighbour, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag);
 
     void copyNeighboursTag(Agent & agent, Agent & neighbour, int numberOfAvailableTags, long double & noiseTag);
@@ -50,7 +50,7 @@ class Simulation
 
     std::vector<Agent> * agentsVectorPtr = nullptr; //just caching the agents vector, because it's used extensively
     
-public:
+  public:
 	Simulation(Population * population, int & i_maxGenerations, long double & tauTag, long double & tauStrat, long double & noiseStrat, long double & noiseTag, std::vector<long double> & payoffMatrix, std::vector<DataSubscriber*> & dataSubscribers);
     
     ~Simulation();
