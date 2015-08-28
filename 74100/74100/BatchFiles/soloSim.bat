@@ -21,10 +21,10 @@ echo noiseStrat= %noiseStrat%
 echo noiseTag= %noiseTag%
 
 set randomVar=%random%
-echo %randomVar% > .\Results\TempFiles\%randomVar%.tmp
+echo %randomVar% > .\Results\TempFiles\%tag%%networkPath%%networkType%%generations%%tauTag%%tauStrat%%noiseStrat%%noiseTag%10%b%00.tmp
 
-rem start /WAIT "" 74100.exe %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1 0 %b% 0 0 tds
-pause
+start /WAIT "" 74100.exe %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1 0 %b% 0 0 tds
 
-echo Y | DEL .\Results\TempFiles\%randomVar%.tmp
+echo Y | DEL .\Results\TempFiles\%tag%%networkPath%%networkType%%generations%%tauTag%%tauStrat%%noiseStrat%%noiseTag%10%b%00.tmp
+
 exit
