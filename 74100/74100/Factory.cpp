@@ -45,7 +45,10 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
     //TODO: meanwhile, everything should work with a lattice population type class
     retPopulation = new LatticePopulation();
     retPopulation->init(path, totalTags, type);
-    if(retPopulation->getSize() <= 0) exit(false); //error creating the population, shouldn't continue running sim
+	if (retPopulation->getSize() <= 0){
+		printf("Error creating the population\n");
+		exit(false); //error creating the population, shouldn't continue running sim
+	} 
     return retPopulation;
 }
 
@@ -59,7 +62,7 @@ std::string createFileName(const int totalTags, const std::string popType, const
 	filename += std::to_string(tauStrat) + "__";
 	filename += std::to_string(noiseStrat) + "__";
 	filename += std::to_string(noiseTag) + "__";
-    for (int i = 0; i < payoffMatrix.size(); i++){
+    for (unsigned int i = 0; i < payoffMatrix.size(); i++){
         filename += std::to_string(payoffMatrix[i]) + "_";
     }
     filename += "__#";
@@ -74,7 +77,7 @@ void Factory::parseDataSubscribers(const std::vector<std::string> & subscribers,
     //TODO: this shouldn't be here....
     _subscribersParsed.clear();
     if (!subscribers.empty()){
-        for (int i = 0; i < subscribers.size(); i++){
+        for (unsigned int i = 0; i < subscribers.size(); i++){
             if (subscribers[i] == "TextFileDataSubscriber"){
                 //1__fc_128__15000__1.0__1.0_0.0_1.0_0.0__#1.txt
 				std::string filename = createFileName(totalTags, popType, sizePop, i_maxGenerations, tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
@@ -266,7 +269,7 @@ void Factory::generateForwardBehind(){
         std::sort(neighborIndexes.begin(),neighborIndexes.end());
 
         //create string
-        for (double it = 0; it<neighborIndexes.size(); it++) {
+        for (unsigned int it = 0; it < neighborIndexes.size(); it++) {
             s += " " + std::to_string(neighborIndexes.at(it));
         }
         s += '\n';

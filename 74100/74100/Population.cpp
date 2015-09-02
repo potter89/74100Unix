@@ -94,7 +94,7 @@ void LatticePopulation::parseDotLinksFile(std::string i_source){
             tokens.push_back(currentAgentLine);
             
             //create the neigbors vector to be used in the constructor of this new agent.
-            for (int i = 4; i < (tokens.size()); i++){ //neighbor's indexes start at pos 4, and end
+            for (unsigned int i = 4; i < tokens.size(); i++){ //neighbor's indexes start at pos 4, and end
                 if (tokens[i] != "") {
                     tempNeighbors.push_back(atoi(tokens[i].c_str()));
                 }

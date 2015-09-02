@@ -222,7 +222,7 @@ void Simulation::copyNeighboursStrategy(Agent & agent, Agent & neighbour, long d
     int randomNumber = 0;
     
     //for each of the strategies, induce noise given probability noiseStrat
-    for (int i = 0; i < agent.strategy.size(); i++) {
+    for (unsigned int i = 0; i < agent.strategy.size(); i++) {
         probabilityOfNoise = GlobalRandomGen::getInstance()->getRandomF0Till1();
         //printf("noiseStrat = %Lf and random: %Lf\n", noiseStrat, probabilityOfNoise);
         
@@ -342,7 +342,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
 //GOAL is hitting a certain number of generations - > every 10% of the generations done, prints in console the progress
 void Simulation::printPercentageDone(int & iGeneration){
     
-    if (_tenPercentGenerations == -1) _tenPercentGenerations = ((*stateManager.getMaxGenerations()) * 0.1);
+    if (_tenPercentGenerations == -1) _tenPercentGenerations = (int)((*stateManager.getMaxGenerations()) * 0.1);
     
     if (_percentage * _tenPercentGenerations == iGeneration){
         printf("%%%%  %%%%  %%%%  %%%%  -- Progress: %d%%  -- %%%%  %%%%  %%%%  %%%%\n",(_percentage * 10));

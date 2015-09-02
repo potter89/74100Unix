@@ -69,7 +69,7 @@ void ConsoleDataSubscriber::update(const SimulationData & simData) {
             
             //if it's the last one, include an endl
             lastInRow = true;
-            for (int z = 0; z < auxAgent->neighbors.size(); z++){ //check each of auxAgent neighbors
+            for (unsigned int z = 0; z < auxAgent->neighbors.size(); z++){ //check each of auxAgent neighbors
                 if ((index + 1) == auxAgent->neighbors.at(z)) {
                     lastInRow = false; //if any of them has index directly
                     break;
@@ -217,7 +217,7 @@ AverageTextFileDataSubscriber::AverageTextFileDataSubscriber(std::string filenam
 : TextFileDataSubscriber(filename)
 {
 	(totalGenerations >= 100) ? 
-		_refreshRate = totalGenerations * 0.01 : // to print 100 times only
+		_refreshRate = (int)(totalGenerations * 0.01) : // to print 100 times only
 		_refreshRate = 0; //else prints at all times
 }
 AverageTextFileDataSubscriber::~AverageTextFileDataSubscriber(){
