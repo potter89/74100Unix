@@ -28,6 +28,7 @@ public:
     
     int currentGeneration = -1;
     int numbCooperativeActions = 0;
+	int prevNumbCooperativeActions = 0;
     unsigned int strategyChangeCounter = 0;
 };
 

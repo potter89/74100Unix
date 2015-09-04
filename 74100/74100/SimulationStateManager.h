@@ -45,6 +45,7 @@ public:
     std::vector<long double> * getPayoffMatrix();
     unsigned int * getStrategyChangeCounter();
     int * getCurrentGenerationCounter();
+	int getPrevNumberCooperativeActions();
 
     
     //setup subs

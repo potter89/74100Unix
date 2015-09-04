@@ -63,6 +63,9 @@ unsigned int * SimulationStateManager::getStrategyChangeCounter(){
 int * SimulationStateManager::getCurrentGenerationCounter(){
     return &_simData.currentGeneration;
 }
+int SimulationStateManager::getPrevNumberCooperativeActions(){
+	return _simData.prevNumbCooperativeActions;
+}
 
 //returns how many subscribers are attached
 int SimulationStateManager::getNumbAttachedSubscribers(){
@@ -112,6 +115,7 @@ void SimulationStateManager::incrementCooperativeActions(){
 
 //reset's counter of cooperative actions
 void SimulationStateManager::resetStateForNextGeneration(){
+	_simData.prevNumbCooperativeActions = _simData.numbCooperativeActions;
     _simData.numbCooperativeActions = 0;
 }
 

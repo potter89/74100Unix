@@ -47,6 +47,7 @@ Population * Factory::createPopulation(std::string linksPath, std::string popula
     retPopulation->init(path, totalTags, type);
 	if (retPopulation->getSize() <= 0){
 		printf("Error creating the population\n");
+		char i;	std::cin >> i;
 		exit(false); //error creating the population, shouldn't continue running sim
 	} 
     return retPopulation;

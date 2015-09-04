@@ -64,7 +64,11 @@ void Simulation::runSimulation(){
         while (*stateManager.getStrategyChangeCounter() <= maxStrategyChanges) {
             runOneGeneration();
             printPercentageStrategyChangesDone(*stateManager.getStrategyChangeCounter());
-            
+			if (continuosEquilibrium()){
+				printf("Reached equilibrium!!!!! -> %i \n", previousNumberOfCooperationActions);
+				printf("Generations done -> %i \n", stateManager.getCurrentGenerationCounter());
+				break;
+			}
         }
         std::cout << "Number of strategy changes: " << *stateManager.getStrategyChangeCounter() << std::endl;
     }
@@ -249,7 +253,7 @@ void Simulation::copyNeighboursTag(Agent & agent, Agent & neighbour, int numberO
         
         if (noiseTag >= probabilityOfNoise) {
             //include noise, random EXISTING tag
-            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numberOfAvailableTags);
+            randomNumber = GlobalRandomGen::getInstance()->getRandomTillMax(numberOfAvailableTags-1);
             agent.tag = randomNumber;
         }else{
             //simply copy TAG from neighbour
@@ -338,6 +342,20 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
     }
 }
 
+//if the number of cooperative actions has been the same for xAmount of times, return true
+bool Simulation::continuosEquilibrium(){
+	if (stateManager.getPrevNumberCooperativeActions() == previousNumberOfCooperationActions){
+		counter++;
+		if (counter >= 3000){
+			return true;
+		}
+	}
+	else{
+		previousNumberOfCooperationActions = stateManager.getPrevNumberCooperativeActions();
+		counter = 0;
+	}
+	return false;
+}
 
 //GOAL is hitting a certain number of generations - > every 10% of the generations done, prints in console the progress
 void Simulation::printPercentageDone(int & iGeneration){

@@ -46,6 +46,10 @@ class Simulation
 	int _percentage = 1; //how much percentage of work has been calculated already
 	int _tenPercentGenerations = -1; //how many generations need to be calculated to achieve 10% of their total
     
+	bool continuosEquilibrium();
+	int previousNumberOfCooperationActions = 0;
+	int counter = 0;
+
     void printPercentageStrategyChangesDone(int currentNumberChanges);
 
     std::vector<Agent> * agentsVectorPtr = nullptr; //just caching the agents vector, because it's used extensively

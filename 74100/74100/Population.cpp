@@ -167,6 +167,7 @@ void LatticePopulation::parseDotTxtLinksFile(std::string i_source){
     }
     else{
         std::cout << "Links txt not found! -> " << source << std::endl;
+		char i;	std::cin >> i;
         exit(EXIT_FAILURE);
     }
 }
@@ -191,8 +192,11 @@ void LatticePopulation::generateLinks(std::string i_source){
     }else if (fileTypeName == "links"){
         //parse links file
         parseDotLinksFile(i_source);
-    }else
-        printf("Links file type extension not recognized! -> %s", fileTypeName.c_str());
+	}
+	else{
+		printf("Links file type extension not recognized! -> %s\n", fileTypeName.c_str());
+		char i;	std::cin >> i;
+	}
 
 }
 
