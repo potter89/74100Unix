@@ -13,12 +13,12 @@ set noiseStrat=%7
 set noiseTag=%8
 
 rem echo deleted previous batchFiles
-echo Y | DEL "%projectPath%\Release\Results\TempFiles\*.tmp"
+echo Y | DEL "%projectPath%\Release\TempFiles\*.tmp"
 
 :Main
-for /F %%i in ('dir /b "%projectPath%\Release\Results\TempFiles\*.tmp"') do (
+for /F %%i in ('dir /b "%projectPath%\Release\TempFiles\*.tmp"') do (
    echo Folder is NON empty
-   timeout 2 /NOBREAK
+   timeout 5 /NOBREAK
    goto :Main
 )
 
@@ -46,7 +46,7 @@ start "" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tau
 start /wait "" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 2.0
 rem wait for the last one to finish
 
-timeout 2 /NOBREAK
+echo finished/finishing round
 
 set /A counter=%counter%-1
 if %counter%==0 goto ParseFolderName
@@ -54,10 +54,13 @@ goto Main
 
 
 :ParseFolderName
+echo parsing folder names
+timeout 30 /NOBREAK
+
 rem this will make sure it wait for the last counter of sims finish
-for /F %%i in ('dir /b "%projectPath%\Release\Results\TempFiles\*.tmp"') do (
+for /F %%i in ('dir /b "%projectPath%\Release\TempFiles\*.tmp"') do (
    echo Folder is NON empty
-   timeout 2 /NOBREAK
+   timeout 5 /NOBREAK
    goto :ParseFolderName
 )
 
