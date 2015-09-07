@@ -18,7 +18,7 @@ bool isInteger(const std::string & s)
 	return (*p == 0);
 }
 
-void combineOutputFiles(std::string folder, int bIncrement){
+void combineOutputFiles(std::string folder, int bMin, int bMax, int bIncrement){
 	if (folder == "") return; //do nothing if no path is given
 	
 	//HARDCODED constants
@@ -41,7 +41,7 @@ void combineOutputFiles(std::string folder, int bIncrement){
 		std::ifstream auxSimulationFile; std::string auxString = "", auxFileName = "";
 		
 		//for each value of b (cheater's advantage), from 1.0 to 2.0, inclusive
-		for (int b = 100; b <= 200; b += bIncrement) { //after division by 100.0f, b goes from 1.0 to 2.0, with increments of 0.05f (when bIncrement=5), without loss of precision
+		for (int b = bMin; b <= bMax; b += bIncrement) { //after division by 100.0f, b goes from 1.0 to 2.0, with increments of 0.05f (when bIncrement=5), without loss of precision
 			//look for all the repeated files of the same b
 			for (int i = 1; i <= numbDuplicates; i++) {
 				//1__bara.z4_500__10000__1.000000__1.000000_0.000000_1.000000_0.000000___#1.txt
@@ -87,7 +87,7 @@ void combineOutputFiles(std::string folder, int bIncrement){
 
 }
 
-void multipleCombineOutputFiles(int bIncrement){
+void multipleCombineOutputFiles(int bMin, int bMax, int bIncrement){
 	std::ifstream myfile("Results/folderNames.txt");
 	std::string auxFolderName = "";
 
@@ -96,7 +96,7 @@ void multipleCombineOutputFiles(int bIncrement){
 		while (getline(myfile, auxFolderName)){
 			if (auxFolderName != ""){
 				std::cout << "Combining " + auxFolderName << std::endl;
-				combineOutputFiles(auxFolderName, bIncrement);
+				combineOutputFiles(auxFolderName, bMin, bMax, bIncrement);
 			}
 		}
 		std::cout << "All files processed. Press any key to continue..." << std::endl;

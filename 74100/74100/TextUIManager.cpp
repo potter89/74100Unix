@@ -23,6 +23,8 @@ void printOptions(){
     std::cout << "--> 5: Combine simulation files (x100, b interval = 0.05)" << std::endl << std::endl;
 
 	std::cout << "--> 6: (Mini B) Combine simulation files (x100, b interval = 0.25)" << std::endl << std::endl;
+
+	std::cout << "--> 7: (Little B) Combine simulation files (x100, b-> 1 to 1.2  +=0.05)" << std::endl << std::endl;
     
     std::cout << "--> 9: EXIT!" << std::endl << std::endl;
     
@@ -54,15 +56,31 @@ void handleUIRequest(Factory & factory){
     else if (inputByUser == 4){
         factory.generateShellScript();
 	}
-	else if (inputByUser == 5 || inputByUser == 6){
+	else if (inputByUser == 5 || inputByUser == 6 || inputByUser == 7){
 		int bIncrement = 0; //when combining output files in folders, we need to know the range of b that was used
-		if (inputByUser == 5) bIncrement = 5;
-		else if (inputByUser == 6) bIncrement = 25;
+		int bMinimum = 0; //min value of b, times 100
+		int bMaximum = 0;
+
+		if (inputByUser == 5){ 
+			bIncrement = 5; 
+			bMinimum = 100;
+			bMaximum = 200;
+		}
+		else if (inputByUser == 6){
+			bIncrement = 25;
+			bMinimum = 100;
+			bMaximum = 200;
+		}
+		else if (inputByUser == 7){
+			bIncrement = 5;
+			bMinimum = 100;
+			bMaximum = 120;
+		}
 
 		std::cout << "Use input file? y or n" << std::endl; //
 		std::string usrInput = ""; std::cin >> usrInput;
 		if (usrInput == "y"){
-			multipleCombineOutputFiles(bIncrement); //assumes there's a file called folderNames.txt with the names of all the folders
+			multipleCombineOutputFiles(bMinimum,bMaximum,bIncrement); //assumes there's a file called folderNames.txt with the names of all the folders
 		} else{
 			while (true){ //keep combining until the word stop is typed in
 				std::string pathToFolder = "";
@@ -71,7 +89,7 @@ void handleUIRequest(Factory & factory){
 				customCin(pathToFolder);
 				if (pathToFolder == "stop") break;
 				else{
-					combineOutputFiles(pathToFolder, bIncrement);
+					combineOutputFiles(pathToFolder, bMinimum, bMaximum, bIncrement);
 				}
 			}
 		}

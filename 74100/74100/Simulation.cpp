@@ -338,7 +338,6 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
         for (int x = 0; x < iPopulation[randomNeighborIndex].strategy.size(); x++) printf("%d, ", iPopulation[randomNeighborIndex].strategy[x]); printf("\n"); //*/
         
         imitationProcess(iPopulation[i], iPopulation[randomNeighborIndex], tauTag, tauStrat, noiseStrat, noiseTag, payoffMatrix);
-
     }
 }
 
@@ -346,7 +345,7 @@ void Simulation::evolutionaryGameTheory(std::vector<Agent> & iPopulation, long d
 bool Simulation::continuosEquilibrium(){
 	if (stateManager.getPrevNumberCooperativeActions() == previousNumberOfCooperationActions){
 		counter++;
-		if (counter >= 3000){
+		if (counter >= 50000){
 			return true;
 		}
 	}

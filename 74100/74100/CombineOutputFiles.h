@@ -16,8 +16,8 @@
 #include <stdlib.h> // atoi
 #include <list>
 
-void combineOutputFiles(std::string folderPath, int bIncrement);
-void multipleCombineOutputFiles(int bIncrement);
+void combineOutputFiles(std::string folderPath, int bMin, int bMax, int bIncrement);
+void multipleCombineOutputFiles(int bMin, int bMax, int bIncrement);
 int calculateAverage(std::list<int> & vec);
 
 #endif /* defined(___4100Unix__CombineOutputFiles__) */

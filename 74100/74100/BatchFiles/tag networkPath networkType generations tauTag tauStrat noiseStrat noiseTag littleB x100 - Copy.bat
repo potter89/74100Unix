@@ -24,10 +24,10 @@ for /F %%i in ('dir /b "%projectPath%\Release\TempFiles\*.tmp"') do (
 
 echo starting a new round
 start "sim1" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.0
-start "sim2" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.25
-start "sim3" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.5
-start "sim4" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.75
-start /wait "sim5" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 2.0
+start "sim2" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.05
+start "sim3" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.1
+start "sim4" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.15
+start /wait "sim5" "soloSim" %tag% %networkPath% %networkType% %generations% %tauTag% %tauStrat% %noiseStrat% %noiseTag% 1.2
 
 echo finished/finishing round
 
