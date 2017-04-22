@@ -53,7 +53,7 @@ example:
 @@@@@@@@@@@@ .txt file:
 
 First line:  Total number of agents in the population
-Second Line: AgentIndex SignalBit NeighborIndex NeighborIndex ...
+Following Lines: AgentIndex SignalBit NeighborIndex NeighborIndex ...
 
 example:
 5
